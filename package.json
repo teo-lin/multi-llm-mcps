@@ -1,0 +1,26 @@
+{
+  "name": "mcp-servers",
+  "version": "1.0.0",
+  "description": "Collection of MCP servers",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.9.0"
+  },
+  "scripts": {
+    "register": "bash scripts/register-all.sh",
+    "unregister": "bash scripts/unregister-all.sh",
+    "test": "npm test --workspaces --if-present"
+  },
+  "workspaces": [
+    "CloudWatch",
+    "CodeReview",
+    "Jira",
+    "GitHub",
+    "Atlassian",
+    "MySQL"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  }
+}

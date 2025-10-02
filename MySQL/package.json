@@ -1,0 +1,28 @@
+{
+  "name": "mysql-mcp-server",
+  "version": "1.0.0",
+  "author": "Teolin",
+  "license": "MIT",
+  "description": "MCP server for MySQL database operations",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "mysql",
+    "database",
+    "sql",
+    "claude",
+    "claude-code",
+    "server"
+  ],
+  "type": "module",
+  "engines": {
+    "node": "24.9.0"
+  },
+  "scripts": {
+    "start": "node --env-file=.env src/index.js",
+    "test": "node src/test.js"
+  },
+  "dependencies": {
+    "mysql2": "^3.11.5"
+  }
+}

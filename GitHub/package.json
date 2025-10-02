@@ -1,0 +1,27 @@
+{
+  "name": "github-mcp-server",
+  "version": "1.0.0",
+  "author": "Teolin",
+  "license": "MIT",
+  "description": "MCP server for GitHub PR operations",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "github",
+    "pull-request",
+    "pr",
+    "diff",
+    "claude",
+    "claude-code",
+    "git",
+    "version-control"
+  ],
+  "type": "module",
+  "engines": {
+    "node": "24.9.0"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node src/test.js"
+  }
+}

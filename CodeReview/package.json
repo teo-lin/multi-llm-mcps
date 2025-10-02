@@ -1,0 +1,28 @@
+{
+  "name": "code-review-mcp-server",
+  "version": "1.0.0",
+  "author": "Teolin",
+  "license": "MIT",
+  "description": "MCP server for automated code reviews with GitHub PR and Jira integration",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "code-review",
+    "github",
+    "jira",
+    "pull-request",
+    "pr",
+    "claude",
+    "claude-code",
+    "automation",
+    "atlassian"
+  ],
+  "type": "module",
+  "engines": {
+    "node": "24.9.0"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node src/test.js"
+  }
+}

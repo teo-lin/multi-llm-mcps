@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+*.env
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE & Config
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.claude/
+
+# Build outputs (if any remain)
+dist/
+build/
+*.tsbuildinfo

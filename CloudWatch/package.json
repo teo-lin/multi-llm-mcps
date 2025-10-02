@@ -1,0 +1,30 @@
+{
+  "name": "mcp-server-cloudwatch-logs",
+  "version": "1.0.0",
+  "author": "Teolin",
+  "license": "MIT",
+  "description": "MCP server for querying AWS CloudWatch Logs with Log Insights",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "aws",
+    "cloudwatch",
+    "logs",
+    "log-insights",
+    "claude",
+    "claude-code",
+    "monitoring",
+    "observability"
+  ],
+  "type": "module",
+  "engines": {
+    "node": "24.9.0"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node src/test.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudwatch-logs": "^3.600.0"
+  }
+}

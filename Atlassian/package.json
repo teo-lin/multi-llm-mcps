@@ -1,0 +1,26 @@
+{
+  "name": "atlassian-mcp-server",
+  "version": "1.0.0",
+  "author": "Teolin",
+  "license": "MIT",
+  "description": "MCP server for Atlassian Jira operations",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "atlassian",
+    "jira",
+    "issue-tracking",
+    "project-management",
+    "claude",
+    "claude-code",
+    "acli"
+  ],
+  "type": "module",
+  "engines": {
+    "node": "24.9.0"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node src/test.js"
+  }
+}
