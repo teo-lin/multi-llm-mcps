@@ -1,5 +1,5 @@
 {
-  "name": "mcp-server-cloudwatch-logs",
+  "name": "cloudwatch-logs-mcp-server",
   "version": "1.0.0",
   "author": "Teolin",
   "license": "MIT",

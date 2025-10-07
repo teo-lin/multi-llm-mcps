@@ -36,9 +36,11 @@ npm start
 
 **Add to Claude Code:**
 ```bash
-claude mcp add mysql \
-  -- node --env-file=/Users/teolin/_WORK/_ALL/_MCP/MySQL/.env \
-  /Users/teolin/_WORK/_ALL/_MCP/MySQL/src/index.js
+cd /path/to/_MCP
+./scripts/register-all.sh
+
+# Or register individually:
+claude mcp add mysql /path/to/_MCP/MySQL/start-mcp.sh
 ```
 
 ## Requirements

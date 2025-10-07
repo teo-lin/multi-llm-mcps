@@ -1,9 +1,9 @@
 {
-  "name": "mysql-mcp-server",
+  "name": "local-mysql-mcp-server",
   "version": "1.0.0",
   "author": "Teolin",
   "license": "MIT",
-  "description": "MCP server for MySQL database operations",
+  "description": "MCP server for local MySQL database operations",
   "keywords": [
     "mcp",
     "model-context-protocol",

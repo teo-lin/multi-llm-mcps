@@ -8,6 +8,7 @@
     "node": "24.9.0"
   },
   "scripts": {
+    "setup": "bash scripts/setup.sh",
     "register": "bash scripts/register-all.sh",
     "unregister": "bash scripts/unregister-all.sh",
     "test": "npm test --workspaces --if-present"
@@ -18,7 +19,9 @@
     "Jira",
     "GitHub",
     "Atlassian",
-    "MySQL"
+    "MySQL",
+    "Kafdrop",
+    "AzureAD"
   ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4"

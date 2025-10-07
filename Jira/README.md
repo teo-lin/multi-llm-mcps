@@ -13,17 +13,12 @@ Model Context Protocol server for integrating with Doctari's Jira instance.
 
 ## Installation
 
-1. **Clone or navigate to the project**:
-   ```bash
-   cd /Users/teolin/_WORK/_ALL/_MCP/Jira
-   ```
-
-2. **Install dependencies**:
+1. **Install dependencies**:
    ```bash
    npm install
    ```
 
-3. **Setup environment**:
+2. **Setup environment**:
    ```bash
    cp .env.example .env
    # Edit .env with your Jira credentials
@@ -33,7 +28,7 @@ Model Context Protocol server for integrating with Doctari's Jira instance.
 
 ### Environment Variables
 
-- `JIRA_BASE_URL`: Your Jira instance URL (default: https://doctari.atlassian.net)
+- `JIRA_BASE_URL`: Your Jira instance URL (e.g., https://your-domain.atlassian.net)
 - `JIRA_EMAIL`: Your Atlassian account email
 - `JIRA_API_TOKEN`: Your Atlassian API token ([Create one here](https://id.atlassian.com/manage-profile/security/api-tokens))
 
@@ -91,7 +86,7 @@ npm start
 npm test
 ```
 
-## Board Information
+## Configuration Tips
 
-- **PAB Sprint Board**: https://doctari.atlassian.net/jira/software/projects/PAB/boards/114
-- **PTLS Bugs Board**: https://doctari.atlassian.net/jira/software/projects/PTLSNEW/boards/155
+- Find your board IDs from the Jira board URL: `https://your-domain.atlassian.net/jira/software/projects/PROJECT/boards/{BOARD_ID}`
+- Board IDs can be configured in `.env` as `JIRA_TEAM_BOARD_ID` and `JIRA_BUGS_BOARD_ID`

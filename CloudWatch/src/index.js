@@ -7,13 +7,17 @@ import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprot
 
 class CloudWatchLogsMCPServer {
   constructor() {
-    this.server = new Server({
-      name: 'cloudwatch-logs-server',
-      version: '1.0.0',
-      capabilities: {
-        tools: {},
+    this.server = new Server(
+      {
+        name: 'cloudwatch-logs-server',
+        version: '1.0.0',
       },
-    });
+      {
+        capabilities: {
+          tools: {},
+        },
+      }
+    );
 
     // Initialize AWS CloudWatch Logs client
     const config = {

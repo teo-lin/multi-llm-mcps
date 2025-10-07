@@ -18,6 +18,10 @@ const execAsync = promisify(exec);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Load environment variables
+const JIRA_BASE_URL = process.env.JIRA_BASE_URL || 'https://your-domain.atlassian.net';
+const JIRA_SITE = process.env.JIRA_SITE || 'your-domain.atlassian.net';
+
 // MCP-safe logging (must use stderr to avoid interfering with MCP protocol)
 const log = {
   info: (message) => console.error(`${message}`),
@@ -216,7 +220,7 @@ class AtlassianServer {
           ticket.fields.description
         ),
         status: ticket.fields.status.name,
-        url: `https://doctari.atlassian.net/browse/${ticketKey}`,
+        url: `${JIRA_BASE_URL}/browse/${ticketKey}`,
       };
     } catch (error) {
       log.error(`Failed to fetch Jira ticket ${ticketKey}: ${error}`);
@@ -228,16 +232,16 @@ class AtlassianServer {
       return {
         key: ticketKey,
         summary: `Jira ticket ${ticketKey} (acli access failed)`,
-        description: `View ticket at: https://doctari.atlassian.net/browse/${ticketKey}`,
+        description: `View ticket at: ${JIRA_BASE_URL}/browse/${ticketKey}`,
         status: "Unknown",
-        url: `https://doctari.atlassian.net/browse/${ticketKey}`,
+        url: `${JIRA_BASE_URL}/browse/${ticketKey}`,
       };
     }
   }
 
   async openJiraTicketInBrowser(ticketKey) {
     try {
-      await execAsync(`open "https://doctari.atlassian.net/browse/${ticketKey}"`);
+      await execAsync(`open "${JIRA_BASE_URL}/browse/${ticketKey}"`);
       log.info(`Opened Jira ticket ${ticketKey} in browser`);
     } catch (error) {
       log.error(`Failed to open Jira ticket ${ticketKey}: ${error}`);

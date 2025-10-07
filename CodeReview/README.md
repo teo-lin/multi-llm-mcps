@@ -32,7 +32,7 @@ npm install
 gh auth login
 
 # Atlassian CLI
-acli auth login --url https://doctari.atlassian.net
+acli auth login --url https://your-domain.atlassian.net
 ```
 
 ## Usage
@@ -41,10 +41,10 @@ acli auth login --url https://doctari.atlassian.net
 
 ```bash
 # Review a specific PR (from any repository)
-code_review pr_name: "123" working_directory: "/Users/teolin/_WORK/_ABS"
+code_review pr_name: "123" working_directory: "/path/to/your/repo"
 
 # Or use the tool directly:
-/mcp code_review {"pr_name": "123", "working_directory": "/Users/teolin/_WORK/_ABS"}
+/mcp code_review {"pr_name": "123", "working_directory": "/path/to/your/repo"}
 ```
 
 ### Example Output

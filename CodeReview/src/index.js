@@ -15,6 +15,10 @@ import { promisify } from "util";
 
 const execAsync = promisify(exec);
 
+// Load environment variables
+const JIRA_BASE_URL = process.env.JIRA_BASE_URL || 'https://your-domain.atlassian.net';
+const GITHUB_REPO = process.env.GITHUB_REPO || 'owner/repo';
+
 // MCP-safe logging (must use stderr to avoid interfering with MCP protocol)
 const log = {
   info: (message) => console.error(`${message}`),
@@ -257,15 +261,15 @@ class CodeReviewServer {
     try {
       const normalizedPR = this.normalizePRIdentifier(prName);
 
-      // Get PR metadata - assume we're in the doctariDev/io.planer.service.absences repo context
+      // Get PR metadata
       const { stdout: prInfo } = await execAsync(
-        `gh pr view ${normalizedPR} --repo doctariDev/io.planer.service.absences --json title,body,headRefName`
+        `gh pr view ${normalizedPR} --repo ${GITHUB_REPO} --json title,body,headRefName`
       );
       const pr = JSON.parse(prInfo);
 
       // Get PR diff
       const { stdout: diff } = await execAsync(
-        `gh pr diff ${normalizedPR} --repo doctariDev/io.planer.service.absences`
+        `gh pr diff ${normalizedPR} --repo ${GITHUB_REPO}`
       );
 
       return {
@@ -300,7 +304,7 @@ class CodeReviewServer {
           ticket.fields.description
         ),
         status: ticket.fields.status.name,
-        url: `https://doctari.atlassian.net/browse/${ticketKey}`,
+        url: `${JIRA_BASE_URL}/browse/${ticketKey}`,
       };
     } catch (error) {
       log.error(`Failed to fetch Jira ticket ${ticketKey}: ${error}`);
@@ -312,16 +316,16 @@ class CodeReviewServer {
       return {
         key: ticketKey,
         summary: `Jira ticket ${ticketKey} (acli access failed)`,
-        description: `View ticket at: https://doctari.atlassian.net/browse/${ticketKey}`,
+        description: `View ticket at: ${JIRA_BASE_URL}/browse/${ticketKey}`,
         status: "Unknown",
-        url: `https://doctari.atlassian.net/browse/${ticketKey}`,
+        url: `${JIRA_BASE_URL}/browse/${ticketKey}`,
       };
     }
   }
 
   async openJiraTicketInBrowser(ticketKey) {
     try {
-      await execAsync(`open "https://doctari.atlassian.net/browse/${ticketKey}"`);
+      await execAsync(`open "${JIRA_BASE_URL}/browse/${ticketKey}"`);
       log.info(`Opened Jira ticket ${ticketKey} in browser`);
     } catch (error) {
       log.error(`Failed to open Jira ticket ${ticketKey}: ${error}`);
@@ -430,7 +434,7 @@ class CodeReviewServer {
             summary: `${ticketKey} (auth required for details)`,
             description: "Atlassian CLI authentication required for full details",
             status: "Unknown",
-            url: `https://doctari.atlassian.net/browse/${ticketKey}`,
+            url: `${JIRA_BASE_URL}/browse/${ticketKey}`,
           };
         }
       } else {
