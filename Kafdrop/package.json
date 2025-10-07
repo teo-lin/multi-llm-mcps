@@ -1,0 +1,30 @@
+{
+  "name": "kafdrop-mcp-server",
+  "version": "1.0.0",
+  "author": "Teolin",
+  "license": "MIT",
+  "description": "MCP server for inspecting Kafka clusters via Kafdrop Web UI",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "kafka",
+    "kafdrop",
+    "messaging",
+    "streaming",
+    "monitoring"
+  ],
+  "type": "module",
+  "engines": {
+    "node": "24.9.0"
+  },
+  "scripts": {
+    "start": "node --env-file=.env src/index.js",
+    "test": "node src/test.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.0"
+  },
+  "bin": {
+    "kafdrop-mcp": "src/index.js"
+  }
+}

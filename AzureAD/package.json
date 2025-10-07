@@ -1,0 +1,31 @@
+{
+  "name": "azure-ad-mcp-server",
+  "version": "1.0.0",
+  "author": "Teolin",
+  "license": "MIT",
+  "description": "MCP server for Azure AD authentication with device code flow",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "azure",
+    "azure-ad",
+    "authentication",
+    "oauth2",
+    "msal"
+  ],
+  "type": "module",
+  "engines": {
+    "node": "24.9.0"
+  },
+  "scripts": {
+    "start": "node --env-file=.env src/index.js",
+    "test": "node src/test.js"
+  },
+  "dependencies": {
+    "@azure/msal-node": "^3.8.0",
+    "axios": "^1.7.0"
+  },
+  "bin": {
+    "azuread-mcp": "src/index.js"
+  }
+}
