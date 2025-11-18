@@ -1,3 +1,7 @@
 #!/bin/bash
-cd /Users/teolin/_WORK/_ALL/_MCP/MySQL
-/Users/teolin/.nvm/versions/node/v24.9.0/bin/node --env-file=.env src/index.js
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+# Use node from PATH (respects nvm/volta/etc)
+node --env-file=.env src/index.js

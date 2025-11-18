@@ -9,15 +9,17 @@ git clone https://github.com/teo-lin/claude-mcps.git
 cd claude-mcps
 npm run setup
 ```
-Edit the `.env` files in each MCP directory with your credentials
 
+Edit the `.env` files in each MCP directory with your credentials
 
 ## 📦 Available MCP Servers
 
 ### 1. **MySQL** (`mysql`)
+
 Connect to MySQL databases, execute queries, and manage schemas.
 
 **Tools:**
+
 - `query` - Execute SQL queries with parameterized placeholders
 - `list_databases` - List all databases
 - `list_tables` - List tables in a database
@@ -28,9 +30,11 @@ Connect to MySQL databases, execute queries, and manage schemas.
 ---
 
 ### 2. **Jira** (`jira`)
+
 Comprehensive Jira integration with advanced querying capabilities.
 
 **Tools:**
+
 - `get_ticket_details` - Get ticket information
 - `search_tickets_jql` - Search using JQL
 - `get_board_issues` - Get sprint board issues
@@ -43,9 +47,11 @@ Comprehensive Jira integration with advanced querying capabilities.
 ---
 
 ### 3. **GitHub** (`github`)
+
 GitHub operations using GitHub CLI.
 
 **Tools:**
+
 - PR information and diffs
 - Repository context extraction
 - Multiple PR identifier formats support
@@ -57,12 +63,15 @@ GitHub operations using GitHub CLI.
 ---
 
 ### 4. **CodeReview** (`code-review`)
+
 Automated PR code review with Jira integration.
 
 **Tools:**
+
 - `codereview` - Automated PR analysis with Jira context
 
 **Features:**
+
 - Fetches PR diffs and metadata
 - Retrieves Jira requirements
 - Runs tests and linting
@@ -75,9 +84,11 @@ Automated PR code review with Jira integration.
 ---
 
 ### 5. **Atlassian** (`atlassian`)
+
 Atlassian Jira operations via Atlassian CLI.
 
 **Tools:**
+
 - `jira_ticket_info` - Get ticket details
 - `jira_extract_ticket_from_text` - Extract ticket keys
 - `jira_open_ticket` - Open in browser
@@ -90,9 +101,11 @@ Atlassian Jira operations via Atlassian CLI.
 ---
 
 ### 6. **CloudWatch** (`cloudwatch`)
+
 Query AWS CloudWatch Logs using Log Insights.
 
 **Tools:**
+
 - `query_logs` - Execute CloudWatch Logs Insights queries
 - `list_log_groups` - Browse log groups
 - `get_recent_logs` - Quick access to recent entries
@@ -104,9 +117,11 @@ Query AWS CloudWatch Logs using Log Insights.
 ---
 
 ### 7. **AzureAD** (`azuread`)
+
 Azure Active Directory authentication with OAuth 2.0.
 
 **Tools:**
+
 - `authenticate` - Device code flow authentication
 - `get_access_token` - Get current token
 - `check_auth_status` - Check authentication
@@ -118,9 +133,11 @@ Azure Active Directory authentication with OAuth 2.0.
 ---
 
 ### 8. **Kafdrop** (`kafdrop`)
+
 Kafka cluster inspection via Kafdrop Web UI.
 
 **Tools:**
+
 - `list_topics` - View all topics
 - `get_topic_details` - Topic information
 - `browse_messages` - Read messages
@@ -201,9 +218,31 @@ Contributions are welcome! Please:
 ## 🆘 Support
 
 For issues or questions:
+
 - Check individual MCP READMEs
 - Review `.env.example` files for configuration help
 - Verify authentication: `gh auth status`, `acli auth status`
 - Check MCP health: `claude mcp list`
+
+
+# 🐇 Introduction to MCP Servers
+
+## What in the Devil's name are those...?
+
+Think of MCP servers as smart-ish middleware between the agent's tools and the agent. An agent is basically a glorified chat-bot with tools. You can create your own coding agent starting from Codellama or DeepSeek by adding a minimum of 4 tools: file reader/editor, shell client, web-clinet, debugger. Think of these as supplementary abilities, besides the chat-bot's skill of diplomatically serving you bullshit.
+
+MCP stands for Model-Context Protocoll, a fancy-ass name for a framework that lets AI agents handle structured inputs (basically JSON), manage context across tasks, and produce more consistent, meaningful outputs.
+
+Now, since you cannot modify the built-in tools that Claude Code or Gemini CLI ship with, you can extend these with your own: the mighty MCP servers.
+
+Think of these as functions you can call. They're like little Lambdas or Google Functions, running locally. There's a plethora of them freely available, which may or may not come with massive security risks. Good luck with those. You can create them with Node, Python, whatever you fancy. You can ask your AI agent to build them for you. It's basically just a one-file project.
+
+Setup: Create a small server app exposing one or more functions, like code_review(pull_request_id), then register the tool so that your agent can "see" them (usually with mcp add my-code_review-server --scope user /path/to/server). Verify with `claude mcp list` to ensure it shows "✓ Connected".
+
+Run with - every service differs: mcp__code_review_review 1234 (Claude) or cursor.agent.codeReview(pull_request_id) (you guessed it, Cursor) etc. You can also @-mention them to toggle on/off, or use `/mcp` to see all available tools from connected servers.
+
+Pros: Scoped, accepts params, can authenticate and integrate with external services, very flexible
+
+Cons: more complex, needs a repo to share with the team.
 
 ---
