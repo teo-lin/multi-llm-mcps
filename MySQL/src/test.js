@@ -1,13 +1,8 @@
 import { spawn } from 'child_process';
-import { execSync } from 'child_process';
 
 console.log('🚀 Testing MySQL MCP Server\n');
 
-// Ensure we use Node 24.9.0 from nvm
-const nvmDir = process.env.NVM_DIR || `${process.env.HOME}/.nvm`;
-const nodePath = `${nvmDir}/versions/node/v24.9.0/bin/node`;
-
-const mcp = spawn(nodePath, ['--env-file=.env', 'src/index.js']);
+const mcp = spawn(process.execPath, ['--env-file=.env', 'src/index.js']);
 
 let buffer = '';
 let testResults = [];

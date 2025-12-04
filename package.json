@@ -11,7 +11,7 @@
     "setup": "bash scripts/setup.sh",
     "register": "bash scripts/register-all.sh",
     "unregister": "bash scripts/unregister-all.sh",
-    "test": "npm test --workspaces --if-present"
+    "test": "bash scripts/test-all.sh"
   },
   "workspaces": [
     "CloudWatch",

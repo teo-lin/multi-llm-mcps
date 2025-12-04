@@ -62,12 +62,20 @@ fi
 echo ""
 
 # =============================================================================
-# 3. Install Node.js 24.9.0
+# 3. Install Node.js from .nvmrc
 # =============================================================================
-echo "📦 Checking Node.js 24.9.0..."
-nvm install v24.9.0
-nvm use v24.9.0
-echo "✅ Node.js $(node --version) active"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+NVMRC_PATH="$SCRIPT_DIR/../.nvmrc"
+
+if [ -f "$NVMRC_PATH" ]; then
+    NODE_VERSION=$(cat "$NVMRC_PATH")
+    echo "📦 Installing Node.js $NODE_VERSION from .nvmrc..."
+    nvm install "$NODE_VERSION"
+    nvm use "$NODE_VERSION"
+    echo "✅ Node.js $(node --version) active"
+else
+    echo "⚠️  .nvmrc not found, using default Node version"
+fi
 echo ""
 
 # =============================================================================
