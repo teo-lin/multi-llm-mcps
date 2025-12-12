@@ -17,12 +17,10 @@ jobs:
 
       - name: Configure npm auth
         run: |
-          if [ -n "${{ secrets.NPM_TOKEN }}" ]; then
-            echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-          elif [ -n "$NPM_TEOLIN_ACCESS_TOKEN" ]; then
-            echo "//registry.npmjs.org/:_authToken=$NPM_TEOLIN_ACCESS_TOKEN" > ~/.npmrc
+          if [ -n "${{ secrets.NPM_ACCESS_TOKEN }}" ]; then
+            echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" > ~/.npmrc
           else
-            echo "No NPM token found in secrets or runner environment" >&2
+            echo "No NPM token found in repository secrets" >&2
             exit 1
           fi
 
