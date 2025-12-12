@@ -1,6 +1,6 @@
 {
-  "name": "kafdrop-mcp-server",
-  "version": "1.0.1",
+  "name": "@teolin/mcp-kafdrop",
+  "version": "1.0.2",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for inspecting Kafka clusters via Kafdrop Web UI",

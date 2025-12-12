@@ -1,6 +1,6 @@
 {
-  "name": "atlassian-mcp-server",
-  "version": "1.0.1",
+  "name": "@teolin/mcp-atlassian",
+  "version": "1.0.2",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for Atlassian Jira operations",

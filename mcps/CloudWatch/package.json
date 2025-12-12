@@ -1,6 +1,6 @@
 {
-  "name": "cloudwatch-logs-mcp-server",
-  "version": "1.0.1",
+  "name": "@teolin/mcp-cloudwatch-logs",
+  "version": "1.0.2",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for querying AWS CloudWatch Logs with Log Insights",
