@@ -1,14 +1,20 @@
-# Claude MCP Servers
+# Multi LLM MCP Servers
 
-A comprehensive collection of Model Context Protocol (MCP) servers for Claude Code, providing integrations with MySQL, Jira, GitHub, CloudWatch, Azure AD, and more.
+A comprehensive collection of Model Context Protocol (MCP) servers for Claude Code, Gemini, Copilot, providing integrations with MySQL, Jira, GitHub, CloudWatch, Azure AD, and more.
+
+Availability status:
+
+- ✅ Claude Code
+- 🚧 Gemini
+- 🚧 GitHub Copilot
+- 🚧 Ollama (local)
+- 🚧 DeepSeek (local)
 
 ## ⏭️ Quick Start
 
-```bash
-git clone https://github.com/teo-lin/claude-mcps.git
-cd claude-mcps
+git clone https://github.com/teo-lin/multi-llm-mcps
+cd mcp-servers
 npm run setup
-```
 
 Edit the `.env` files in each MCP directory with your credentials
 
@@ -223,7 +229,6 @@ For issues or questions:
 - Review `.env.example` files for configuration help
 - Verify authentication: `gh auth status`, `acli auth status`
 - Check MCP health: `claude mcp list`
-
 
 # 🐇 Introduction to MCP Servers
 

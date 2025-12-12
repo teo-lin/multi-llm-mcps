@@ -38,7 +38,7 @@ failed=0
 declare -a failed_mcps
 
 for mcp in "${MCPS[@]}"; do
-  mcp_dir="$BASE_DIR/$mcp"
+  mcp_dir="$BASE_DIR/mcps/$mcp"
 
   if [ ! -d "$mcp_dir" ]; then
     echo -e "${RED}⚠️  $mcp: Directory not found${NC}"

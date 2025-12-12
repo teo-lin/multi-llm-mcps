@@ -14,16 +14,13 @@
     "test": "bash scripts/test-all.sh"
   },
   "workspaces": [
-    "CloudWatch",
-    "CodeReview",
-    "Jira",
-    "GitHub",
-    "Atlassian",
-    "MySQL",
-    "Kafdrop",
-    "AzureAD"
+    "mcps/*"
   ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "repository": {
+    "url": "https://github.com/teo-lin/multi-llm-mcps.git",
+    "type": "git"
   }
 }
