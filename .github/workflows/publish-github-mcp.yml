@@ -1,0 +1,33 @@
+name: Publish @teo-lin/mcp-github
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Configure npm auth
+        run: |
+          if [ -n "${{ secrets.NPM_TOKEN }}" ]; then
+            echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          elif [ -n "$NPM_TEOLIN_ACCESS_TOKEN" ]; then
+            echo "//registry.npmjs.org/:_authToken=$NPM_TEOLIN_ACCESS_TOKEN" > ~/.npmrc
+          else
+            echo "No NPM token found in secrets or runner environment" >&2
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: npm ci --silent
+
+      - name: Publish package
+        run: npm publish --workspace=mcps/GitHub --access public

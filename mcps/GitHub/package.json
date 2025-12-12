@@ -1,5 +1,5 @@
 {
-  "name": "github-mcp-server",
+  "name": "@teo-lin/mcp-github",
   "version": "1.0.0",
   "author": "Teolin",
   "license": "MIT",
@@ -23,5 +23,13 @@
   "scripts": {
     "start": "node src/index.js",
     "test": "node src/test.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/teo-lin/multi-llm-mcps.git",
+    "directory": "mcps/GitHub"
   }
 }
