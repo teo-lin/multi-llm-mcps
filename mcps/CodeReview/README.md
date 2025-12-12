@@ -15,9 +15,29 @@ Automated code review server that integrates GitHub PRs with Jira tickets for co
 
 1. **GitHub CLI**: `gh` command must be available and authenticated
 2. **Atlassian CLI**: `acli` command must be available and authenticated
-3. **Node.js**: Version 25.2.1 required
+3. **Node.js**: Version >=25.2.1 required
 
-## Installation & Setup
+## Installation
+
+### Option 1: Install from npm (Recommended)
+
+```bash
+npm install -g code-review-mcp-server
+```
+
+### Option 2: Install locally
+
+```bash
+npm install code-review-mcp-server
+```
+
+### Option 3: Use with npx (no installation)
+
+```bash
+npx -y code-review-mcp-server
+```
+
+## Setup
 
 ### 1. Install Dependencies
 
@@ -108,12 +128,48 @@ To test the MCP server:
 npm test
 ```
 
+## Integration with Claude Code
+
+Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.claude/config.json` in your project):
+
+### Using npx (Recommended - no global installation needed)
+
+```json
+{
+  "mcpServers": {
+    "codereview": {
+      "command": "npx",
+      "args": ["-y", "code-review-mcp-server"]
+    }
+  }
+}
+```
+
+### Using global installation
+
+```json
+{
+  "mcpServers": {
+    "codereview": {
+      "command": "codereview-mcp"
+    }
+  }
+}
+```
+
 ## Troubleshooting
 
 - **GitHub auth**: Run `gh auth status`
 - **Atlassian auth**: Run `acli auth list`
 - **MCP connection**: Check Claude Code logs with `/logs`
 - **Permissions**: Ensure server has access to repositories
+
+## Requirements
+
+- Node.js >=25.2.1
+- GitHub CLI (`gh`) authenticated
+- Atlassian CLI (`acli`) authenticated
+- Published on npm: [code-review-mcp-server](https://www.npmjs.com/package/code-review-mcp-server)
 
 ## Extending
 

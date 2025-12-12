@@ -10,8 +10,28 @@ Model Context Protocol server for GitHub operations using GitHub CLI (`gh`).
 
 ## Prerequisites
 
-- Node.js 25.2.1
+- Node.js >=25.2.1
 - GitHub CLI (`gh`) installed and authenticated
+
+## Installation
+
+### Option 1: Install from npm (Recommended)
+
+```bash
+npm install -g @teolin/mcp-github
+```
+
+### Option 2: Install locally
+
+```bash
+npm install @teolin/mcp-github
+```
+
+### Option 3: Use with npx (no installation)
+
+```bash
+npx -y @teolin/mcp-github
+```
 
 ## Setup
 
@@ -28,29 +48,28 @@ sudo apt update
 sudo apt install gh
 ```
 
-### 2. Authenticate
+### 2. Authenticate with GitHub CLI
 
 ```bash
 gh auth login
 ```
 
-### 3. Install Dependencies
-
-```bash
-npm install
-```
-
 ## Usage
 
-### Starting the Server
+### Running as a standalone server
 
 ```bash
+# If installed globally
+mcp-github
+
+# If installed locally
+npx @teolin/mcp-github
+
+# Or using npm start (for development)
 npm start
-# or
-./start-mcp.sh
 ```
 
-### Running Tests
+### Running tests
 
 ```bash
 npm test
@@ -70,20 +89,54 @@ The server supports multiple PR identifier formats:
 
 ## Integration with Claude Code
 
-```bash
-# Add to Claude Code
-cd /path/to/_MCP
-./scripts/register-all.sh
+Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.claude/config.json` in your project):
 
-# Or register individually
-claude mcp add github /path/to/_MCP/GitHub/start-mcp.sh
+### Using npx (Recommended - no global installation needed)
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@teolin/mcp-github"]
+    }
+  }
+}
+```
+
+### Using global installation
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "mcp-github"
+    }
+  }
+}
+```
+
+### Using local installation
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "node",
+      "args": [
+        "./node_modules/@teolin/mcp-github/src/index.js"
+      ]
+    }
+  }
+}
 ```
 
 ## Requirements
 
-- Node.js 25.2.1
-- GitHub CLI authenticated
+- Node.js >=25.2.1
+- GitHub CLI (`gh`) authenticated
 - Network access to GitHub
+- Published on npm: [@teolin/mcp-github](https://www.npmjs.com/package/@teolin/mcp-github)
 
 ## Troubleshooting
 

@@ -38,7 +38,6 @@ class GitHubServer {
   }
 
   normalizePRIdentifier(prIdentifier) {
-    // Handle GitHub PR URL: https://github.com/doctariDev/io.planer.service.absences/pull/2125/files
     const urlMatch = prIdentifier.match(/github\.com\/[^\/]+\/[^\/]+\/pull\/(\d+)/);
     if (urlMatch) {
       return urlMatch[1]; // Return just the PR number
@@ -184,13 +183,11 @@ class GitHubServer {
     try {
       const normalizedPR = this.normalizePRIdentifier(prName);
 
-      // Get PR metadata
       const { stdout: prInfo } = await execAsync(
         `gh pr view ${normalizedPR} --json title,body,headRefName`
       );
       const pr = JSON.parse(prInfo);
 
-      // Get PR diff
       const diff = await this.getPRDiff(prName);
 
       return {

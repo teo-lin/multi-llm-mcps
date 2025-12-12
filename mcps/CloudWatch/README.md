@@ -1,108 +1,175 @@
 # CloudWatch Logs MCP Server
 
-An MCP (Model Context Protocol) server for querying AWS CloudWatch Logs using Log Insights.
+MCP server for querying AWS CloudWatch Logs with Log Insights.
 
 ## Features
 
-- **Query Logs**: Execute CloudWatch Logs Insights queries with flexible time ranges
-- **List Log Groups**: Browse available log groups with filtering
-- **Get Recent Logs**: Quick access to recent log entries from specific log groups
+- Execute CloudWatch Logs Insights queries
+- List available log groups
+- Get recent log entries from specific log groups
+- Support for relative time ranges (e.g., "1h", "1d")
+- Flexible query parameters and filtering
+
+## Prerequisites
+
+- Node.js >=25.2.1
+- AWS credentials configured (via AWS CLI, environment variables, or IAM role)
+- Access to CloudWatch Logs
+
+## Installation
+
+### Option 1: Install from npm (Recommended)
+
+```bash
+npm install -g cloudwatch-logs-mcp-server
+```
+
+### Option 2: Install locally
+
+```bash
+npm install cloudwatch-logs-mcp-server
+```
+
+### Option 3: Use with npx (no installation)
+
+```bash
+npx -y cloudwatch-logs-mcp-server
+```
 
 ## Setup
 
-1. Install dependencies:
+### Configure AWS Credentials
+
+Ensure AWS credentials are configured:
+
 ```bash
-npm install
+# Option 1: AWS CLI
+aws configure
+
+# Option 2: Environment variables
+export AWS_ACCESS_KEY_ID=your_key
+export AWS_SECRET_ACCESS_KEY=your_secret
+export AWS_REGION=us-east-1
 ```
 
-2. Configure AWS credentials using one of these methods:
-   - Environment variables: `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`
-   - AWS CLI configuration (`~/.aws/credentials`)
-   - IAM roles (when running on EC2)
+## Usage
 
-## Required AWS Permissions
+### Running as a standalone server
 
-The server needs the following CloudWatch Logs permissions:
+```bash
+# If installed globally
+cloudwatch-mcp
 
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "logs:DescribeLogGroups",
-        "logs:StartQuery",
-        "logs:GetQueryResults"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
+# If installed locally
+npx cloudwatch-logs-mcp-server
+
+# Or using npm start (for development)
+npm start
+```
+
+### Running tests
+
+```bash
+npm test
 ```
 
 ## Available Tools
 
-### query_logs
-Execute a CloudWatch Logs Insights query.
+### 1. query_logs
+Execute CloudWatch Logs Insights queries.
 
 **Parameters:**
-- `query` (required): CloudWatch Logs Insights query string
-- `logGroups` (required): Array of log group names to query
-- `startTime` (optional): Start time (ISO 8601 or relative like "1h", "1d")
-- `endTime` (optional): End time (ISO 8601 or "now")
-- `limit` (optional): Maximum number of results (default: 100)
+- `query` (string, required): Logs Insights query string
+- `logGroups` (array, required): Log group names to query
+- `startTime` (string): Start time (ISO 8601 or relative like "1h", "1d")
+- `endTime` (string): End time (ISO 8601 or "now")
+- `limit` (number): Maximum number of results (default: 100)
 
 **Example:**
 ```json
 {
   "query": "fields @timestamp, @message | filter @message like /ERROR/ | sort @timestamp desc",
   "logGroups": ["/aws/lambda/my-function"],
-  "startTime": "2h",
-  "endTime": "now",
+  "startTime": "1h",
   "limit": 50
 }
 ```
 
-### list_log_groups
+### 2. list_log_groups
 List available CloudWatch log groups.
 
 **Parameters:**
-- `namePrefix` (optional): Filter by name prefix
-- `limit` (optional): Maximum number of results (default: 50)
+- `namePrefix` (string, optional): Filter by name prefix
+- `limit` (number): Maximum number to return (default: 50)
 
-### get_recent_logs
+### 3. get_recent_logs
 Get recent log entries from a specific log group.
 
 **Parameters:**
-- `logGroup` (required): Name of the log group
-- `hours` (optional): Hours to look back (default: 1)
-- `limit` (optional): Maximum number of results (default: 100)
-- `filterPattern` (optional): Filter pattern for log entries
+- `logGroup` (string, required): Log group name
+- `hours` (number): Hours to look back (default: 1)
+- `limit` (number): Maximum entries (default: 100)
+- `filterPattern` (string, optional): Filter pattern for log entries
 
-## Time Format Examples
+## Integration with Claude Code
 
-- Relative: `"1h"` (1 hour ago), `"2d"` (2 days ago), `"30m"` (30 minutes ago)
-- Absolute: `"2024-01-01T10:00:00Z"`, `"2024-01-01T10:00:00-05:00"`
-- Special: `"now"` (current time)
+Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.claude/config.json` in your project):
 
-## CloudWatch Logs Insights Query Examples
+### Using npx (Recommended - no global installation needed)
 
-```sql
--- Find errors in the last hour
-fields @timestamp, @message
-| filter @message like /ERROR/
-| sort @timestamp desc
-| limit 20
-
--- Count log levels
-fields @timestamp, @message
-| filter @message like /INFO|WARN|ERROR/
-| stats count() by @message
-| sort count desc
-
--- Parse JSON logs
-fields @timestamp, @message
-| filter ispresent(@requestId)
-| sort @timestamp desc
+```json
+{
+  "mcpServers": {
+    "cloudwatch": {
+      "command": "npx",
+      "args": ["-y", "cloudwatch-logs-mcp-server"],
+      "env": {
+        "AWS_REGION": "us-east-1"
+      }
+    }
+  }
+}
 ```
+
+### Using global installation
+
+```json
+{
+  "mcpServers": {
+    "cloudwatch": {
+      "command": "cloudwatch-mcp",
+      "env": {
+        "AWS_REGION": "us-east-1"
+      }
+    }
+  }
+}
+```
+
+**Note:** AWS credentials will be automatically picked up from your environment or AWS CLI configuration.
+
+## Troubleshooting
+
+### Authentication errors
+- Verify AWS credentials are configured: `aws sts get-caller-identity`
+- Check IAM permissions include `logs:DescribeLogGroups`, `logs:FilterLogEvents`, `logs:StartQuery`, `logs:GetQueryResults`
+
+### Query timeout
+- Reduce time range or add more specific filters
+- Increase query timeout in your code
+
+### No results returned
+- Verify log group names are correct
+- Check time range includes relevant logs
+- Test query in AWS Console first
+
+## Requirements
+
+- Node.js >=25.2.1
+- AWS SDK for JavaScript v3
+- Valid AWS credentials with CloudWatch Logs permissions
+- Published on npm: [cloudwatch-logs-mcp-server](https://www.npmjs.com/package/cloudwatch-logs-mcp-server)
+
+## License
+
+MIT

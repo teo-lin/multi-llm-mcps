@@ -1,6 +1,6 @@
 {
   "name": "@teolin/mcp-github",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for GitHub PR operations",
@@ -17,6 +17,10 @@
     "version-control"
   ],
   "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "mcp-github": "src/index.js"
+  },
   "engines": {
     "node": ">=25.2.1"
   },

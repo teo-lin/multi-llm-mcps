@@ -13,7 +13,7 @@ Model Context Protocol (MCP) server for inspecting and managing Kafka clusters v
 
 ## Prerequisites
 
-- Node.js 25.2.1
+- Node.js >=25.2.1
 - A running Kafdrop instance (v2.0.0+ recommended for full API support)
 - Kafdrop accessible via HTTP/HTTPS
 
@@ -88,7 +88,38 @@ Search for messages containing specific text.
 
 ## Integration with Claude Code
 
-To use this MCP server with Claude Code, add it to your MCP configuration file.
+Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.claude/config.json` in your project):
+
+### Using npx (Recommended - no global installation needed)
+
+```json
+{
+  "mcpServers": {
+    "kafdrop": {
+      "command": "npx",
+      "args": ["-y", "kafdrop-mcp-server"],
+      "env": {
+        "KAFDROP_BASE_URL": "http://localhost:9000"
+      }
+    }
+  }
+}
+```
+
+### Using global installation
+
+```json
+{
+  "mcpServers": {
+    "kafdrop": {
+      "command": "kafdrop-mcp",
+      "env": {
+        "KAFDROP_BASE_URL": "http://localhost:9000"
+      }
+    }
+  }
+}
+```
 
 ## Troubleshooting
 
@@ -100,6 +131,12 @@ To use this MCP server with Claude Code, add it to your MCP configuration file.
 ### API Timeout Errors
 - Increase `KAFDROP_API_TIMEOUT` for large message queries
 - Check Kafka cluster performance
+
+## Requirements
+
+- Node.js >=25.2.1
+- Kafdrop running and accessible
+- Published on npm: [kafdrop-mcp-server](https://www.npmjs.com/package/kafdrop-mcp-server)
 
 ## License
 

@@ -11,9 +11,29 @@ Model Context Protocol (MCP) server for Azure Active Directory authentication us
 
 ## Prerequisites
 
-- Node.js 25.2.1
+- Node.js >=25.2.1
 - Azure AD Application Registration
 - Internet connection for authentication
+
+## Installation
+
+### Option 1: Install from npm (Recommended)
+
+```bash
+npm install -g azure-ad-mcp-server
+```
+
+### Option 2: Install locally
+
+```bash
+npm install azure-ad-mcp-server
+```
+
+### Option 3: Use with npx (no installation)
+
+```bash
+npx -y azure-ad-mcp-server
+```
 
 ## Setup
 
@@ -118,6 +138,45 @@ const response = await mcpClient.call('azuread-server', 'make_authenticated_requ
 });
 ```
 
+## Integration with Claude Code
+
+Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.claude/config.json` in your project):
+
+### Using npx (Recommended - no global installation needed)
+
+```json
+{
+  "mcpServers": {
+    "azuread": {
+      "command": "npx",
+      "args": ["-y", "azure-ad-mcp-server"],
+      "env": {
+        "AZURE_CLIENT_ID": "your-client-id",
+        "AZURE_AUTHORITY": "https://login.microsoftonline.com/common",
+        "AZURE_SCOPES": "https://graph.microsoft.com/.default"
+      }
+    }
+  }
+}
+```
+
+### Using global installation
+
+```json
+{
+  "mcpServers": {
+    "azuread": {
+      "command": "azuread-mcp",
+      "env": {
+        "AZURE_CLIENT_ID": "your-client-id",
+        "AZURE_AUTHORITY": "https://login.microsoftonline.com/common",
+        "AZURE_SCOPES": "https://graph.microsoft.com/.default"
+      }
+    }
+  }
+}
+```
+
 ## Troubleshooting
 
 ### Authentication fails
@@ -140,6 +199,12 @@ const response = await mcpClient.call('azuread-server', 'make_authenticated_requ
 - Access tokens are sensitive - handle with care
 - Tokens expire automatically (usually within 1 hour)
 - Use appropriate scopes - request only what you need
+
+## Requirements
+
+- Node.js >=25.2.1
+- Azure AD Application Registration
+- Published on npm: [azure-ad-mcp-server](https://www.npmjs.com/package/azure-ad-mcp-server)
 
 ## License
 

@@ -12,9 +12,29 @@ Model Context Protocol server for Atlassian Jira operations using the Atlassian 
 
 ## Prerequisites
 
-- Node.js 25.2.1
+- Node.js >=25.2.1
 - Atlassian CLI (`acli`) installed and authenticated
 - Jira instance URL
+
+## Installation
+
+### Option 1: Install from npm (Recommended)
+
+```bash
+npm install -g atlassian-mcp-server
+```
+
+### Option 2: Install locally
+
+```bash
+npm install atlassian-mcp-server
+```
+
+### Option 3: Use with npx (no installation)
+
+```bash
+npx -y atlassian-mcp-server
+```
 
 ## Setup
 
@@ -108,13 +128,46 @@ The server attempts to authenticate automatically using `.env` credentials if th
 
 ## Integration with Claude Code
 
-```bash
-# Add to Claude Code
-cd /path/to/_MCP
-./scripts/register-all.sh
+Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.claude/config.json` in your project):
 
-# Or register individually
-claude mcp add atlassian /path/to/_MCP/Atlassian/start-mcp.sh
+### Using npx (Recommended - no global installation needed)
+
+```json
+{
+  "mcpServers": {
+    "atlassian": {
+      "command": "npx",
+      "args": ["-y", "atlassian-mcp-server"]
+    }
+  }
+}
+```
+
+### Using global installation
+
+```json
+{
+  "mcpServers": {
+    "atlassian": {
+      "command": "atlassian-mcp"
+    }
+  }
+}
+```
+
+### Using local installation
+
+```json
+{
+  "mcpServers": {
+    "atlassian": {
+      "command": "node",
+      "args": [
+        "./node_modules/atlassian-mcp-server/src/index.js"
+      ]
+    }
+  }
+}
 ```
 
 ## Ticket Key Pattern
@@ -143,9 +196,10 @@ acli jira auth login --url https://your-domain.atlassian.net
 
 ## Requirements
 
-- Node.js 25.2.1
-- Atlassian CLI authenticated
+- Node.js >=25.2.1
+- Atlassian CLI (`acli`) authenticated
 - Network access to Jira instance
+- Published on npm: [atlassian-mcp-server](https://www.npmjs.com/package/atlassian-mcp-server)
 
 ## License
 

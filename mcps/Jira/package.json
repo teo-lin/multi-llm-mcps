@@ -1,6 +1,6 @@
 {
   "name": "jira-mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Teolin",
   "license": "MIT",
   "description": "Model Context Protocol server for Doctari Jira integration",
@@ -10,6 +10,7 @@
     "atlassian"
   ],
   "type": "module",
+  "main": "src/index.js",
   "engines": {
     "node": ">=25.2.1"
   },

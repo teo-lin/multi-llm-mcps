@@ -1,6 +1,6 @@
 {
   "name": "code-review-mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for automated code reviews with GitHub PR and Jira integration",
@@ -18,6 +18,10 @@
     "atlassian"
   ],
   "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "codereview-mcp": "src/index.js"
+  },
   "engines": {
     "node": ">=25.2.1"
   },

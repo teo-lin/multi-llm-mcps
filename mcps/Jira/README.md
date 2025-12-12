@@ -11,9 +11,34 @@ Model Context Protocol server for integrating with Doctari's Jira instance.
 - **Team Management**: Validate and list available team names
 - **Environment Variables**: Automatic loading of .env configuration
 
+## Prerequisites
+
+- Node.js >=25.2.1
+- Jira instance URL and API credentials
+
 ## Installation
 
-1. **Install dependencies**:
+### Option 1: Install from npm (Recommended)
+
+```bash
+npm install -g jira-mcp-server
+```
+
+### Option 2: Install locally
+
+```bash
+npm install jira-mcp-server
+```
+
+### Option 3: Use with npx (no installation)
+
+```bash
+npx -y jira-mcp-server
+```
+
+## Setup
+
+1. **Install dependencies** (for development):
    ```bash
    npm install
    ```
@@ -36,18 +61,61 @@ Model Context Protocol server for integrating with Doctari's Jira instance.
 - `JIRA_TEAM_BOARD_ID`: Sprint board ID (default: 114)
 - `JIRA_BUGS_BOARD_ID`: Bugs board ID (default: 155)
 
-## Usage with Claude Code
+## Usage
 
-### Run the server:
+### Running as a standalone server
 
 ```bash
+# If installed globally
+jira-mcp
+
+# If installed locally
+npx jira-mcp-server
+
+# Or using npm start (for development)
 npm start
-# or
-./start-mcp.sh
 ```
 
+## Integration with Claude Code
 
-### Available Tools
+Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.claude/config.json` in your project):
+
+### Using npx (Recommended - no global installation needed)
+
+```json
+{
+  "mcpServers": {
+    "jira": {
+      "command": "npx",
+      "args": ["-y", "jira-mcp-server"],
+      "env": {
+        "JIRA_BASE_URL": "https://your-domain.atlassian.net",
+        "JIRA_EMAIL": "your-email@example.com",
+        "JIRA_API_TOKEN": "your-api-token"
+      }
+    }
+  }
+}
+```
+
+### Using global installation
+
+```json
+{
+  "mcpServers": {
+    "jira": {
+      "command": "jira-mcp",
+      "env": {
+        "JIRA_BASE_URL": "https://your-domain.atlassian.net",
+        "JIRA_EMAIL": "your-email@example.com",
+        "JIRA_API_TOKEN": "your-api-token"
+      }
+    }
+  }
+}
+```
+
+## Available Tools
 
 1. **`get_ticket_details(ticket_key)`**
    - Get detailed info about a specific ticket (e.g., PAB-1234)
@@ -90,3 +158,13 @@ npm test
 
 - Find your board IDs from the Jira board URL: `https://your-domain.atlassian.net/jira/software/projects/PROJECT/boards/{BOARD_ID}`
 - Board IDs can be configured in `.env` as `JIRA_TEAM_BOARD_ID` and `JIRA_BUGS_BOARD_ID`
+
+## Requirements
+
+- Node.js >=25.2.1
+- Jira instance with API access
+- Published on npm: [jira-mcp-server](https://www.npmjs.com/package/jira-mcp-server)
+
+## License
+
+MIT

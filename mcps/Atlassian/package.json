@@ -1,6 +1,6 @@
 {
   "name": "atlassian-mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for Atlassian Jira operations",
@@ -16,6 +16,10 @@
     "acli"
   ],
   "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "atlassian-mcp": "src/index.js"
+  },
   "engines": {
     "node": ">=25.2.1"
   },

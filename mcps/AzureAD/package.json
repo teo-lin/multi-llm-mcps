@@ -1,6 +1,6 @@
 {
   "name": "azure-ad-mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for Azure AD authentication with device code flow",
@@ -14,6 +14,7 @@
     "msal"
   ],
   "type": "module",
+  "main": "src/index.js",
   "engines": {
     "node": ">=25.2.1"
   },
