@@ -1,4 +1,4 @@
-name: Publish @teo-lin/mcp-github
+name: Publish mcp-github
 
 on:
   workflow_dispatch:
@@ -15,17 +15,10 @@ jobs:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Configure npm auth
-        run: |
-          if [ -n "${{ secrets.NPM_ACCESS_TOKEN }}" ]; then
-            echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" > ~/.npmrc
-          else
-            echo "No NPM token found in repository secrets" >&2
-            exit 1
-          fi
-
       - name: Install dependencies
         run: npm ci
 
       - name: Publish package
         run: npm publish --workspace=mcps/GitHub --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
