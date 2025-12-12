@@ -167,9 +167,10 @@ else
 fi
 echo ""
 
-# Get the absolute path to the MCP servers directory
-MCP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-cd "$MCP_DIR"
+# Get the absolute path to the project root and MCP servers directory
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+MCP_DIR="$ROOT_DIR/mcps"
+cd "$ROOT_DIR"
 
 echo "📂 MCP Directory: $MCP_DIR"
 echo ""
@@ -247,11 +248,11 @@ echo ""
 
 # Unregister any existing servers first (clean slate)
 echo "🧹 Cleaning up old registrations..."
-bash "$MCP_DIR/scripts/unregister-all.sh"
+bash "$ROOT_DIR/scripts/unregister-all.sh"
 
 echo ""
 echo "➕ Registering all MCP servers..."
-bash "$MCP_DIR/scripts/register-all.sh"
+bash "$ROOT_DIR/scripts/register-all.sh"
 
 echo ""
 echo "✅ Setup complete!"

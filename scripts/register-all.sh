@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Get the absolute path to the MCP servers directory
-MCP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Get the absolute path to the project root and MCP servers directory
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+MCP_DIR="$ROOT_DIR/mcps"
 
 echo "➡️ Registering all MCP servers with Claude Code..."
 echo "📂 MCP Directory: $MCP_DIR"
