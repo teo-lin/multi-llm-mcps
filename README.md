@@ -183,7 +183,7 @@ Each MCP server has its own README with detailed documentation:
 
 ## 🔧 Requirements
 
-- **Node.js**: 24.9.0 (automatically installed by setup script)
+- **Node.js**: 25.2.1 (automatically installed by setup script)
 - **Claude Code**: Latest version
 - **GitHub CLI**: For GitHub and CodeReview MCPs (`brew install gh`)
 - **Atlassian CLI**: For Atlassian and CodeReview MCPs

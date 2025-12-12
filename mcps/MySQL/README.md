@@ -45,5 +45,5 @@ claude mcp add mysql /path/to/_MCP/MySQL/start-mcp.sh
 
 ## Requirements
 
-- Node.js 24.9.0
+- Node.js 25.2.1
 - MySQL 8.0

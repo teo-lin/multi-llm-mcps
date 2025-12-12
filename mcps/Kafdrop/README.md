@@ -13,7 +13,7 @@ Model Context Protocol (MCP) server for inspecting and managing Kafka clusters v
 
 ## Prerequisites
 
-- Node.js 24.9.0
+- Node.js 25.2.1
 - A running Kafdrop instance (v2.0.0+ recommended for full API support)
 - Kafdrop accessible via HTTP/HTTPS
 

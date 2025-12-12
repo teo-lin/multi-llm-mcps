@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": "24.9.0"
+    "node": ">=24.0.0"
   },
   "scripts": {
     "setup": "bash scripts/setup.sh",

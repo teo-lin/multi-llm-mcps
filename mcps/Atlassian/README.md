@@ -12,7 +12,7 @@ Model Context Protocol server for Atlassian Jira operations using the Atlassian 
 
 ## Prerequisites
 
-- Node.js 24.9.0
+- Node.js 25.2.1
 - Atlassian CLI (`acli`) installed and authenticated
 - Jira instance URL
 
@@ -143,7 +143,7 @@ acli jira auth login --url https://your-domain.atlassian.net
 
 ## Requirements
 
-- Node.js 24.9.0
+- Node.js 25.2.1
 - Atlassian CLI authenticated
 - Network access to Jira instance
 

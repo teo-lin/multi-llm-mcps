@@ -15,7 +15,7 @@ Automated code review server that integrates GitHub PRs with Jira tickets for co
 
 1. **GitHub CLI**: `gh` command must be available and authenticated
 2. **Atlassian CLI**: `acli` command must be available and authenticated
-3. **Node.js**: Version 24.9.0 required
+3. **Node.js**: Version 25.2.1 required
 
 ## Installation & Setup
 

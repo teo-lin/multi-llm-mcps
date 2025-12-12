@@ -11,7 +11,7 @@ Model Context Protocol (MCP) server for Azure Active Directory authentication us
 
 ## Prerequisites
 
-- Node.js 24.9.0
+- Node.js 25.2.1
 - Azure AD Application Registration
 - Internet connection for authentication
 

@@ -10,7 +10,7 @@ Model Context Protocol server for GitHub operations using GitHub CLI (`gh`).
 
 ## Prerequisites
 
-- Node.js 24.9.0
+- Node.js 25.2.1
 - GitHub CLI (`gh`) installed and authenticated
 
 ## Setup
@@ -81,7 +81,7 @@ claude mcp add github /path/to/_MCP/GitHub/start-mcp.sh
 
 ## Requirements
 
-- Node.js 24.9.0
+- Node.js 25.2.1
 - GitHub CLI authenticated
 - Network access to GitHub
 
