@@ -1,40 +1,78 @@
 # Publishing MCP Packages
 
-## @teo-lin/mcp-github
+## Prerequisites
 
-### Prerequisites
+- NPM Automation token configured as `NPM_ACCESS_TOKEN` in GitHub repository secrets
+- Packages must have their version bumped before publishing
 
-- NPM token exported from `.zshrc`
-- GitHub token exported from `.zshrc`
+## Workflow Structure (DRY)
 
-### Publishing Process
+All publish workflows use a single reusable workflow (`publish-mcp.yml`) to avoid code duplication.
 
-#### Option 1: GitHub Actions (Recommended)
+### Available Workflows
 
-1. Go to **Actions** → **Publish @teo-lin/mcp-github**
-2. Click **Run workflow** → **Run workflow**
-3. The workflow runs on your self-hosted runner and publishes to npm
+#### Publish All MCPs
+**Actions → Publish All MCPs → Run workflow**
 
-The workflow:
+Publishes all 8 MCP packages in parallel:
+- @teolin/mcp-github
+- atlassian-mcp-server
+- azure-ad-mcp-server
+- cloudwatch-logs-mcp-server
+- code-review-mcp-server
+- jira-mcp-server
+- kafdrop-mcp-server
+- local-mysql-mcp-server
 
-- Uses your runner's environment variables (`NPM_TEOLIN_ACCESS_TOKEN`)
-- Falls back to GitHub secrets if `NPM_TOKEN` is set
-- Publishes from the `mcps/GitHub` workspace
+#### Publish Individual Packages
+**Actions → Publish [package-name] → Run workflow**
 
-#### Option 2: Manual Publishing
+Individual workflows for each package:
+- Publish mcp-github
+- Publish atlassian-mcp-server
+- Publish azure-ad-mcp-server
+- Publish cloudwatch-logs-mcp-server
+- Publish code-review-mcp-server
+- Publish jira-mcp-server
+- Publish kafdrop-mcp-server
+- Publish local-mysql-mcp-server
+
+## Publishing Process
+
+### 1. Bump Version
+
+```bash
+# For a specific package
+cd mcps/GitHub
+npm version patch|minor|major
+
+# Commit and push
+git add package.json package-lock.json
+git commit -m "chore: bump mcp-github to vX.X.X"
+git push
+```
+
+### 2. Run Workflow
+
+Go to **Actions** → Select workflow → **Run workflow**
+
+### 3. Verify
+
+Check npm: https://www.npmjs.com/package/@teolin/mcp-github
+
+## Manual Publishing
 
 ```bash
 # From repository root
 npm publish --workspace=mcps/GitHub --access public
 ```
 
-Requires `NPM_TEOLIN_ACCESS_TOKEN` in your environment.
+Requires `NPM_TEOLIN_ACCESS_TOKEN` in environment.
 
-### Version Management
+## Adding New Packages
 
-Update version in `mcps/GitHub/package.json` before publishing.
+To add a new MCP package to publishing:
 
-```bash
-cd mcps/GitHub
-npm version patch|minor|major
-```
+1. Add job to `.github/workflows/publish-all-mcps.yml`
+2. Create individual workflow file (copy existing pattern)
+3. Ensure package has correct scope/name in `package.json`

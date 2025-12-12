@@ -27,5 +27,13 @@
   },
   "bin": {
     "azuread-mcp": "src/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teo-lin/multi-llm-mcps.git",
+    "directory": "mcps/AzureAD"
   }
 }

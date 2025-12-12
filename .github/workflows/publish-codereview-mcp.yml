@@ -1,4 +1,4 @@
-name: Publish mcp-github
+name: Publish code-review-mcp-server
 
 on:
   workflow_dispatch:
@@ -8,5 +8,5 @@ jobs:
     uses: ./.github/workflows/publish-mcp.yml
     secrets: inherit
     with:
-      package_path: mcps/GitHub
-      package_name: mcp-github
+      package_path: mcps/CodeReview
+      package_name: code-review-mcp-server

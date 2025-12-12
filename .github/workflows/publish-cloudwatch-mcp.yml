@@ -1,0 +1,12 @@
+name: Publish cloudwatch-logs-mcp-server
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/CloudWatch
+      package_name: cloudwatch-logs-mcp-server

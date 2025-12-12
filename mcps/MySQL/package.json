@@ -24,5 +24,13 @@
   },
   "dependencies": {
     "mysql2": "^3.11.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teo-lin/multi-llm-mcps.git",
+    "directory": "mcps/MySQL"
   }
 }

@@ -24,5 +24,13 @@
   "scripts": {
     "start": "node src/index.js",
     "test": "node src/test.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teo-lin/multi-llm-mcps.git",
+    "directory": "mcps/CodeReview"
   }
 }

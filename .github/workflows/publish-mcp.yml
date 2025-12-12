@@ -1,0 +1,33 @@
+name: Publish MCP Package
+
+on:
+  workflow_call:
+    inputs:
+      package_path:
+        description: 'Workspace path (e.g., mcps/GitHub)'
+        required: true
+        type: string
+      package_name:
+        description: 'Package name for logging (e.g., mcp-github)'
+        required: true
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '25.2.1'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Publish ${{ inputs.package_name }}
+        run: npm publish --workspace=${{ inputs.package_path }} --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}

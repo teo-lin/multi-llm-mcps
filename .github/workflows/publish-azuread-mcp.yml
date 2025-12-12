@@ -1,4 +1,4 @@
-name: Publish mcp-github
+name: Publish azure-ad-mcp-server
 
 on:
   workflow_dispatch:
@@ -8,5 +8,5 @@ jobs:
     uses: ./.github/workflows/publish-mcp.yml
     secrets: inherit
     with:
-      package_path: mcps/GitHub
-      package_name: mcp-github
+      package_path: mcps/AzureAD
+      package_name: azure-ad-mcp-server

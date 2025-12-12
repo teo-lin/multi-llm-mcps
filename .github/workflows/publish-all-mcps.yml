@@ -1,0 +1,61 @@
+name: Publish All MCPs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish-github:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/GitHub
+      package_name: mcp-github
+
+  publish-atlassian:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/Atlassian
+      package_name: atlassian-mcp-server
+
+  publish-azuread:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/AzureAD
+      package_name: azure-ad-mcp-server
+
+  publish-cloudwatch:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/CloudWatch
+      package_name: cloudwatch-logs-mcp-server
+
+  publish-codereview:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/CodeReview
+      package_name: code-review-mcp-server
+
+  publish-jira:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/Jira
+      package_name: jira-mcp-server
+
+  publish-kafdrop:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/Kafdrop
+      package_name: kafdrop-mcp-server
+
+  publish-mysql:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/MySQL
+      package_name: local-mysql-mcp-server
