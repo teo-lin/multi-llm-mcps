@@ -30,7 +30,6 @@ class AzureADMCPServer {
     this.accessToken = null;
     this.tokenExpiry = null;
 
-    // MSAL configuration
     this.msalConfig = {
       auth: {
         clientId: process.env.AZURE_CLIENT_ID || '',
@@ -78,7 +77,6 @@ class AzureADMCPServer {
   }
 
   async acquireToken() {
-    // Check if we have a valid cached token
     if (this.accessToken && this.tokenExpiry && new Date() < new Date(this.tokenExpiry.getTime() - 60000)) {
       return this.accessToken;
     }

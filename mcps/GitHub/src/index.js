@@ -13,7 +13,6 @@ import { promisify } from "util";
 
 const execAsync = promisify(exec);
 
-// MCP-safe logging (must use stderr to avoid interfering with MCP protocol)
 const log = {
   info: (message) => console.error(`${message}`),
   error: (message) => console.error(`[ERROR] ${message}`),
@@ -43,14 +42,11 @@ class GitHubServer {
       return urlMatch[1]; // Return just the PR number
     }
 
-    // Handle PR number with hash: #2125
     const hashMatch = prIdentifier.match(/^#(\d+)$/);
     if (hashMatch) {
       return hashMatch[1]; // Return just the number
     }
 
-    // Handle branch name: feat/PAB-2254 (return as-is for gh pr view)
-    // Handle plain PR number: 2125 (return as-is)
     return prIdentifier;
   }
 

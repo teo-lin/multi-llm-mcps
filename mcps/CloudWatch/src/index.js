@@ -19,12 +19,10 @@ class CloudWatchLogsMCPServer {
       }
     );
 
-    // Initialize AWS CloudWatch Logs client
     const config = {
       region: process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || 'us-east-1',
     };
 
-    // Use credentials from environment if available
     if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
       config.credentials = {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -145,7 +143,6 @@ class CloudWatchLogsMCPServer {
       return now;
     }
 
-    // Check if it's a relative time (e.g., "1h", "2d", "30m")
     const relativeMatch = timeStr.match(/^(\d+)([hmsd])$/);
     if (relativeMatch) {
       const [, amount, unit] = relativeMatch;
@@ -163,7 +160,6 @@ class CloudWatchLogsMCPServer {
       }
     }
 
-    // Try to parse as ISO 8601 date
     const date = new Date(timeStr);
     if (isNaN(date.getTime())) {
       throw new Error(`Invalid time format: ${timeStr}. Use ISO 8601 format or relative time like "1h", "1d", "30m"`);
@@ -185,7 +181,6 @@ class CloudWatchLogsMCPServer {
       const startTimeDate = this.parseTimeString(startTime);
       const endTimeDate = this.parseTimeString(endTime);
 
-      // Start the query
       const startQueryResponse = await this.cloudWatchClient.send(
         new StartQueryCommand({
           logGroupNames: logGroups,
@@ -200,7 +195,6 @@ class CloudWatchLogsMCPServer {
         throw new Error('Failed to start query - no query ID returned');
       }
 
-      // Poll for results
       let queryStatus = 'Running';
       let attempts = 0;
       const maxAttempts = 30; // 30 seconds timeout

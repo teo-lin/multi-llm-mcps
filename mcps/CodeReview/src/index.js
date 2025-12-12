@@ -15,11 +15,9 @@ import { promisify } from "util";
 
 const execAsync = promisify(exec);
 
-// Load environment variables
 const JIRA_BASE_URL = process.env.JIRA_BASE_URL || 'https://your-domain.atlassian.net';
 const GITHUB_REPO = process.env.GITHUB_REPO || 'owner/repo';
 
-// MCP-safe logging (must use stderr to avoid interfering with MCP protocol)
 const log = {
   info: (message) => console.error(`${message}`),
   error: (message) => console.error(`[ERROR] ${message}`),
@@ -45,7 +43,6 @@ class CodeReviewServer {
 
   getProjectName(currentDir) {
     try {
-      // Try to read package.json for project name
       const packagePath = path.join(currentDir, "package.json");
 
       if (fs.existsSync(packagePath)) {
@@ -53,7 +50,6 @@ class CodeReviewServer {
         return packageJson.name || path.basename(currentDir);
       }
 
-      // Fallback to directory name
       return path.basename(currentDir);
     } catch (error) {
       return path.basename(currentDir);
@@ -132,7 +128,6 @@ class CodeReviewServer {
   }
 
   extractJiraTicketFromText(text) {
-    // Extract ticket from text (e.g., feat/PAB-2197-description)
     const match = text.match(/([A-Z]+-\d+)/);
     return match ? match[1] : null;
   }
@@ -160,7 +155,6 @@ class CodeReviewServer {
       if (line.startsWith("+") && !line.startsWith("+++")) {
         const code = line.substring(1).trim();
 
-        // Check for common issues
         if (code.includes("console.log") && !code.includes("//")) {
           comments.push({
             file: currentFile,
@@ -194,7 +188,6 @@ class CodeReviewServer {
         }
 
         if (code.includes("await") && !code.includes("try")) {
-          // Check if we're not already in a try block (simple heuristic)
           comments.push({
             file: currentFile,
             line: lineNumber,
@@ -240,20 +233,16 @@ class CodeReviewServer {
   }
 
   normalizePRIdentifier(prIdentifier) {
-    // Handle GitHub PR URL: https://github.com/doctariDev/io.planer.service.absences/pull/2125/files
     const urlMatch = prIdentifier.match(/github\.com\/[^\/]+\/[^\/]+\/pull\/(\d+)/);
     if (urlMatch) {
       return urlMatch[1]; // Return just the PR number
     }
 
-    // Handle PR number with hash: #2125
     const hashMatch = prIdentifier.match(/^#(\d+)$/);
     if (hashMatch) {
       return hashMatch[1]; // Return just the number
     }
 
-    // Handle branch name: feat/PAB-2254 (return as-is for gh pr view)
-    // Handle plain PR number: 2125 (return as-is)
     return prIdentifier;
   }
 
@@ -261,13 +250,11 @@ class CodeReviewServer {
     try {
       const normalizedPR = this.normalizePRIdentifier(prName);
 
-      // Get PR metadata
       const { stdout: prInfo } = await execAsync(
         `gh pr view ${normalizedPR} --repo ${GITHUB_REPO} --json title,body,headRefName`
       );
       const pr = JSON.parse(prInfo);
 
-      // Get PR diff
       const { stdout: diff } = await execAsync(
         `gh pr diff ${normalizedPR} --repo ${GITHUB_REPO}`
       );
@@ -291,7 +278,6 @@ class CodeReviewServer {
       );
       const ticket = JSON.parse(stdout);
 
-      // Open Jira ticket in browser
       await this.openJiraTicketInBrowser(ticketKey);
 
       return {
@@ -309,10 +295,8 @@ class CodeReviewServer {
     } catch (error) {
       log.error(`Failed to fetch Jira ticket ${ticketKey}: ${error}`);
 
-      // Still try to open in browser even if acli fails
       await this.openJiraTicketInBrowser(ticketKey);
 
-      // Return a placeholder ticket with the key and URL
       return {
         key: ticketKey,
         summary: `Jira ticket ${ticketKey} (acli access failed)`,
@@ -352,7 +336,6 @@ class CodeReviewServer {
     let ghAuth = false;
     let acliAuth = false;
 
-    // Check GitHub CLI auth
     try {
       await execAsync("gh auth status");
       ghAuth = true;
@@ -362,10 +345,8 @@ class CodeReviewServer {
       log.error("GitHub CLI auth failed");
     }
 
-    // Check Atlassian CLI auth
     try {
       const { stdout } = await execAsync("acli jira auth status");
-      // Check for success indicators in stdout
       if (stdout.includes("✓") || stdout.includes("authenticated") || stdout.includes("logged in")) {
         acliAuth = true;
         log.info("✅ Atlassian CLI authenticated");
@@ -373,7 +354,6 @@ class CodeReviewServer {
         errors.push("❌ Atlassian CLI not authenticated. Run: acli jira auth login --web");
       }
     } catch (error) {
-      // acli auth status returns non-zero exit code when not authenticated
       errors.push("❌ Atlassian CLI not authenticated. Run: acli jira auth login --web");
     }
 
@@ -384,8 +364,6 @@ class CodeReviewServer {
     let output = "🌴🐸🦚🦖🐊 ---- CodeReview MCP (Working!) ---- 🌴🐸🦚🦖🐊\n\n";
 
     try {
-      // Step 1 of 4: Verify authentication status
-      output += "**Step 1 of 4:** 🔐 Verifying authentication status...\n";
       const authStatus = await this.verifyAuthStatus();
 
       if (!authStatus.ghAuth) {
@@ -400,15 +378,11 @@ class CodeReviewServer {
         output += "✅ Atlassian CLI authenticated\n\n";
       }
 
-      // Step 2 of 4: Get PR info
-      output += "**Step 2 of 4:** 📥 Fetching PR info...\n";
       const prInfo = await this.getPRInfo(prName);
       output += `✅ Found PR: ${prInfo.title}\n`;
       output += `📋 Branch: ${prInfo.headRefName}\n`;
       output += `📊 Found ${prInfo.diff.split('\n').length} lines of changes\n\n`;
 
-      // Step 3 of 4: Extract and fetch Jira ticket
-      output += "**Step 3 of 4:** 🎫 Extracting Jira ticket...\n";
       let ticketKey = this.extractJiraTicketFromText(prInfo.headRefName);
       if (!ticketKey) {
         ticketKey = this.extractJiraTicketFromText(prInfo.title);
@@ -441,12 +415,9 @@ class CodeReviewServer {
         output += "⚠️ No Jira ticket found in PR\n\n";
       }
 
-      // Step 4 of 4: Analyze code changes
-      output += "**Step 4 of 4:** 🧠 Analyzing code changes...\n";
       const reviewComments = this.analyzeCodeChanges(prInfo.diff, ticket);
       output += `✅ Found ${reviewComments.length} review comments\n\n`;
 
-      // Format and return review
       const reviewOutput = this.formatReviewOutput(
         prName,
         ticket,

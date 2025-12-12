@@ -300,7 +300,6 @@ class KafdropMCPServer {
   async searchMessages(args) {
     const { topic_name, search_term, partition, max_results = 50 } = args;
 
-    // Get topic details to know partition count
     const topicData = await this.kafdropRequest(`/topic/${encodeURIComponent(topic_name)}`);
     const partitions = partition !== undefined ? [partition] :
       (topicData.partitions || []).map((p, i) => p.id !== undefined ? p.id : i);
@@ -332,7 +331,6 @@ class KafdropMCPServer {
           }
         }
       } catch (error) {
-        // Skip partitions that error
         continue;
       }
     }
