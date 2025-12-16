@@ -140,14 +140,33 @@ const response = await mcpClient.call('azuread-server', 'make_authenticated_requ
 
 ## Integration with Claude Code
 
-Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.claude/config.json` in your project):
+Claude Code supports three scopes for MCP server configuration:
 
-### Using npx (Recommended - no global installation needed)
+- **User scope** (`~/.claude.json`): Available across all projects
+- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
+- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
+
+### Quick Setup with CLI (Recommended)
+
+```bash
+# User scope (available in all projects)
+claude mcp add azuread --scope user
+
+# Project scope (shared with team via git)
+claude mcp add azuread --scope project
+```
+
+### Manual Configuration
+
+#### Using npx (Recommended - no installation needed)
+
+Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
 
 ```json
 {
   "mcpServers": {
     "azuread": {
+      "type": "stdio",
       "command": "npx",
       "args": ["-y", "azure-ad-mcp-server"],
       "env": {
@@ -160,13 +179,35 @@ Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.cla
 }
 ```
 
-### Using global installation
+#### Using global installation
 
 ```json
 {
   "mcpServers": {
     "azuread": {
+      "type": "stdio",
       "command": "azuread-mcp",
+      "env": {
+        "AZURE_CLIENT_ID": "your-client-id",
+        "AZURE_AUTHORITY": "https://login.microsoftonline.com/common",
+        "AZURE_SCOPES": "https://graph.microsoft.com/.default"
+      }
+    }
+  }
+}
+```
+
+#### Using local installation
+
+```json
+{
+  "mcpServers": {
+    "azuread": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "./node_modules/azure-ad-mcp-server/src/index.js"
+      ],
       "env": {
         "AZURE_CLIENT_ID": "your-client-id",
         "AZURE_AUTHORITY": "https://login.microsoftonline.com/common",

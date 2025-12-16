@@ -88,33 +88,72 @@ Search for messages containing specific text.
 
 ## Integration with Claude Code
 
-Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.claude/config.json` in your project):
+Claude Code supports three scopes for MCP server configuration:
 
-### Using npx (Recommended - no global installation needed)
+- **User scope** (`~/.claude.json`): Available across all projects
+- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
+- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
+
+### Quick Setup with CLI (Recommended)
+
+```bash
+# User scope (available in all projects)
+claude mcp add kafdrop --scope user
+
+# Project scope (shared with team via git)
+claude mcp add kafdrop --scope project
+```
+
+### Manual Configuration
+
+#### Using npx (Recommended - no installation needed)
+
+Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
 
 ```json
 {
   "mcpServers": {
     "kafdrop": {
+      "type": "stdio",
       "command": "npx",
       "args": ["-y", "kafdrop-mcp-server"],
       "env": {
-        "KAFDROP_BASE_URL": "http://localhost:9000"
+        "KAFDROP_URL": "http://localhost:9000"
       }
     }
   }
 }
 ```
 
-### Using global installation
+#### Using global installation
 
 ```json
 {
   "mcpServers": {
     "kafdrop": {
+      "type": "stdio",
       "command": "kafdrop-mcp",
       "env": {
-        "KAFDROP_BASE_URL": "http://localhost:9000"
+        "KAFDROP_URL": "http://localhost:9000"
+      }
+    }
+  }
+}
+```
+
+#### Using local installation
+
+```json
+{
+  "mcpServers": {
+    "kafdrop": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "./node_modules/kafdrop-mcp-server/src/index.js"
+      ],
+      "env": {
+        "KAFDROP_URL": "http://localhost:9000"
       }
     }
   }

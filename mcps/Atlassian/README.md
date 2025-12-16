@@ -1,6 +1,23 @@
 # Atlassian MCP Server
 
-Model Context Protocol server for Atlassian Jira operations using the Atlassian CLI (`acli`).
+Model Context Protocol server for Atlassian Jira operations using the Atlassian CLI (`acli`) running locally, on your machine, completely private.
+
+## Local vs Remote MCP
+
+This is a **local stdio MCP server** that runs on your machine. For comparison with Atlassian's official solution:
+
+| Feature                  | This MCP (@teolin/mcp-atlassian)      | Atlassian Remote MCP Server          |
+| ------------------------ | ------------------------------------- | ------------------------------------ |
+| **Type**           | Local stdio server                    | Remote HTTP server (cloud-hosted)    |
+| **Authentication** | Atlassian CLI + API token             | OAuth                                |
+| **Scope**          | Jira only                             | Jira + Confluence                    |
+| **Setup**          | Install npm package + configure CLI   | OAuth setup via Atlassian portal     |
+| **Access**         | Personal (your machine)               | Team-wide (enterprise)               |
+| **Performance**    | Fast (local, no network latency)      | Network-dependent                    |
+| **Features**       | Ticket info, extraction, browser open | Bulk operations, enterprise security |
+
+**Use this MCP if:** You want a lightweight, local solution for Jira ticket operations
+**Use Atlassian's Remote MCP if:** You need enterprise features, Confluence access, or team-wide deployment
 
 ## Features
 
@@ -21,19 +38,19 @@ Model Context Protocol server for Atlassian Jira operations using the Atlassian 
 ### Option 1: Install from npm (Recommended)
 
 ```bash
-npm install -g atlassian-mcp-server
+npm install -g @teolin/mcp-atlassian
 ```
 
 ### Option 2: Install locally
 
 ```bash
-npm install atlassian-mcp-server
+npm install @teolin/mcp-atlassian
 ```
 
 ### Option 3: Use with npx (no installation)
 
 ```bash
-npx -y atlassian-mcp-server
+npx -y @teolin/mcp-atlassian
 ```
 
 ## Setup
@@ -61,6 +78,7 @@ cp .env.example .env
 ```
 
 Edit `.env` and set:
+
 - `JIRA_BASE_URL`: Your Jira instance URL (e.g., `https://your-domain.atlassian.net`)
 - `JIRA_SITE`: Your Jira site domain (e.g., `your-domain.atlassian.net`)
 - `JIRA_EMAIL`: Your Atlassian account email
@@ -91,35 +109,44 @@ npm test
 ## Available Tools
 
 ### 1. jira_ticket_info
+
 Get detailed information about a Jira ticket.
 
 **Parameters:**
+
 - `ticket_key` (string, required): Jira ticket key (e.g., "PAB-2197")
 - `working_directory` (string, optional): Working directory path
 
 **Features:**
+
 - Retrieves ticket details via Atlassian CLI
 - Extracts acceptance criteria from ticket description
 - Automatically opens ticket in browser
 - Falls back gracefully if CLI fails
 
 ### 2. jira_extract_ticket_from_text
+
 Extract Jira ticket key from text.
 
 **Parameters:**
+
 - `text` (string, required): Text to search for ticket key
 
 **Examples:**
+
 - Branch name: `feat/PAB-123-description` → `PAB-123`
 - PR title: `[ABC-456] Fix bug` → `ABC-456`
 
 ### 3. jira_open_ticket
+
 Open a Jira ticket in the default browser.
 
 **Parameters:**
+
 - `ticket_key` (string, required): Jira ticket key to open
 
 ### 4. jira_auth_status
+
 Check Atlassian CLI authentication status.
 
 ## Auto-Authentication
@@ -128,42 +155,79 @@ The server attempts to authenticate automatically using `.env` credentials if th
 
 ## Integration with Claude Code
 
-Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.claude/config.json` in your project):
+Claude Code supports three scopes for MCP server configuration:
 
-### Using npx (Recommended - no global installation needed)
+- **User scope** (`~/.claude.json`): Available across all projects
+- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
+- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
+
+### Quick Setup with CLI (Recommended)
+
+```bash
+# User scope (available in all projects)
+claude mcp add atlassian --scope user
+
+# Project scope (shared with team via git)
+claude mcp add atlassian --scope project
+```
+
+### Manual Configuration
+
+#### Using npx (Recommended - no installation needed)
+
+Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
 
 ```json
 {
   "mcpServers": {
     "atlassian": {
+      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "atlassian-mcp-server"]
+      "args": ["-y", "@teolin/mcp-atlassian"]
     }
   }
 }
 ```
 
-### Using global installation
+#### Using global installation
 
 ```json
 {
   "mcpServers": {
     "atlassian": {
+      "type": "stdio",
       "command": "atlassian-mcp"
     }
   }
 }
 ```
 
-### Using local installation
+#### Using local installation
 
 ```json
 {
   "mcpServers": {
     "atlassian": {
+      "type": "stdio",
       "command": "node",
       "args": [
-        "./node_modules/atlassian-mcp-server/src/index.js"
+        "./node_modules/@teolin/mcp-atlassian/src/index.js"
+      ]
+    }
+  }
+}
+```
+
+#### Using monorepo clone
+
+```json
+{
+  "mcpServers": {
+    "atlassian": {
+      "type": "stdio",
+      "command": "bash",
+      "args": [
+        "/path/to/multi-llm-mcps/mcps/Atlassian/start-mcp.sh"
       ]
     }
   }
@@ -179,6 +243,7 @@ Examples: `PAB-123`, `PROJ-456`, `ABC-789`
 ## Troubleshooting
 
 ### Atlassian CLI not authenticated
+
 ```bash
 acli jira auth status
 # If not authenticated:
@@ -186,11 +251,13 @@ acli jira auth login --url https://your-domain.atlassian.net
 ```
 
 ### Auto-authentication fails
+
 - Verify `.env` file contains correct credentials
 - Check that `JIRA_SITE`, `JIRA_EMAIL`, and `JIRA_API_TOKEN` are set
 - Try manual authentication with `acli jira auth login`
 
 ### Browser doesn't open
+
 - Check that `JIRA_BASE_URL` is correctly set in `.env`
 - Ensure `open` command is available on your system
 
@@ -199,7 +266,7 @@ acli jira auth login --url https://your-domain.atlassian.net
 - Node.js >=25.2.1
 - Atlassian CLI (`acli`) authenticated
 - Network access to Jira instance
-- Published on npm: [atlassian-mcp-server](https://www.npmjs.com/package/atlassian-mcp-server)
+- Published on npm: [@teolin/mcp-atlassian](https://www.npmjs.com/package/@teolin/mcp-atlassian)
 
 ## License
 

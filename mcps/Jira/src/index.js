@@ -117,7 +117,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(ticket, null, 2),
+              text: `✴️ Jira MCP: get_ticket_details ✴️\n\n${JSON.stringify(ticket, null, 2)}`,
             },
           ],
         };
@@ -129,7 +129,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(results, null, 2),
+              text: `✴️ Jira MCP: search_tickets_jql ✴️\n\n${JSON.stringify(results, null, 2)}`,
             },
           ],
         };
@@ -141,7 +141,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(issues, null, 2),
+              text: `✴️ Jira MCP: get_board_issues ✴️\n\n${JSON.stringify(issues, null, 2)}`,
             },
           ],
         };
@@ -153,7 +153,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(bugs, null, 2),
+              text: `✴️ Jira MCP: get_ptls_board_bugs ✴️\n\n${JSON.stringify(bugs, null, 2)}`,
             },
           ],
         };
@@ -165,7 +165,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(bugs, null, 2),
+              text: `✴️ Jira MCP: get_absences_bugs ✴️\n\n${JSON.stringify(bugs, null, 2)}`,
             },
           ],
         };
@@ -177,7 +177,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(teams, null, 2),
+              text: `✴️ Jira MCP: get_team_names ✴️\n\n${JSON.stringify(teams, null, 2)}`,
             },
           ],
         };

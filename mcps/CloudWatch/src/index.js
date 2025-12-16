@@ -217,7 +217,7 @@ class CloudWatchLogsMCPServer {
             content: [
               {
                 type: 'text',
-                text: JSON.stringify({
+                text: `✴️ CloudWatch MCP: query_logs ✴️\n\n${JSON.stringify({
                   status: 'success',
                   queryId: startQueryResponse.queryId,
                   recordsMatched: resultsResponse.statistics?.recordsMatched || 0,
@@ -232,7 +232,7 @@ class CloudWatchLogsMCPServer {
                     });
                     return logEntry;
                   }),
-                }, null, 2),
+                }, null, 2)}`,
               },
             ],
           };
@@ -251,7 +251,7 @@ class CloudWatchLogsMCPServer {
         content: [
           {
             type: 'text',
-            text: JSON.stringify({ status: 'timeout', message: 'Query timed out' }, null, 2),
+            text: `✴️ CloudWatch MCP: query_logs ✴️\n\n${JSON.stringify({ status: 'timeout', message: 'Query timed out' }, null, 2)}`,
           },
         ],
       };
@@ -260,10 +260,10 @@ class CloudWatchLogsMCPServer {
         content: [
           {
             type: 'text',
-            text: JSON.stringify({
+            text: `✴️ CloudWatch MCP: query_logs ✴️\n\n${JSON.stringify({
               status: 'error',
               message: error instanceof Error ? error.message : 'Unknown error'
-            }, null, 2),
+            }, null, 2)}`,
           },
         ],
       };
@@ -287,7 +287,7 @@ class CloudWatchLogsMCPServer {
         content: [
           {
             type: 'text',
-            text: JSON.stringify({
+            text: `✴️ CloudWatch MCP: list_log_groups ✴️\n\n${JSON.stringify({
               status: 'success',
               count: logGroups.length,
               logGroups: logGroups.map(lg => ({
@@ -296,7 +296,7 @@ class CloudWatchLogsMCPServer {
                 retentionInDays: lg.retentionInDays,
                 storedBytes: lg.storedBytes,
               })),
-            }, null, 2),
+            }, null, 2)}`,
           },
         ],
       };
@@ -305,10 +305,10 @@ class CloudWatchLogsMCPServer {
         content: [
           {
             type: 'text',
-            text: JSON.stringify({
+            text: `✴️ CloudWatch MCP: list_log_groups ✴️\n\n${JSON.stringify({
               status: 'error',
               message: error instanceof Error ? error.message : 'Unknown error'
-            }, null, 2),
+            }, null, 2)}`,
           },
         ],
       };

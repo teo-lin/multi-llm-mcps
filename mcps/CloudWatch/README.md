@@ -113,14 +113,33 @@ Get recent log entries from a specific log group.
 
 ## Integration with Claude Code
 
-Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.claude/config.json` in your project):
+Claude Code supports three scopes for MCP server configuration:
 
-### Using npx (Recommended - no global installation needed)
+- **User scope** (`~/.claude.json`): Available across all projects
+- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
+- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
+
+### Quick Setup with CLI (Recommended)
+
+```bash
+# User scope (available in all projects)
+claude mcp add cloudwatch --scope user
+
+# Project scope (shared with team via git)
+claude mcp add cloudwatch --scope project
+```
+
+### Manual Configuration
+
+#### Using npx (Recommended - no installation needed)
+
+Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
 
 ```json
 {
   "mcpServers": {
     "cloudwatch": {
+      "type": "stdio",
       "command": "npx",
       "args": ["-y", "cloudwatch-logs-mcp-server"],
       "env": {
@@ -131,13 +150,33 @@ Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.cla
 }
 ```
 
-### Using global installation
+#### Using global installation
 
 ```json
 {
   "mcpServers": {
     "cloudwatch": {
+      "type": "stdio",
       "command": "cloudwatch-mcp",
+      "env": {
+        "AWS_REGION": "us-east-1"
+      }
+    }
+  }
+}
+```
+
+#### Using local installation
+
+```json
+{
+  "mcpServers": {
+    "cloudwatch": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "./node_modules/cloudwatch-logs-mcp-server/src/index.js"
+      ],
       "env": {
         "AWS_REGION": "us-east-1"
       }

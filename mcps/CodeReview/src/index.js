@@ -112,7 +112,7 @@ class CodeReviewServer {
           content: [
             {
               type: "text",
-              text: review,
+              text: `✴️ CodeReview MCP: codereview ✴️\n\n${review}`,
             },
           ],
         };
@@ -246,17 +246,39 @@ class CodeReviewServer {
     return prIdentifier;
   }
 
+  async getGitHubRepo() {
+    try {
+      const { stdout } = await execAsync('git remote get-url origin');
+      const remoteUrl = stdout.trim();
+
+      // Handles both SSH (git@github.com:owner/repo.git) and HTTPS (https://github.com/owner/repo.git)
+      const match = remoteUrl.match(/github\.com[:/](.+?)(?:\.git)?$/);
+      if (match) {
+        return match[1];
+      }
+
+      log.warn(`Could not detect GitHub repo from git remote, falling back to env: ${GITHUB_REPO}`);
+      return GITHUB_REPO;
+    } catch (error) {
+      log.warn(`Failed to detect git remote, using env GITHUB_REPO: ${GITHUB_REPO}`);
+      return GITHUB_REPO;
+    }
+  }
+
   async getPRInfo(prName) {
     try {
       const normalizedPR = this.normalizePRIdentifier(prName);
+      const repo = await this.getGitHubRepo();
+
+      log.info(`📦 Using GitHub repo: ${repo}`);
 
       const { stdout: prInfo } = await execAsync(
-        `gh pr view ${normalizedPR} --repo ${GITHUB_REPO} --json title,body,headRefName`
+        `gh pr view ${normalizedPR} --repo ${repo} --json title,body,headRefName`
       );
       const pr = JSON.parse(prInfo);
 
       const { stdout: diff } = await execAsync(
-        `gh pr diff ${normalizedPR} --repo ${GITHUB_REPO}`
+        `gh pr diff ${normalizedPR} --repo ${repo}`
       );
 
       return {

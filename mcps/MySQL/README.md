@@ -79,14 +79,33 @@ npm test
 
 ## Integration with Claude Code
 
-Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.claude/config.json` in your project):
+Claude Code supports three scopes for MCP server configuration:
 
-### Using npx (Recommended - no global installation needed)
+- **User scope** (`~/.claude.json`): Available across all projects
+- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
+- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
+
+### Quick Setup with CLI (Recommended)
+
+```bash
+# User scope (available in all projects)
+claude mcp add mysql --scope user
+
+# Project scope (shared with team via git)
+claude mcp add mysql --scope project
+```
+
+### Manual Configuration
+
+#### Using npx (Recommended - no installation needed)
+
+Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
 
 ```json
 {
   "mcpServers": {
     "mysql": {
+      "type": "stdio",
       "command": "npx",
       "args": ["-y", "local-mysql-mcp-server"],
       "env": {
@@ -101,13 +120,37 @@ Add to your Claude Code MCP configuration file (`~/.claude/config.json` or `.cla
 }
 ```
 
-### Using global installation
+#### Using global installation
 
 ```json
 {
   "mcpServers": {
     "mysql": {
+      "type": "stdio",
       "command": "mysql-mcp",
+      "env": {
+        "MYSQL_HOST": "localhost",
+        "MYSQL_PORT": "3306",
+        "MYSQL_USER": "root",
+        "MYSQL_PASSWORD": "your_password",
+        "MYSQL_DATABASE": "your_database"
+      }
+    }
+  }
+}
+```
+
+#### Using local installation
+
+```json
+{
+  "mcpServers": {
+    "mysql": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "./node_modules/local-mysql-mcp-server/src/index.js"
+      ],
       "env": {
         "MYSQL_HOST": "localhost",
         "MYSQL_PORT": "3306",

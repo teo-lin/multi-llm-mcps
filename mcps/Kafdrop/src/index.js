@@ -209,7 +209,7 @@ class KafdropMCPServer {
       content: [
         {
           type: 'text',
-          text: `Found ${topics.length} topics:\n\n${JSON.stringify(summary, null, 2)}`,
+          text: `✴️ Kafdrop MCP: list_topics ✴️\n\nFound ${topics.length} topics:\n\n${JSON.stringify(summary, null, 2)}`,
         },
       ],
     };
@@ -223,7 +223,7 @@ class KafdropMCPServer {
       content: [
         {
           type: 'text',
-          text: `Topic: ${topic_name}\n\n${JSON.stringify(data, null, 2)}`,
+          text: `✴️ Kafdrop MCP: get_topic_details ✴️\n\nTopic: ${topic_name}\n\n${JSON.stringify(data, null, 2)}`,
         },
       ],
     };
@@ -249,7 +249,7 @@ class KafdropMCPServer {
       content: [
         {
           type: 'text',
-          text: `Messages from topic "${topic_name}" partition ${partition}:\n\n${JSON.stringify(data, null, 2)}`,
+          text: `✴️ Kafdrop MCP: browse_messages ✴️\n\nMessages from topic "${topic_name}" partition ${partition}:\n\n${JSON.stringify(data, null, 2)}`,
         },
       ],
     };
@@ -263,7 +263,7 @@ class KafdropMCPServer {
       content: [
         {
           type: 'text',
-          text: `Found ${groups.length} consumer groups:\n\n${JSON.stringify(groups, null, 2)}`,
+          text: `✴️ Kafdrop MCP: list_consumer_groups ✴️\n\nFound ${groups.length} consumer groups:\n\n${JSON.stringify(groups, null, 2)}`,
         },
       ],
     };
@@ -277,7 +277,7 @@ class KafdropMCPServer {
       content: [
         {
           type: 'text',
-          text: `Consumer Group: ${group_id}\n\n${JSON.stringify(data, null, 2)}`,
+          text: `✴️ Kafdrop MCP: get_consumer_group_details ✴️\n\nConsumer Group: ${group_id}\n\n${JSON.stringify(data, null, 2)}`,
         },
       ],
     };
@@ -291,7 +291,7 @@ class KafdropMCPServer {
       content: [
         {
           type: 'text',
-          text: `Found ${brokers.length} brokers:\n\n${JSON.stringify(brokers, null, 2)}`,
+          text: `✴️ Kafdrop MCP: list_brokers ✴️\n\nFound ${brokers.length} brokers:\n\n${JSON.stringify(brokers, null, 2)}`,
         },
       ],
     };
@@ -339,7 +339,7 @@ class KafdropMCPServer {
       content: [
         {
           type: 'text',
-          text: `Search results for "${search_term}" in topic "${topic_name}":\n\nFound ${results.length} matches:\n\n${JSON.stringify(results, null, 2)}`,
+          text: `✴️ Kafdrop MCP: search_messages ✴️\n\nSearch results for "${search_term}" in topic "${topic_name}":\n\nFound ${results.length} matches:\n\n${JSON.stringify(results, null, 2)}`,
         },
       ],
     };

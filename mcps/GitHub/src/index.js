@@ -142,7 +142,7 @@ class GitHubServer {
       content: [
         {
           type: "text",
-          text: JSON.stringify(prInfo, null, 2),
+          text: `✴️ GitHub MCP: github_pr_info ✴️\n\n${JSON.stringify(prInfo, null, 2)}`,
         },
       ],
     };
@@ -156,7 +156,7 @@ class GitHubServer {
       content: [
         {
           type: "text",
-          text: diff,
+          text: `✴️ GitHub MCP: github_pr_diff ✴️\n\n${diff}`,
         },
       ],
     };
@@ -169,7 +169,7 @@ class GitHubServer {
       content: [
         {
           type: "text",
-          text: JSON.stringify({ authenticated: isAuthenticated }, null, 2),
+          text: `✴️ GitHub MCP: github_auth_status ✴️\n\n${JSON.stringify({ authenticated: isAuthenticated }, null, 2)}`,
         },
       ],
     };
