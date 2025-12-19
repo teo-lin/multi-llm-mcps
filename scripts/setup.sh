@@ -199,14 +199,17 @@ cd "$MCP_DIR/CodeReview" && npm install
 echo "5/8 Installing Atlassian dependencies..."
 cd "$MCP_DIR/Atlassian" && npm install
 
-echo "6/8 Installing CloudWatch dependencies..."
+echo "6/9 Installing CloudWatch dependencies..."
 cd "$MCP_DIR/CloudWatch" && npm install
 
-echo "7/8 Installing AzureAD dependencies..."
+echo "7/9 Installing AzureAD dependencies..."
 cd "$MCP_DIR/AzureAD" && npm install
 
-echo "8/8 Installing Kafdrop dependencies..."
+echo "8/9 Installing Kafdrop dependencies..."
 cd "$MCP_DIR/Kafdrop" && npm install
+
+echo "9/9 Installing MSK dependencies..."
+cd "$MCP_DIR/MSK" && npm install
 
 echo ""
 echo "📝 Setting up .env files..."
@@ -237,6 +240,7 @@ setup_env "Atlassian" "Atlassian"
 setup_env "CloudWatch" "CloudWatch"
 setup_env "AzureAD" "AzureAD"
 setup_env "Kafdrop" "Kafdrop"
+setup_env "MSK" "MSK"
 
 echo ""
 
@@ -267,6 +271,7 @@ echo "   - CodeReview/.env (GitHub repo + Jira URL)"
 echo "   - Atlassian/.env (Jira credentials)"
 echo "   - AzureAD/.env (Azure AD client ID)"
 echo "   - Kafdrop/.env (Kafdrop URL)"
+echo "   - MSK/.env (AWS credentials + MSK cluster ARN)"
 echo ""
 echo "2. 🔑 Authenticate CLIs (if not already done):"
 echo "   - GitHub: gh auth login"

@@ -1,0 +1,44 @@
+{
+  "name": "@teolin/mcp-msk",
+  "version": "2.0.0",
+  "author": "Teolin",
+  "license": "MIT",
+  "description": "MCP server for AWS MSK (Managed Streaming for Kafka) with protobuf decoding",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "aws",
+    "msk",
+    "kafka",
+    "protobuf",
+    "streaming",
+    "messaging",
+    "claude",
+    "claude-code"
+  ],
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "msk-mcp": "src/index.js"
+  },
+  "engines": {
+    "node": ">=25.2.1"
+  },
+  "scripts": {
+    "start": "node --env-file=.env src/index.js",
+    "test": "node src/test.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-kafka": "^3.954.0",
+    "kafkajs": "^2.2.4",
+    "@protobuf-ts/runtime": "^2.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teo-lin/multi-llm-mcps.git",
+    "directory": "mcps/MSK"
+  }
+}

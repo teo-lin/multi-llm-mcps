@@ -155,6 +155,33 @@ Kafka cluster inspection via Kafdrop Web UI.
 
 ---
 
+### 9. **MSK** (`msk`)
+
+AWS MSK (Managed Streaming for Kafka) with protobuf message decoding.
+
+**Tools:**
+
+- `list_clusters` - List MSK clusters
+- `get_cluster_details` - Get cluster information
+- `list_topics` - List Kafka topics
+- `get_topic_metadata` - Get partition/offset info
+- `browse_messages` - Browse messages from partition/offset
+- `search_messages` - Search across partitions
+- `list_protobuf_types` - List available protobuf message types
+
+**Features:**
+
+- Direct AWS MSK integration via AWS SDK
+- KafkaJS for Kafka operations
+- Protobuf message decoding using `@doctaridev/io.planer.library.npm.protobuf`
+- Support for IAM, TLS, and plaintext authentication
+
+**Prerequisites:** AWS credentials configured, network access to MSK cluster
+
+**Configuration:** `MSK/.env`
+
+---
+
 ## 🛠️ Management Scripts
 
 ```bash
@@ -180,6 +207,7 @@ Each MCP server has its own README with detailed documentation:
 - [CloudWatch README](CloudWatch/README.md)
 - [AzureAD README](AzureAD/README.md)
 - [Kafdrop README](Kafdrop/README.md)
+- [MSK README](MSK/README.md)
 
 ## 🔧 Requirements
 
@@ -202,7 +230,8 @@ All MCPs are registered in **user config** (`~/.claude.json`), making them avail
 ├── atlassian
 ├── cloudwatch
 ├── azuread
-└── kafdrop
+├── kafdrop
+└── msk
 ```
 
 ## 🔒 Security
