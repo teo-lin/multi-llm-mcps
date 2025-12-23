@@ -1,4 +1,4 @@
-name: Publish cloudwatch-logs-mcp-server
+name: Publish @teolin/mcp-cloudwatch-logs
 
 on:
   workflow_dispatch:
@@ -9,4 +9,4 @@ jobs:
     secrets: inherit
     with:
       package_path: mcps/CloudWatch
-      package_name: cloudwatch-logs-mcp-server
+      package_name: "@teolin/mcp-cloudwatch-logs"

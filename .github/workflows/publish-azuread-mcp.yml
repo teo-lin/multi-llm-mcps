@@ -1,4 +1,4 @@
-name: Publish azure-ad-mcp-server
+name: Publish @teolin/mcp-azure-ad
 
 on:
   workflow_dispatch:
@@ -9,4 +9,4 @@ jobs:
     secrets: inherit
     with:
       package_path: mcps/AzureAD
-      package_name: azure-ad-mcp-server
+      package_name: "@teolin/mcp-azure-ad"

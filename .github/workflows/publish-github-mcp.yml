@@ -1,4 +1,4 @@
-name: Publish mcp-github
+name: Publish @teolin/mcp-github
 
 on:
   workflow_dispatch:
@@ -9,4 +9,4 @@ jobs:
     secrets: inherit
     with:
       package_path: mcps/GitHub
-      package_name: mcp-github
+      package_name: "@teolin/mcp-github"

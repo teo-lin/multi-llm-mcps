@@ -1,4 +1,4 @@
-name: Publish code-review-mcp-server
+name: Publish @teolin/code-review-agent
 
 on:
   workflow_dispatch:
@@ -9,4 +9,4 @@ jobs:
     secrets: inherit
     with:
       package_path: mcps/CodeReview
-      package_name: code-review-mcp-server
+      package_name: "@teolin/code-review-agent"
