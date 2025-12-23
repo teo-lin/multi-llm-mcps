@@ -1,0 +1,13 @@
+# Development files
+.env
+*.log
+npm-debug.log*
+
+# Test files
+src/test.js
+
+# Scripts
+start-mcp.sh
+
+# Lock files (users should generate their own)
+package-lock.json

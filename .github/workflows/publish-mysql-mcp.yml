@@ -1,4 +1,4 @@
-name: Publish local-mysql-mcp-server
+name: Publish @teolin/mcp-local-mysql
 
 on:
   workflow_dispatch:
@@ -9,4 +9,4 @@ jobs:
     secrets: inherit
     with:
       package_path: mcps/MySQL
-      package_name: local-mysql-mcp-server
+      package_name: "@teolin/mcp-local-mysql"

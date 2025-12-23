@@ -1,4 +1,4 @@
-name: Publish atlassian-mcp-server
+name: Publish @teolin/mcp-atlassian
 
 on:
   workflow_dispatch:
@@ -9,4 +9,4 @@ jobs:
     secrets: inherit
     with:
       package_path: mcps/Atlassian
-      package_name: atlassian-mcp-server
+      package_name: "@teolin/mcp-atlassian"

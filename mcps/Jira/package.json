@@ -1,6 +1,6 @@
 {
   "name": "@teolin/mcp-jira",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": "Teolin",
   "license": "MIT",
   "description": "Model Context Protocol server for Doctari Jira integration",
@@ -16,7 +16,8 @@
   },
   "scripts": {
     "start": "node --env-file=.env src/index.js",
-    "test": "node src/test.js"
+    "test": "node src/test.js",
+    "prepublishOnly": "chmod +x src/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4",
@@ -25,6 +26,11 @@
   "bin": {
     "jira-mcp": "src/index.js"
   },
+  "files": [
+    "src/**/*.js",
+    "README.md",
+    ".env.example"
+  ],
   "publishConfig": {
     "access": "public"
   },

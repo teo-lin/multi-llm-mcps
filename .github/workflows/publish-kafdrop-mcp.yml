@@ -1,4 +1,4 @@
-name: Publish kafdrop-mcp-server
+name: Publish @teolin/mcp-kafdrop
 
 on:
   workflow_dispatch:
@@ -9,4 +9,4 @@ jobs:
     secrets: inherit
     with:
       package_path: mcps/Kafdrop
-      package_name: kafdrop-mcp-server
+      package_name: "@teolin/mcp-kafdrop"

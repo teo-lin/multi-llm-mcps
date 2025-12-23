@@ -1,6 +1,6 @@
 {
   "name": "@teolin/mcp-local-mysql",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for local MySQL database operations",
@@ -19,12 +19,18 @@
   "bin": {
     "mysql-mcp": "src/index.js"
   },
+  "files": [
+    "src/**/*.js",
+    "README.md",
+    ".env.example"
+  ],
   "engines": {
     "node": ">=25.2.1"
   },
   "scripts": {
     "start": "node --env-file=.env src/index.js",
-    "test": "node src/test.js"
+    "test": "node src/test.js",
+    "prepublishOnly": "chmod +x src/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4",

@@ -16,22 +16,22 @@ MCP server for MySQL 8.0 with connection pooling and parameterized queries.
 
 ## Installation
 
-### Option 1: Install from npm (Recommended)
+### Option 1: Use with npx (Recommended - no installation needed)
 
 ```bash
-npm install -g local-mysql-mcp-server
+npx -y @teolin/mcp-local-mysql
 ```
 
-### Option 2: Install locally
+### Option 2: Install from npm globally
 
 ```bash
-npm install local-mysql-mcp-server
+npm install -g @teolin/mcp-local-mysql
 ```
 
-### Option 3: Use with npx (no installation)
+### Option 3: Install locally
 
 ```bash
-npx -y local-mysql-mcp-server
+npm install @teolin/mcp-local-mysql
 ```
 
 ## Setup
@@ -57,8 +57,8 @@ Required environment variables:
 # If installed globally
 mysql-mcp
 
-# If installed locally
-npx local-mysql-mcp-server
+# If installed locally or using npx
+npx @teolin/mcp-local-mysql
 
 # Or using npm start (for development)
 npm start
@@ -107,7 +107,7 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
     "mysql": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "local-mysql-mcp-server"],
+      "args": ["-y", "@teolin/mcp-local-mysql"],
       "env": {
         "MYSQL_HOST": "localhost",
         "MYSQL_PORT": "3306",
@@ -149,7 +149,7 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
       "type": "stdio",
       "command": "node",
       "args": [
-        "./node_modules/local-mysql-mcp-server/src/index.js"
+        "./node_modules/@teolin/mcp-local-mysql/src/index.js"
       ],
       "env": {
         "MYSQL_HOST": "localhost",
@@ -163,11 +163,102 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
 }
 ```
 
+## Publishing
+
+### Using GitHub Actions (Recommended)
+
+This package uses GitHub Actions for automated publishing. To publish a new version:
+
+1. Go to GitHub Actions → "Publish @teolin/mcp-local-mysql" → Run workflow
+2. The workflow will automatically:
+   - Install dependencies
+   - Run the `prepublishOnly` script to make the bin executable
+   - Publish to npm with public access
+
+### Manual Publishing
+
+#### Prerequisites
+
+1. You need an npm account: https://www.npmjs.com/signup
+2. Login to npm:
+   ```bash
+   npm login
+   ```
+
+#### Publishing Steps
+
+1. **Test the package locally** (optional but recommended):
+   ```bash
+   # Test that it runs
+   node src/index.js --help
+
+   # Or test with environment variables
+   MYSQL_HOST=localhost MYSQL_PORT=3306 MYSQL_USER=root MYSQL_PASSWORD=password MYSQL_DATABASE=test node src/index.js
+   ```
+
+2. **Publish to npm**:
+   ```bash
+   npm publish
+   ```
+
+   This will:
+   - Run the `prepublishOnly` script to make the bin executable
+   - Only include files specified in the `files` field
+   - Publish to npm with public access (configured in `publishConfig`)
+
+3. **Verify the package**:
+   ```bash
+   # Test with npx (no installation)
+   npx -y @teolin/mcp-local-mysql
+
+   # Or install globally and test
+   npm install -g @teolin/mcp-local-mysql
+   mysql-mcp
+   ```
+
+#### Updating the Package
+
+1. Update the version in `package.json`:
+   ```bash
+   npm version patch  # for bug fixes (2.0.2 -> 2.0.3)
+   npm version minor  # for new features (2.0.2 -> 2.1.0)
+   npm version major  # for breaking changes (2.0.2 -> 3.0.0)
+   ```
+
+2. Publish the new version:
+   ```bash
+   npm publish
+   ```
+
+#### Checking Published Package
+
+View your package on npm:
+- https://www.npmjs.com/package/@teolin/mcp-local-mysql
+
+Check what files will be included before publishing:
+```bash
+npm pack --dry-run
+```
+
+#### Troubleshooting
+
+**"You do not have permission to publish"**
+- Make sure you're logged in: `npm whoami`
+- For scoped packages (@teolin/...), ensure you have access to the @teolin organization or use your own scope
+
+**"Package name already exists"**
+- The package name might be taken. Check: https://www.npmjs.com/package/@teolin/mcp-local-mysql
+- If needed, change the name in package.json
+
+**Files missing after installation**
+- Check the `files` field in package.json
+- Use `npm pack --dry-run` to preview what will be included
+
 ## Requirements
 
 - Node.js >=25.2.1
 - MySQL 8.0+
-- Published on npm: [local-mysql-mcp-server](https://www.npmjs.com/package/local-mysql-mcp-server)
+- Published on npm: [@teolin/mcp-local-mysql](https://www.npmjs.com/package/@teolin/mcp-local-mysql)
 
 ## License
 

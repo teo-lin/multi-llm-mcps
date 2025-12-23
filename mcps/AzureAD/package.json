@@ -1,6 +1,6 @@
 {
   "name": "@teolin/mcp-azure-ad",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for Azure AD authentication with device code flow",
@@ -20,7 +20,8 @@
   },
   "scripts": {
     "start": "node --env-file=.env src/index.js",
-    "test": "node src/test.js"
+    "test": "node src/test.js",
+    "prepublishOnly": "chmod +x src/index.js"
   },
   "dependencies": {
     "@azure/msal-node": "^3.8.0",
@@ -30,6 +31,11 @@
   "bin": {
     "azuread-mcp": "src/index.js"
   },
+  "files": [
+    "src/**/*.js",
+    "README.md",
+    ".env.example"
+  ],
   "publishConfig": {
     "access": "public"
   },

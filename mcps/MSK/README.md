@@ -253,6 +253,97 @@ npm test
 - **Issue**: Failed to decode message
 - **Solution**: Use `list_protobuf_types` to verify message type name, check that messages are actually protobuf-encoded
 
+## Publishing
+
+### Using GitHub Actions (Recommended)
+
+This package uses GitHub Actions for automated publishing. To publish a new version:
+
+1. Go to GitHub Actions → "Publish @teolin/mcp-msk" → Run workflow
+2. The workflow will automatically:
+   - Install dependencies
+   - Run the `prepublishOnly` script to make the bin executable
+   - Publish to npm with public access
+
+### Manual Publishing
+
+#### Prerequisites
+
+1. You need an npm account: https://www.npmjs.com/signup
+2. Login to npm:
+   ```bash
+   npm login
+   ```
+
+#### Publishing Steps
+
+1. **Test the package locally** (optional but recommended):
+   ```bash
+   # Test that it runs
+   node src/index.js --help
+
+   # Or test with environment variables
+   AWS_REGION=us-east-1 MSK_AUTH_TYPE=TLS node src/index.js
+   ```
+
+2. **Publish to npm**:
+   ```bash
+   npm publish
+   ```
+
+   This will:
+   - Run the `prepublishOnly` script to make the bin executable
+   - Only include files specified in the `files` field
+   - Publish to npm with public access (configured in `publishConfig`)
+
+3. **Verify the package**:
+   ```bash
+   # Test with npx (no installation)
+   npx -y @teolin/mcp-msk
+
+   # Or install globally and test
+   npm install -g @teolin/mcp-msk
+   msk-mcp
+   ```
+
+#### Updating the Package
+
+1. Update the version in `package.json`:
+   ```bash
+   npm version patch  # for bug fixes (2.0.2 -> 2.0.3)
+   npm version minor  # for new features (2.0.2 -> 2.1.0)
+   npm version major  # for breaking changes (2.0.2 -> 3.0.0)
+   ```
+
+2. Publish the new version:
+   ```bash
+   npm publish
+   ```
+
+#### Checking Published Package
+
+View your package on npm:
+- https://www.npmjs.com/package/@teolin/mcp-msk
+
+Check what files will be included before publishing:
+```bash
+npm pack --dry-run
+```
+
+#### Troubleshooting
+
+**"You do not have permission to publish"**
+- Make sure you're logged in: `npm whoami`
+- For scoped packages (@teolin/...), ensure you have access to the @teolin organization or use your own scope
+
+**"Package name already exists"**
+- The package name might be taken. Check: https://www.npmjs.com/package/@teolin/mcp-msk
+- If needed, change the name in package.json
+
+**Files missing after installation**
+- Check the `files` field in package.json
+- Use `npm pack --dry-run` to preview what will be included
+
 ## Examples
 
 ### Browse Latest Messages

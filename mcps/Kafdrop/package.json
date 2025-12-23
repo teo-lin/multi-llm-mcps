@@ -1,6 +1,6 @@
 {
   "name": "@teolin/mcp-kafdrop",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for inspecting Kafka clusters via Kafdrop Web UI",
@@ -20,7 +20,8 @@
   },
   "scripts": {
     "start": "node --env-file=.env src/index.js",
-    "test": "node src/test.js"
+    "test": "node src/test.js",
+    "prepublishOnly": "chmod +x src/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4",
@@ -29,6 +30,11 @@
   "bin": {
     "kafdrop-mcp": "src/index.js"
   },
+  "files": [
+    "src/**/*.js",
+    "README.md",
+    ".env.example"
+  ],
   "publishConfig": {
     "access": "public"
   },
