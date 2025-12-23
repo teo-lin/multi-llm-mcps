@@ -27,6 +27,7 @@
     "test": "node src/test.js"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
     "mysql2": "^3.11.5"
   },
   "publishConfig": {

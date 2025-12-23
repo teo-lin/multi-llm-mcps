@@ -30,8 +30,9 @@
   },
   "dependencies": {
     "@aws-sdk/client-kafka": "^3.954.0",
-    "kafkajs": "^2.2.4",
-    "@protobuf-ts/runtime": "^2.9.0"
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "@protobuf-ts/runtime": "^2.9.0",
+    "kafkajs": "^2.2.4"
   },
   "publishConfig": {
     "access": "public"

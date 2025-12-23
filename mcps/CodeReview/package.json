@@ -29,6 +29,9 @@
     "start": "node src/index.js",
     "test": "node src/test.js"
   },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
   "publishConfig": {
     "access": "public"
   },

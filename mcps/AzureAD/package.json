@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@azure/msal-node": "^3.8.0",
+    "@modelcontextprotocol/sdk": "^1.0.4",
     "axios": "^1.7.0"
   },
   "bin": {

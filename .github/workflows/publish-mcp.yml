@@ -25,9 +25,11 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
+        working-directory: ${{ inputs.package_path }}
         run: npm ci
 
       - name: Publish ${{ inputs.package_name }}
-        run: npm publish --workspace=${{ inputs.package_path }} --access public
+        working-directory: ${{ inputs.package_path }}
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
