@@ -7,10 +7,15 @@ export class JiraClient {
     const email = process.env.JIRA_EMAIL;
     const apiToken = process.env.JIRA_API_TOKEN;
 
-    if (!email || !apiToken) {
-      throw new Error(
-        "JIRA_EMAIL and JIRA_API_TOKEN environment variables are required"
+    // Track configuration status
+    this.configured = !!(email && apiToken && this.baseUrl);
+
+    if (!this.configured) {
+      console.error(
+        "⚠️  Warning: Jira credentials not configured. Set JIRA_BASE_URL, JIRA_EMAIL, and JIRA_API_TOKEN environment variables."
       );
+      this.client = null;
+      return;
     }
 
     this.client = axios.create({
@@ -26,12 +31,22 @@ export class JiraClient {
     });
   }
 
+  _checkConfigured() {
+    if (!this.configured) {
+      throw new Error(
+        "Jira is not configured. Please set JIRA_BASE_URL, JIRA_EMAIL, and JIRA_API_TOKEN environment variables."
+      );
+    }
+  }
+
   async getTicketDetails(ticketKey) {
+    this._checkConfigured();
     const response = await this.client.get(`/rest/api/3/issue/${ticketKey}`);
     return response.data;
   }
 
   async searchTickets(jql, maxResults = 50) {
+    this._checkConfigured();
     const response = await this.client.post("/rest/api/3/search", {
       jql,
       maxResults,
@@ -51,6 +66,7 @@ export class JiraClient {
   }
 
   async getBoardIssues(boardId, sprintId) {
+    this._checkConfigured();
     const url = `/rest/agile/1.0/board/${boardId}/issue`;
     const params = {
       maxResults: 100,
@@ -65,6 +81,7 @@ export class JiraClient {
   }
 
   async getPtlsBoardBugs(teamName) {
+    this._checkConfigured();
     let jql = "project = PTLSNEW AND issuetype = Bug";
 
     if (teamName) {

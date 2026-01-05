@@ -1,6 +1,6 @@
 {
   "name": "@teolin/code-review-agent",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for automated code reviews with GitHub PR and Jira integration",
