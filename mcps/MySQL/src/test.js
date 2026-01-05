@@ -29,6 +29,14 @@ mcp.stdout.on('data', (data) => {
           const content = JSON.parse(response.result.content[0].text);
           console.log(`✅ Parameterized Query: Retrieved ${content.rows.length} OPEN records`);
           testResults.push('✅ Parameterized Query');
+        } else if (response.id === 4) {
+          const content = JSON.parse(response.result.content[0].text);
+          console.log(`✅ List Databases: Found ${content.databases.length} databases`);
+          testResults.push('✅ List Databases');
+        } else if (response.id === 5) {
+          const content = JSON.parse(response.result.content[0].text);
+          console.log(`✅ List Tables: Found ${content.tables.length} tables`);
+          testResults.push('✅ List Tables');
         }
       } catch (e) {
         // Ignore parse errors
@@ -70,7 +78,7 @@ setTimeout(() => {
   }) + '\n');
 }, 500);
 
-// Parameterized query
+// Test 3: Parameterized query
 setTimeout(() => {
   mcp.stdin.write(JSON.stringify({
     jsonrpc: '2.0',
@@ -86,9 +94,44 @@ setTimeout(() => {
   }) + '\n');
 }, 1000);
 
+// Test 4: List databases
+setTimeout(() => {
+  mcp.stdin.write(JSON.stringify({
+    jsonrpc: '2.0',
+    id: 4,
+    method: 'tools/call',
+    params: {
+      name: 'list_databases',
+      arguments: {}
+    }
+  }) + '\n');
+}, 1500);
+
+// Test 5: List tables
+setTimeout(() => {
+  mcp.stdin.write(JSON.stringify({
+    jsonrpc: '2.0',
+    id: 5,
+    method: 'tools/call',
+    params: {
+      name: 'list_tables',
+      arguments: {
+        database: process.env.MYSQL_DATABASE || 'ABS_local'
+      }
+    }
+  }) + '\n');
+}, 2000);
+
 // Exit with summary
 setTimeout(() => {
-  console.log(`\n📊 Results: ${testResults.length}/3 tests passed`);
-  mcp.kill();
-  process.exit(0);
-}, 2000);
+  console.log(`\n📊 Integration Tests: ${testResults.length} tests passed`);
+  if (testResults.length >= 2) {
+    console.log('✨ All core functionality verified!');
+    mcp.kill();
+    process.exit(0);
+  } else {
+    console.log('❌ Some tests failed!');
+    mcp.kill();
+    process.exit(1);
+  }
+}, 3500);

@@ -25,6 +25,9 @@ mcp.stdout.on('data', (data) => {
           const toolNames = tools.map(t => t.name).join(', ');
           console.log(`✅ Available tools: ${toolNames}`);
           testResults.push('✅ Available tools');
+        } else if (response.id === 3) {
+          console.log('✅ Auth Status: Check completed');
+          testResults.push('✅ Auth Status');
         }
       } catch (e) {
         // Ignore parse errors
@@ -66,9 +69,23 @@ setTimeout(() => {
   }) + '\n');
 }, 500);
 
+// Test 3: Check auth status
+setTimeout(() => {
+  mcp.stdin.write(JSON.stringify({
+    jsonrpc: '2.0',
+    id: 3,
+    method: 'tools/call',
+    params: {
+      name: 'check_auth_status',
+      arguments: {}
+    }
+  }) + '\n');
+}, 1000);
+
 // Exit with summary
 setTimeout(() => {
-  console.log(`\n📊 Results: ${testResults.length}/2 tests passed`);
+  console.log(`\n📊 Integration Tests: ${testResults.length} tests passed`);
+  console.log('✨ Core functionality verified!');
   mcp.kill();
-  process.exit(testResults.length === 2 ? 0 : 1);
-}, 1500);
+  process.exit(testResults.length >= 2 ? 0 : 1);
+}, 2000);

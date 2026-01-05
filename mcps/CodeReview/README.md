@@ -22,19 +22,19 @@ Automated code review server that integrates GitHub PRs with Jira tickets for co
 ### Option 1: Install from npm (Recommended)
 
 ```bash
-npm install -g code-review-mcp-server
+npm install -g @teolin/code-review-agent
 ```
 
 ### Option 2: Install locally
 
 ```bash
-npm install code-review-mcp-server
+npm install @teolin/code-review-agent
 ```
 
 ### Option 3: Use with npx (no installation)
 
 ```bash
-npx -y code-review-mcp-server
+npx -y @teolin/code-review-agent
 ```
 
 ## Setup
@@ -158,7 +158,7 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
     "codereview": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "code-review-mcp-server"]
+      "args": ["-y", "@teolin/code-review-agent"]
     }
   }
 }
@@ -186,7 +186,7 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
       "type": "stdio",
       "command": "node",
       "args": [
-        "./node_modules/code-review-mcp-server/src/index.js"
+        "./node_modules/@teolin/code-review-agent/src/index.js"
       ]
     }
   }
@@ -291,12 +291,35 @@ npm pack --dry-run
 - Check the `files` field in package.json
 - Use `npm pack --dry-run` to preview what will be included
 
+## Usage Examples
+
+### Example 1: Review current PR
+```javascript
+// In Claude Code (from a git repository):
+"Review PR 123"
+// Fetches PR, runs tests & lint, analyzes code, generates review
+```
+
+### Example 2: Review with working directory
+```javascript
+// In Claude Code:
+"Review PR 456 in /path/to/repo"
+// Explicit path to repository
+```
+
+### Example 3: Quick code quality check
+```javascript
+// In Claude Code:
+"Check code quality for PR 789"
+// Runs lint and test suite, reports results
+```
+
 ## Requirements
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - GitHub CLI (`gh`) authenticated
 - Atlassian CLI (`acli`) authenticated
-- Published on npm: [code-review-mcp-server](https://www.npmjs.com/package/code-review-mcp-server)
+- Published on npm: [@teolin/code-review-agent](https://www.npmjs.com/package/@teolin/code-review-agent)
 
 ## Extending
 

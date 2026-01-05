@@ -10,7 +10,7 @@ Model Context Protocol server for GitHub operations using GitHub CLI (`gh`).
 
 ## Prerequisites
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - GitHub CLI (`gh`) installed and authenticated
 
 ## Installation
@@ -152,9 +152,39 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
 }
 ```
 
+## Usage Examples
+
+### Example 1: Get PR details
+```javascript
+// In Claude Code (from a git repository):
+"Get details for PR 123"
+// Fetches PR metadata and diff
+```
+
+### Example 2: Get PR from URL
+```javascript
+// In Claude Code:
+"Analyze PR https://github.com/owner/repo/pull/456"
+// Extracts PR number and fetches details
+```
+
+### Example 3: Get PR diff
+```javascript
+// In Claude Code:
+"Show me the diff for PR #789"
+// Gets full diff of all changes
+```
+
+### Example 4: Get PR from branch
+```javascript
+// In Claude Code:
+"Get PR for branch feat/PAB-123-new-feature"
+// Finds PR associated with the branch
+```
+
 ## Requirements
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - GitHub CLI (`gh`) authenticated
 - Network access to GitHub
 - Published on npm: [@teolin/mcp-github](https://www.npmjs.com/package/@teolin/mcp-github)

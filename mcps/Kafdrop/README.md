@@ -13,7 +13,7 @@ Model Context Protocol (MCP) server for inspecting and managing Kafka clusters v
 
 ## Prerequisites
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - A running Kafdrop instance (v2.0.0+ recommended for full API support)
 - Kafdrop accessible via HTTP/HTTPS
 
@@ -116,7 +116,7 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
     "kafdrop": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "kafdrop-mcp-server"],
+      "args": ["-y", "@teolin/mcp-kafdrop"],
       "env": {
         "KAFDROP_URL": "http://localhost:9000"
       }
@@ -150,7 +150,7 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
       "type": "stdio",
       "command": "node",
       "args": [
-        "./node_modules/kafdrop-mcp-server/src/index.js"
+        "./node_modules/@teolin/mcp-kafdrop/src/index.js"
       ],
       "env": {
         "KAFDROP_URL": "http://localhost:9000"
@@ -262,11 +262,48 @@ npm pack --dry-run
 - Check the `files` field in package.json
 - Use `npm pack --dry-run` to preview what will be included
 
+## Usage Examples
+
+### Example 1: List all Kafka topics
+```javascript
+// In Claude Code:
+"List all topics in Kafka"
+// Uses: list_topics
+```
+
+### Example 2: Get topic details
+```javascript
+// In Claude Code:
+"Show me details for topic user-events"
+// Uses: get_topic_details with topic_name
+```
+
+### Example 3: Browse messages
+```javascript
+// In Claude Code:
+"Show me the last 10 messages from topic user-events partition 0"
+// Uses: browse_messages with limit parameter
+```
+
+### Example 4: Search messages
+```javascript
+// In Claude Code:
+"Search for 'user123' in topic activity-logs"
+// Uses: search_messages with search_term
+```
+
+### Example 5: Check consumer lag
+```javascript
+// In Claude Code:
+"Show me consumer group 'my-app-group' lag"
+// Uses: get_consumer_group_details
+```
+
 ## Requirements
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - Kafdrop running and accessible
-- Published on npm: [kafdrop-mcp-server](https://www.npmjs.com/package/kafdrop-mcp-server)
+- Published on npm: [@teolin/mcp-kafdrop](https://www.npmjs.com/package/@teolin/mcp-kafdrop)
 
 ## License
 

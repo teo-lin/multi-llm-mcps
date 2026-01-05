@@ -13,7 +13,7 @@ Model Context Protocol server for integrating with Doctari's Jira instance.
 
 ## Prerequisites
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - Jira instance URL and API credentials
 
 ## Installation
@@ -21,19 +21,19 @@ Model Context Protocol server for integrating with Doctari's Jira instance.
 ### Option 1: Install from npm (Recommended)
 
 ```bash
-npm install -g jira-mcp-server
+npm install -g @teolin/mcp-jira
 ```
 
 ### Option 2: Install locally
 
 ```bash
-npm install jira-mcp-server
+npm install @teolin/mcp-jira
 ```
 
 ### Option 3: Use with npx (no installation)
 
 ```bash
-npx -y jira-mcp-server
+npx -y @teolin/mcp-jira
 ```
 
 ## Setup
@@ -70,7 +70,7 @@ npx -y jira-mcp-server
 jira-mcp
 
 # If installed locally
-npx jira-mcp-server
+npx @teolin/mcp-jira
 
 # Or using npm start (for development)
 npm start
@@ -106,7 +106,7 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
     "jira": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "jira-mcp-server"],
+      "args": ["-y", "@teolin/mcp-jira"],
       "env": {
         "JIRA_BASE_URL": "https://your-domain.atlassian.net",
         "JIRA_EMAIL": "your-email@example.com",
@@ -144,7 +144,7 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
       "type": "stdio",
       "command": "node",
       "args": [
-        "./node_modules/jira-mcp-server/src/index.js"
+        "./node_modules/@teolin/mcp-jira/src/index.js"
       ],
       "env": {
         "JIRA_BASE_URL": "https://your-domain.atlassian.net",
@@ -291,11 +291,41 @@ npm pack --dry-run
 - Check the `files` field in package.json
 - Use `npm pack --dry-run` to preview what will be included
 
+## Usage Examples
+
+### Example 1: Get ticket details
+```javascript
+// In Claude Code:
+"Get details for PAB-1234"
+// Fetches full ticket info including description and acceptance criteria
+```
+
+### Example 2: Search tickets with JQL
+```javascript
+// In Claude Code:
+"Find all bugs assigned to me: assignee = currentUser() AND type = Bug"
+// Uses JQL to search tickets
+```
+
+### Example 3: Get sprint issues
+```javascript
+// In Claude Code:
+"Show me issues in sprint board 114"
+// Gets all issues from the specified board
+```
+
+### Example 4: Get team bugs
+```javascript
+// In Claude Code:
+"Show me Absences team bugs from the PTLS board"
+// Uses get_absences_bugs or get_ptls_board_bugs
+```
+
 ## Requirements
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - Jira instance with API access
-- Published on npm: [jira-mcp-server](https://www.npmjs.com/package/jira-mcp-server)
+- Published on npm: [@teolin/mcp-jira](https://www.npmjs.com/package/@teolin/mcp-jira)
 
 ## License
 

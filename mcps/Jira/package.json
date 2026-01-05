@@ -1,6 +1,6 @@
 {
   "name": "@teolin/mcp-jira",
-  "version": "3.0.1",
+  "version": "3.1.2",
   "author": "Teolin",
   "license": "MIT",
   "description": "Model Context Protocol server for Doctari Jira integration",
@@ -12,7 +12,7 @@
   "type": "module",
   "main": "src/index.js",
   "engines": {
-    "node": ">=25.2.1"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "start": "node --env-file=.env src/index.js",

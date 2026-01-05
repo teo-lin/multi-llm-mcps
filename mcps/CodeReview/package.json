@@ -1,6 +1,6 @@
 {
   "name": "@teolin/code-review-agent",
-  "version": "3.0.1",
+  "version": "3.1.2",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for automated code reviews with GitHub PR and Jira integration",
@@ -27,7 +27,7 @@
     "README.md"
   ],
   "engines": {
-    "node": ">=25.2.1"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "start": "node src/index.js",

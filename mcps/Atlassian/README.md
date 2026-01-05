@@ -29,7 +29,7 @@ This is a **local stdio MCP server** that runs on your machine. For comparison w
 
 ## Prerequisites
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - Atlassian CLI (`acli`) installed and authenticated
 - Jira instance URL
 
@@ -352,9 +352,39 @@ npm pack --dry-run
 - Check the `files` field in package.json
 - Use `npm pack --dry-run` to preview what will be included
 
+## Usage Examples
+
+### Example 1: Get ticket details
+```javascript
+// In Claude Code conversation:
+"Get details for PAB-2197"
+// Automatically extracts ticket key and retrieves info
+```
+
+### Example 2: Extract ticket from branch name
+```javascript
+// In Claude Code:
+"What ticket is this branch for: feat/PAB-123-add-authentication"
+// Returns: PAB-123 with full ticket details
+```
+
+### Example 3: Check auth status
+```javascript
+// In Claude Code:
+"Check my Jira authentication status"
+// Shows current acli login status
+```
+
+### Example 4: Open ticket in browser
+```javascript
+// In Claude Code:
+"Open PAB-456 in my browser"
+// Launches default browser with the ticket
+```
+
 ## Requirements
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - Atlassian CLI (`acli`) authenticated
 - Network access to Jira instance
 - Published on npm: [@teolin/mcp-atlassian](https://www.npmjs.com/package/@teolin/mcp-atlassian)

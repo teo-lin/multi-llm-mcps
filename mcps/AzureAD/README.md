@@ -11,7 +11,7 @@ Model Context Protocol (MCP) server for Azure Active Directory authentication us
 
 ## Prerequisites
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - Azure AD Application Registration
 - Internet connection for authentication
 
@@ -20,19 +20,19 @@ Model Context Protocol (MCP) server for Azure Active Directory authentication us
 ### Option 1: Install from npm (Recommended)
 
 ```bash
-npm install -g azure-ad-mcp-server
+npm install -g @teolin/mcp-azure-ad
 ```
 
 ### Option 2: Install locally
 
 ```bash
-npm install azure-ad-mcp-server
+npm install @teolin/mcp-azure-ad
 ```
 
 ### Option 3: Use with npx (no installation)
 
 ```bash
-npx -y azure-ad-mcp-server
+npx -y @teolin/mcp-azure-ad
 ```
 
 ## Setup
@@ -168,7 +168,7 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
     "azuread": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "azure-ad-mcp-server"],
+      "args": ["-y", "@teolin/mcp-azure-ad"],
       "env": {
         "AZURE_CLIENT_ID": "your-client-id",
         "AZURE_AUTHORITY": "https://login.microsoftonline.com/common",
@@ -206,7 +206,7 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
       "type": "stdio",
       "command": "node",
       "args": [
-        "./node_modules/azure-ad-mcp-server/src/index.js"
+        "./node_modules/@teolin/mcp-azure-ad/src/index.js"
       ],
       "env": {
         "AZURE_CLIENT_ID": "your-client-id",
@@ -332,11 +332,41 @@ npm pack --dry-run
 - Check the `files` field in package.json
 - Use `npm pack --dry-run` to preview what will be included
 
+## Usage Examples
+
+### Example 1: Authenticate and make API call
+```javascript
+// In Claude Code:
+"Authenticate with Azure AD and get my profile"
+// Triggers device code flow, then calls Microsoft Graph API
+```
+
+### Example 2: Check authentication status
+```javascript
+// In Claude Code:
+"Am I authenticated with Azure AD?"
+// Shows token status and expiration
+```
+
+### Example 3: Make authenticated request to Graph API
+```javascript
+// In Claude Code:
+"Get my Azure AD user info"
+// Uses: make_authenticated_request with https://graph.microsoft.com/v1.0/me
+```
+
+### Example 4: Clear cached token
+```javascript
+// In Claude Code:
+"Clear my Azure AD authentication cache"
+// Removes cached token, requires re-authentication
+```
+
 ## Requirements
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - Azure AD Application Registration
-- Published on npm: [azure-ad-mcp-server](https://www.npmjs.com/package/azure-ad-mcp-server)
+- Published on npm: [@teolin/mcp-azure-ad](https://www.npmjs.com/package/@teolin/mcp-azure-ad)
 
 ## License
 

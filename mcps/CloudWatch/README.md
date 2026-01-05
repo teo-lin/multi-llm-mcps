@@ -12,7 +12,7 @@ MCP server for querying AWS CloudWatch Logs with Log Insights.
 
 ## Prerequisites
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - AWS credentials configured (via AWS CLI, environment variables, or IAM role)
 - Access to CloudWatch Logs
 
@@ -21,19 +21,19 @@ MCP server for querying AWS CloudWatch Logs with Log Insights.
 ### Option 1: Install from npm (Recommended)
 
 ```bash
-npm install -g cloudwatch-logs-mcp-server
+npm install -g @teolin/mcp-cloudwatch-logs
 ```
 
 ### Option 2: Install locally
 
 ```bash
-npm install cloudwatch-logs-mcp-server
+npm install @teolin/mcp-cloudwatch-logs
 ```
 
 ### Option 3: Use with npx (no installation)
 
 ```bash
-npx -y cloudwatch-logs-mcp-server
+npx -y @teolin/mcp-cloudwatch-logs
 ```
 
 ## Setup
@@ -61,7 +61,7 @@ export AWS_REGION=us-east-1
 cloudwatch-mcp
 
 # If installed locally
-npx cloudwatch-logs-mcp-server
+npx @teolin/mcp-cloudwatch-logs
 
 # Or using npm start (for development)
 npm start
@@ -141,7 +141,7 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
     "cloudwatch": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "cloudwatch-logs-mcp-server"],
+      "args": ["-y", "@teolin/mcp-cloudwatch-logs"],
       "env": {
         "AWS_REGION": "us-east-1"
       }
@@ -175,7 +175,7 @@ Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
       "type": "stdio",
       "command": "node",
       "args": [
-        "./node_modules/cloudwatch-logs-mcp-server/src/index.js"
+        "./node_modules/@teolin/mcp-cloudwatch-logs/src/index.js"
       ],
       "env": {
         "AWS_REGION": "us-east-1"
@@ -293,12 +293,42 @@ npm pack --dry-run
 - Check the `files` field in package.json
 - Use `npm pack --dry-run` to preview what will be included
 
+## Usage Examples
+
+### Example 1: Query recent errors
+```javascript
+// In Claude Code:
+"Show me errors from the last hour in /aws/lambda/my-function"
+// Uses: query_logs with filter pattern for ERROR
+```
+
+### Example 2: Search specific log group
+```javascript
+// In Claude Code:
+"Query CloudWatch: fields @timestamp, @message | filter @message like /timeout/ | sort @timestamp desc"
+// Custom Logs Insights query
+```
+
+### Example 3: List all log groups
+```javascript
+// In Claude Code:
+"List all CloudWatch log groups starting with /aws/lambda"
+// Uses: list_log_groups with namePrefix filter
+```
+
+### Example 4: Get recent logs from specific group
+```javascript
+// In Claude Code:
+"Get the last 50 log entries from /aws/ecs/my-service from the past 2 hours"
+// Uses: get_recent_logs with hours and limit parameters
+```
+
 ## Requirements
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - AWS SDK for JavaScript v3
 - Valid AWS credentials with CloudWatch Logs permissions
-- Published on npm: [cloudwatch-logs-mcp-server](https://www.npmjs.com/package/cloudwatch-logs-mcp-server)
+- Published on npm: [@teolin/mcp-cloudwatch-logs](https://www.npmjs.com/package/@teolin/mcp-cloudwatch-logs)
 
 ## License
 

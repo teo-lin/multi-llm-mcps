@@ -11,7 +11,7 @@ MCP server for MySQL 8.0 with connection pooling and parameterized queries.
 
 ## Prerequisites
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - MySQL 8.0+
 
 ## Installation
@@ -254,9 +254,43 @@ npm pack --dry-run
 - Check the `files` field in package.json
 - Use `npm pack --dry-run` to preview what will be included
 
+## Usage Examples
+
+### Example 1: Query with parameters
+```javascript
+// In Claude Code conversation:
+"Query the database: SELECT * FROM users WHERE status = ? AND age > ?"
+// Parameters: ["active", 18]
+```
+
+### Example 2: List all databases
+```javascript
+// In Claude Code:
+"Show me all databases"
+// Uses: list_databases tool
+```
+
+### Example 3: Describe table structure
+```javascript
+// In Claude Code:
+"What's the structure of the users table?"
+// Uses: describe_table tool with table name "users"
+```
+
+### Example 4: Complex join query
+```javascript
+// In Claude Code:
+"Get all orders with customer names:
+SELECT o.id, o.total, c.name
+FROM orders o
+JOIN customers c ON o.customer_id = c.id
+WHERE o.created_at > ?"
+// Parameters: ["2024-01-01"]
+```
+
 ## Requirements
 
-- Node.js >=25.2.1
+- Node.js >=18.0.0
 - MySQL 8.0+
 - Published on npm: [@teolin/mcp-local-mysql](https://www.npmjs.com/package/@teolin/mcp-local-mysql)
 
