@@ -17,6 +17,7 @@ PACKAGES=(
   "@teolin/mcp-github"
   "@teolin/mcp-jira"
   "@teolin/mcp-kafdrop"
+  "@teolin/mcp-sonarcloud"
 )
 
 passed=0

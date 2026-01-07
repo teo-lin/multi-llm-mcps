@@ -6,26 +6,28 @@ Model Context Protocol server for Atlassian Jira operations using the Atlassian 
 
 This is a **local stdio MCP server** that runs on your machine. For comparison with Atlassian's official solution:
 
-| Feature                  | This MCP (@teolin/mcp-atlassian)      | Atlassian Remote MCP Server          |
-| ------------------------ | ------------------------------------- | ------------------------------------ |
-| **Type**           | Local stdio server                    | Remote HTTP server (cloud-hosted)    |
-| **Authentication** | Atlassian CLI + API token             | OAuth                                |
-| **Scope**          | Jira only                             | Jira + Confluence                    |
-| **Setup**          | Install npm package + configure CLI   | OAuth setup via Atlassian portal     |
-| **Access**         | Personal (your machine)               | Team-wide (enterprise)               |
-| **Performance**    | Fast (local, no network latency)      | Network-dependent                    |
-| **Features**       | Ticket info, extraction, browser open | Bulk operations, enterprise security |
+| Feature                  | This MCP (@teolin/mcp-atlassian)                    | Atlassian Remote MCP Server          |
+| ------------------------ | --------------------------------------------------- | ------------------------------------ |
+| **Type**           | Local stdio server                                  | Remote HTTP server (cloud-hosted)    |
+| **Authentication** | OAuth (acli) + Basic Auth (API token) with fallback | OAuth                                |
+| **Scope**          | Jira only                                           | Jira + Confluence                    |
+| **Setup**          | Install npm package, configure auth (flexible)      | OAuth setup via Atlassian portal     |
+| **Access**         | Personal (your machine)                             | Team-wide (enterprise)               |
+| **Performance**    | Fast (local, no network latency)                    | Network-dependent                    |
+| **Features**       | Ticket info, extraction, browser open               | Bulk operations, enterprise security |
 
 **Use this MCP if:** You want a lightweight, local solution for Jira ticket operations
 **Use Atlassian's Remote MCP if:** You need enterprise features, Confluence access, or team-wide deployment
 
 ## Features
 
+- **Dual Authentication**: Supports both OAuth (acli) and Basic Auth (API token) with automatic fallback
 - **Jira Ticket Information**: Retrieve ticket details including summary, description, and acceptance criteria
 - **Ticket Extraction**: Automatically extract Jira ticket keys from text (PR titles, branch names, etc.)
 - **Browser Integration**: Opens tickets in your default browser for quick access
 - **Auto-Authentication**: Attempts to authenticate using credentials from `.env` file
 - **CLI Integration**: Uses Atlassian CLI for seamless Jira access
+- **Robust Fallback**: Automatically tries multiple auth methods for maximum reliability
 
 ## Prerequisites
 
@@ -77,18 +79,66 @@ npm install
 cp .env.example .env
 ```
 
-Edit `.env` and set:
+Edit `.env` and configure authentication:
 
+#### Required
 - `JIRA_BASE_URL`: Your Jira instance URL (e.g., `https://your-domain.atlassian.net`)
-- `JIRA_SITE`: Your Jira site domain (e.g., `your-domain.atlassian.net`)
-- `JIRA_EMAIL`: Your Atlassian account email
-- `JIRA_API_TOKEN`: Your Atlassian API token ([Create one here](https://id.atlassian.com/manage-profile/security/api-tokens))
+
+#### Authentication (at least one method required)
+- `JIRA_SITE`: Your Jira site domain (e.g., `your-domain.atlassian.net`) (for OAuth via acli)
+- `JIRA_EMAIL`: Your Atlassian account email (for basic auth)
+- `JIRA_API_TOKEN`: Your Atlassian API token ([Create one here](https://id.atlassian.com/manage-profile/security/api-tokens)) (for basic auth)
+
+#### Authentication Strategy (Optional)
+- `JIRA_AUTH_STRATEGY`: Authentication method preference (default: 'auto')
+  - `'auto'`: Try OAuth (acli) first, fallback to Basic Auth (API token)
+  - `'oauth'`: Use OAuth (acli) only
+  - `'basic'`: Use Basic Auth (API token) only
 
 ### 4. Authenticate (if not using auto-auth)
 
 ```bash
 acli jira auth login --url https://your-domain.atlassian.net
 ```
+
+## Authentication Methods
+
+This MCP supports two authentication methods with automatic fallback:
+
+### 1. OAuth via Atlassian CLI (Recommended)
+- Uses the Atlassian CLI (`acli`) for OAuth authentication
+- More secure with broader permissions
+- Requires `acli` to be installed and authenticated
+- Set `JIRA_SITE` in your `.env` file
+
+**Setup:**
+```bash
+# Install acli (if not already installed)
+npm install -g @atlassian/forge-cli
+
+# Authenticate
+acli jira auth login --site your-domain.atlassian.net
+```
+
+### 2. Basic Auth with API Token
+- Uses email + API token for authentication
+- Works without acli installed
+- May have limited permissions depending on token scope
+- Set `JIRA_EMAIL` and `JIRA_API_TOKEN` in your `.env` file
+
+**Setup:**
+1. Go to https://id.atlassian.com/manage-profile/security/api-tokens
+2. Create an API token
+3. Add to your `.env` file
+
+### Automatic Fallback
+
+By default (`JIRA_AUTH_STRATEGY='auto'`), the MCP will:
+1. Try OAuth (acli) first if available
+2. Automatically fallback to Basic Auth if OAuth fails
+3. Provide detailed error messages if both methods fail
+
+This ensures maximum reliability across different environments and authentication setups.
 
 ## Usage
 

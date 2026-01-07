@@ -4,12 +4,14 @@ Model Context Protocol server for integrating with Doctari's Jira instance.
 
 ## Features
 
+- **Dual Authentication**: Supports both OAuth (acli) and Basic Auth (API token) with automatic fallback
 - **Ticket Details**: Get comprehensive information about specific Jira tickets
 - **JQL Search**: Search tickets using Jira Query Language
 - **Board Integration**: Access sprint boards and PTLS bug boards
 - **Team Filtering**: Filter PTLS bugs by team (with Absences team shortcut)
 - **Team Management**: Validate and list available team names
 - **Environment Variables**: Automatic loading of .env configuration
+- **Robust Fallback**: Automatically tries multiple auth methods for maximum reliability
 
 ## Prerequisites
 
@@ -53,13 +55,62 @@ npx -y @teolin/mcp-jira
 
 ### Environment Variables
 
+#### Required
 - `JIRA_BASE_URL`: Your Jira instance URL (e.g., https://your-domain.atlassian.net)
-- `JIRA_EMAIL`: Your Atlassian account email
-- `JIRA_API_TOKEN`: Your Atlassian API token ([Create one here](https://id.atlassian.com/manage-profile/security/api-tokens))
+
+#### Authentication (at least one method required)
+- `JIRA_EMAIL`: Your Atlassian account email (for basic auth)
+- `JIRA_API_TOKEN`: Your Atlassian API token ([Create one here](https://id.atlassian.com/manage-profile/security/api-tokens)) (for basic auth)
+- `JIRA_SITE`: Your Jira site domain (e.g., your-domain.atlassian.net) (for OAuth via acli)
+
+#### Authentication Strategy (Optional)
+- `JIRA_AUTH_STRATEGY`: Authentication method preference (default: 'auto')
+  - `'auto'`: Try OAuth (acli) first, fallback to Basic Auth (API token)
+  - `'oauth'`: Use OAuth (acli) only
+  - `'basic'`: Use Basic Auth (API token) only
 
 ### Board IDs (Optional)
 - `JIRA_TEAM_BOARD_ID`: Sprint board ID (default: 114)
 - `JIRA_BUGS_BOARD_ID`: Bugs board ID (default: 155)
+
+## Authentication Methods
+
+This MCP supports two authentication methods with automatic fallback:
+
+### 1. OAuth via Atlassian CLI (Recommended)
+- Uses the Atlassian CLI (`acli`) for OAuth authentication
+- More secure with broader permissions
+- Requires `acli` to be installed and authenticated
+- Set `JIRA_SITE` in your `.env` file
+
+**Setup:**
+```bash
+# Install acli (if not already installed)
+npm install -g @atlassian/forge-cli
+
+# Authenticate
+acli jira auth login --site your-domain.atlassian.net
+```
+
+### 2. Basic Auth with API Token
+- Uses email + API token for authentication
+- Works without acli installed
+- May have limited permissions depending on token scope
+- Set `JIRA_EMAIL` and `JIRA_API_TOKEN` in your `.env` file
+
+**Setup:**
+1. Go to https://id.atlassian.com/manage-profile/security/api-tokens
+2. Create an API token
+3. Add to your `.env` file
+
+### Automatic Fallback
+
+By default (`JIRA_AUTH_STRATEGY='auto'`), the MCP will:
+1. Try OAuth (acli) first if available
+2. Automatically fallback to Basic Auth if OAuth fails
+3. Provide detailed error messages if both methods fail
+
+This ensures maximum reliability across different environments.
 
 ## Usage
 

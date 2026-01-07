@@ -8,6 +8,7 @@ import {
   ListToolsRequestSchema,
   McpError,
 } from "@modelcontextprotocol/sdk/types.js";
+import axios from "axios";
 import { exec } from "child_process";
 import { promisify } from "util";
 import * as fs from "fs";
@@ -20,6 +21,9 @@ const __dirname = path.dirname(__filename);
 
 const JIRA_BASE_URL = process.env.JIRA_BASE_URL || 'https://your-domain.atlassian.net';
 const JIRA_SITE = process.env.JIRA_SITE || 'your-domain.atlassian.net';
+const JIRA_EMAIL = process.env.JIRA_EMAIL;
+const JIRA_API_TOKEN = process.env.JIRA_API_TOKEN;
+const JIRA_AUTH_STRATEGY = process.env.JIRA_AUTH_STRATEGY || 'auto'; // 'oauth', 'basic', or 'auto'
 
 const log = {
   info: (message) => console.error(`${message}`),
@@ -41,7 +45,40 @@ class AtlassianServer {
       }
     );
 
+    this.oauthAvailable = null; // Cache oauth availability check
+
+    // Configure axios client for basic auth
+    this.hasBasicAuth = !!(JIRA_EMAIL && JIRA_API_TOKEN);
+    if (this.hasBasicAuth) {
+      this.axiosClient = axios.create({
+        baseURL: JIRA_BASE_URL,
+        auth: {
+          username: JIRA_EMAIL,
+          password: JIRA_API_TOKEN,
+        },
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
     this.setupToolHandlers();
+  }
+
+  async _isOAuthAvailable() {
+    if (this.oauthAvailable !== null) {
+      return this.oauthAvailable;
+    }
+
+    try {
+      const { stdout } = await execAsync("acli jira auth status");
+      this.oauthAvailable = stdout.includes("✓") || stdout.includes("authenticated") || stdout.includes("logged in");
+      return this.oauthAvailable;
+    } catch (error) {
+      this.oauthAvailable = false;
+      return false;
+    }
   }
 
   setupToolHandlers() {
@@ -197,40 +234,96 @@ class AtlassianServer {
     return match ? match[1] : null;
   }
 
-  async getJiraTicketInfo(ticketKey) {
-    try {
-      const { stdout } = await execAsync(
-        `acli jira workitem view ${ticketKey} --json`
-      );
-      const ticket = JSON.parse(stdout);
+  async _getTicketInfoViaOAuth(ticketKey) {
+    const { stdout } = await execAsync(
+      `acli jira workitem view ${ticketKey} --json`
+    );
+    const ticket = JSON.parse(stdout);
 
-      await this.openJiraTicketInBrowser(ticketKey);
+    return {
+      key: ticket.key,
+      summary: ticket.fields.summary,
+      description:
+        ticket.fields.description?.content?.[0]?.content?.[0]?.text ||
+        "No description",
+      acceptanceCriteria: this.extractAcceptanceCriteria(
+        ticket.fields.description
+      ),
+      status: ticket.fields.status.name,
+      url: `${JIRA_BASE_URL}/browse/${ticketKey}`,
+    };
+  }
 
-      return {
-        key: ticket.key,
-        summary: ticket.fields.summary,
-        description:
-          ticket.fields.description?.content?.[0]?.content?.[0]?.text ||
-          "No description",
-        acceptanceCriteria: this.extractAcceptanceCriteria(
-          ticket.fields.description
-        ),
-        status: ticket.fields.status.name,
-        url: `${JIRA_BASE_URL}/browse/${ticketKey}`,
-      };
-    } catch (error) {
-      log.error(`Failed to fetch Jira ticket ${ticketKey}: ${error}`);
-
-      await this.openJiraTicketInBrowser(ticketKey);
-
-      return {
-        key: ticketKey,
-        summary: `Jira ticket ${ticketKey} (acli access failed)`,
-        description: `View ticket at: ${JIRA_BASE_URL}/browse/${ticketKey}`,
-        status: "Unknown",
-        url: `${JIRA_BASE_URL}/browse/${ticketKey}`,
-      };
+  async _getTicketInfoViaBasicAuth(ticketKey) {
+    if (!this.hasBasicAuth) {
+      throw new Error("Basic auth not configured. Set JIRA_EMAIL and JIRA_API_TOKEN environment variables.");
     }
+
+    const response = await this.axiosClient.get(`/rest/api/3/issue/${ticketKey}`);
+    const ticket = response.data;
+
+    return {
+      key: ticket.key,
+      summary: ticket.fields.summary,
+      description: this.extractDescriptionText(ticket.fields.description) || "No description",
+      acceptanceCriteria: this.extractAcceptanceCriteria(ticket.fields.description),
+      status: ticket.fields.status.name,
+      url: `${JIRA_BASE_URL}/browse/${ticketKey}`,
+    };
+  }
+
+  async getJiraTicketInfo(ticketKey) {
+    const errors = [];
+
+    // Try OAuth first if strategy is 'oauth' or 'auto'
+    if (JIRA_AUTH_STRATEGY === 'oauth' || JIRA_AUTH_STRATEGY === 'auto') {
+      const oauthAvailable = await this._isOAuthAvailable();
+      if (oauthAvailable) {
+        try {
+          log.info(`[Atlassian MCP] Fetching ticket ${ticketKey} via OAuth (acli)`);
+          const ticket = await this._getTicketInfoViaOAuth(ticketKey);
+          await this.openJiraTicketInBrowser(ticketKey);
+          return ticket;
+        } catch (error) {
+          log.error(`[Atlassian MCP] OAuth failed: ${error.message}`);
+          errors.push(`OAuth: ${error.message}`);
+
+          if (JIRA_AUTH_STRATEGY === 'oauth') {
+            await this.openJiraTicketInBrowser(ticketKey);
+            return {
+              key: ticketKey,
+              summary: `Jira ticket ${ticketKey} (acli access failed)`,
+              description: `View ticket at: ${JIRA_BASE_URL}/browse/${ticketKey}`,
+              status: "Unknown",
+              url: `${JIRA_BASE_URL}/browse/${ticketKey}`,
+            };
+          }
+        }
+      }
+    }
+
+    // Try basic auth if strategy is 'basic' or 'auto' (and oauth failed)
+    if (JIRA_AUTH_STRATEGY === 'basic' || JIRA_AUTH_STRATEGY === 'auto') {
+      try {
+        log.info(`[Atlassian MCP] Fetching ticket ${ticketKey} via Basic Auth (API token)`);
+        const ticket = await this._getTicketInfoViaBasicAuth(ticketKey);
+        await this.openJiraTicketInBrowser(ticketKey);
+        return ticket;
+      } catch (error) {
+        log.error(`[Atlassian MCP] Basic auth failed: ${error.message}`);
+        errors.push(`Basic Auth: ${error.message}`);
+      }
+    }
+
+    // All auth methods failed, return fallback
+    await this.openJiraTicketInBrowser(ticketKey);
+    return {
+      key: ticketKey,
+      summary: `Jira ticket ${ticketKey} (all auth methods failed)`,
+      description: `View ticket at: ${JIRA_BASE_URL}/browse/${ticketKey}. Errors: ${errors.join(', ')}`,
+      status: "Unknown",
+      url: `${JIRA_BASE_URL}/browse/${ticketKey}`,
+    };
   }
 
   async openJiraTicketInBrowser(ticketKey) {
@@ -240,6 +333,18 @@ class AtlassianServer {
     } catch (error) {
       log.error(`Failed to open Jira ticket ${ticketKey}: ${error}`);
     }
+  }
+
+  extractDescriptionText(description) {
+    if (!description?.content) return undefined;
+
+    const text = description.content
+      .map((block) =>
+        block.content?.map((item) => item.text).join(" ")
+      )
+      .join(" ");
+
+    return text || undefined;
   }
 
   extractAcceptanceCriteria(description) {

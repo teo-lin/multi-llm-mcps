@@ -17,6 +17,7 @@ PACKAGES=(
   "GitHub"
   "Jira"
   "Kafdrop"
+  "SonarCloud"
 )
 
 passed=0

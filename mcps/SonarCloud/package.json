@@ -1,23 +1,27 @@
 {
-  "name": "@teolin/mcp-local-mysql",
-  "version": "3.2.5",
+  "name": "@teolin/mcp-sonarcloud",
+  "version": "1.0.0",
   "author": "Teolin",
   "license": "MIT",
-  "description": "MCP server for local MySQL database operations",
+  "description": "MCP server for SonarCloud/SonarQube code quality analysis and issue management",
   "keywords": [
     "mcp",
     "model-context-protocol",
-    "mysql",
-    "database",
-    "sql",
+    "sonarcloud",
+    "sonarqube",
+    "code-quality",
+    "static-analysis",
+    "security",
+    "code-smells",
+    "bugs",
+    "vulnerabilities",
     "claude",
-    "claude-code",
-    "server"
+    "claude-code"
   ],
   "type": "module",
   "main": "src/index.js",
   "bin": {
-    "mysql-mcp": "src/index.js"
+    "sonarcloud-mcp": "src/index.js"
   },
   "files": [
     "src/**/*.js",
@@ -28,13 +32,13 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "start": "node --env-file=.env src/index.js",
+    "start": "node src/index.js",
     "test": "node src/test.js",
     "prepublishOnly": "chmod +x src/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4",
-    "mysql2": "^3.11.5"
+    "axios": "^1.7.9"
   },
   "publishConfig": {
     "access": "public"
@@ -42,6 +46,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/teo-lin/multi-llm-mcps.git",
-    "directory": "mcps/MySQL"
+    "directory": "mcps/SonarCloud"
   }
 }
