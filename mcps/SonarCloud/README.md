@@ -4,15 +4,15 @@ Model Context Protocol (MCP) server for SonarCloud and SonarQube integration. Pr
 
 ## Features
 
-- 📊 **Quality Gate Status** - Check if your project passes quality gates
-- 🐛 **Issue Management** - List and analyze bugs, vulnerabilities, and code smells
-- 🔒 **Security Hotspots** - Identify and review security-sensitive code
-- 📈 **Project Metrics** - Get coverage, duplication, and quality metrics
-- 📁 **File Browser** - Navigate project structure
-- 📖 **Source Code Access** - Read source code with issue context
-- 📋 **Rule Details** - Understand what each rule checks and how to fix it
-- 📜 **Analysis History** - View past analysis results
-- 🎯 **Comprehensive Summaries** - Get aggregated issue reports
+-  **Quality Gate Status** - Check if your project passes quality gates
+-  **Issue Management** - List and analyze bugs, vulnerabilities, and code smells
+-  **Security Hotspots** - Identify and review security-sensitive code
+-  **Project Metrics** - Get coverage, duplication, and quality metrics
+-  **File Browser** - Navigate project structure
+-  **Source Code Access** - Read source code with issue context
+-  **Rule Details** - Understand what each rule checks and how to fix it
+-  **Analysis History** - View past analysis results
+-  **Comprehensive Summaries** - Get aggregated issue reports
 
 ## Prerequisites
 

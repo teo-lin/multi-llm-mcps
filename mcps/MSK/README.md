@@ -4,12 +4,12 @@ MCP server for AWS MSK (Managed Streaming for Kafka) with protobuf message decod
 
 ## Features
 
-- 🔍 **Browse Kafka Messages** - Read messages from specific partitions and offsets
-- 🔎 **Search Messages** - Search across partitions for specific content
-- 📋 **List Clusters & Topics** - Discover MSK clusters and Kafka topics
-- 🔐 **Protobuf Decoding** - Decode messages using `@doctaridev/io.planer.library.npm.protobuf`
-- ☁️ **AWS Integration** - Seamless integration with AWS MSK API
-- 🛡️ **Multiple Auth Methods** - Support for IAM, TLS, and plaintext authentication
+-  **Browse Kafka Messages** - Read messages from specific partitions and offsets
+-  **Search Messages** - Search across partitions for specific content
+-  **List Clusters & Topics** - Discover MSK clusters and Kafka topics
+-  **Protobuf Decoding** - Decode messages using `@doctaridev/io.planer.library.npm.protobuf`
+-  **AWS Integration** - Seamless integration with AWS MSK API
+-  **Multiple Auth Methods** - Support for IAM, TLS, and plaintext authentication
 
 ## Tools
 

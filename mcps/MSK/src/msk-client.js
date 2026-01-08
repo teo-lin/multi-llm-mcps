@@ -2,41 +2,42 @@ import {
   KafkaClient,
   ListClustersV2Command,
   DescribeClusterV2Command,
-  GetBootstrapBrokersCommand
-} from '@aws-sdk/client-kafka';
+  GetBootstrapBrokersCommand,
+} from "@aws-sdk/client-kafka"
 
 /**
  * MSKClient - Wrapper for AWS MSK API operations
  * Handles cluster discovery and broker endpoint retrieval
- * Matches CloudWatch MCP pattern from /Users/teolin/_WORK/done 👍/✴️ AI/mcps/CloudWatch/src/index.js
+ * Matches CloudWatch MCP pattern from /Users/teolin/_WORK/done / AI/mcps/CloudWatch/src/index.js
  */
 export class MSKClient {
   constructor() {
     // Initialize AWS Kafka client with credentials
     // Follows CloudWatch MCP authentication pattern
     const config = {
-      region: process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || 'us-east-1',
-    };
+      region:
+        process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || "us-east-1",
+    }
 
     // Support explicit credentials or default AWS credential chain
     if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
       config.credentials = {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      };
+      }
 
       // Support temporary credentials (IAM role assumption)
       if (process.env.AWS_SESSION_TOKEN) {
-        config.credentials.sessionToken = process.env.AWS_SESSION_TOKEN;
+        config.credentials.sessionToken = process.env.AWS_SESSION_TOKEN
       }
     }
 
-    this.client = new KafkaClient(config);
+    this.client = new KafkaClient(config)
 
     // Cache broker endpoints to reduce AWS API calls
     // Map<clusterArn, {brokers: string[], timestamp: number}>
-    this.brokerCache = new Map();
-    this.CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+    this.brokerCache = new Map()
+    this.CACHE_TTL = 5 * 60 * 1000 // 5 minutes
   }
 
   /**
@@ -49,17 +50,17 @@ export class MSKClient {
   async listClusters(maxResults = 50, clusterNameFilter = null) {
     try {
       const params = {
-        MaxResults: maxResults
-      };
-
-      if (clusterNameFilter) {
-        params.ClusterNameFilter = clusterNameFilter;
+        MaxResults: maxResults,
       }
 
-      const command = new ListClustersV2Command(params);
-      const response = await this.client.send(command);
+      if (clusterNameFilter) {
+        params.ClusterNameFilter = clusterNameFilter
+      }
 
-      return (response.ClusterInfoList || []).map(cluster => ({
+      const command = new ListClustersV2Command(params)
+      const response = await this.client.send(command)
+
+      return (response.ClusterInfoList || []).map((cluster) => ({
         arn: cluster.ClusterArn,
         name: cluster.ClusterName,
         state: cluster.State,
@@ -67,13 +68,16 @@ export class MSKClient {
         creationTime: cluster.CreationTime,
         brokerNodeGroupInfo: cluster.Provisioned?.BrokerNodeGroupInfo
           ? {
-              instanceType: cluster.Provisioned.BrokerNodeGroupInfo.InstanceType,
-              numberOfBrokerNodes: cluster.Provisioned.BrokerNodeGroupInfo.ClientSubnets?.length || 0
+              instanceType:
+                cluster.Provisioned.BrokerNodeGroupInfo.InstanceType,
+              numberOfBrokerNodes:
+                cluster.Provisioned.BrokerNodeGroupInfo.ClientSubnets?.length ||
+                0,
             }
-          : null
-      }));
+          : null,
+      }))
     } catch (error) {
-      throw new Error(`Failed to list MSK clusters: ${error.message}`);
+      throw new Error(`Failed to list MSK clusters: ${error.message}`)
     }
   }
 
@@ -86,14 +90,14 @@ export class MSKClient {
   async getClusterDetails(clusterArn) {
     try {
       const command = new DescribeClusterV2Command({
-        ClusterArn: clusterArn
-      });
+        ClusterArn: clusterArn,
+      })
 
-      const response = await this.client.send(command);
-      const cluster = response.ClusterInfo;
+      const response = await this.client.send(command)
+      const cluster = response.ClusterInfo
 
       if (!cluster) {
-        throw new Error('Cluster not found');
+        throw new Error("Cluster not found")
       }
 
       return {
@@ -103,16 +107,18 @@ export class MSKClient {
         clusterType: cluster.ClusterType,
         currentVersion: cluster.CurrentVersion,
         creationTime: cluster.CreationTime,
-        kafkaVersion: cluster.Provisioned?.KafkaVersion || cluster.Serverless?.KafkaVersion,
-        numberOfBrokerNodes: cluster.Provisioned?.NumberOfBrokerNodes || 'Serverless',
+        kafkaVersion:
+          cluster.Provisioned?.KafkaVersion || cluster.Serverless?.KafkaVersion,
+        numberOfBrokerNodes:
+          cluster.Provisioned?.NumberOfBrokerNodes || "Serverless",
         storageMode: cluster.StorageMode,
-        tags: cluster.Tags || {}
-      };
-    } catch (error) {
-      if (error.name === 'NotFoundException') {
-        throw new Error(`MSK cluster not found: ${clusterArn}`);
+        tags: cluster.Tags || {},
       }
-      throw new Error(`Failed to get cluster details: ${error.message}`);
+    } catch (error) {
+      if (error.name === "NotFoundException") {
+        throw new Error(`MSK cluster not found: ${clusterArn}`)
+      }
+      throw new Error(`Failed to get cluster details: ${error.message}`)
     }
   }
 
@@ -125,17 +131,17 @@ export class MSKClient {
    */
   async getBootstrapBrokers(clusterArn) {
     // Check cache first
-    const cached = this.brokerCache.get(clusterArn);
-    if (cached && (Date.now() - cached.timestamp < this.CACHE_TTL)) {
-      return cached.brokers;
+    const cached = this.brokerCache.get(clusterArn)
+    if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+      return cached.brokers
     }
 
     try {
       const command = new GetBootstrapBrokersCommand({
-        ClusterArn: clusterArn
-      });
+        ClusterArn: clusterArn,
+      })
 
-      const response = await this.client.send(command);
+      const response = await this.client.send(command)
 
       // Prefer TLS brokers, fallback chain
       const brokerString =
@@ -144,27 +150,27 @@ export class MSKClient {
         response.BootstrapBrokerStringPublicTls ||
         response.BootstrapBrokerStringPublic ||
         response.BootstrapBrokerStringSaslIam ||
-        response.BootstrapBrokerStringSaslScram;
+        response.BootstrapBrokerStringSaslScram
 
       if (!brokerString) {
-        throw new Error('No bootstrap brokers found for cluster');
+        throw new Error("No bootstrap brokers found for cluster")
       }
 
       // Split comma-separated broker list
-      const brokers = brokerString.split(',').map(b => b.trim());
+      const brokers = brokerString.split(",").map((b) => b.trim())
 
       // Cache the result
       this.brokerCache.set(clusterArn, {
         brokers,
-        timestamp: Date.now()
-      });
+        timestamp: Date.now(),
+      })
 
-      return brokers;
+      return brokers
     } catch (error) {
-      if (error.name === 'NotFoundException') {
-        throw new Error(`MSK cluster not found: ${clusterArn}`);
+      if (error.name === "NotFoundException") {
+        throw new Error(`MSK cluster not found: ${clusterArn}`)
       }
-      throw new Error(`Failed to get bootstrap brokers: ${error.message}`);
+      throw new Error(`Failed to get bootstrap brokers: ${error.message}`)
     }
   }
 
@@ -172,7 +178,7 @@ export class MSKClient {
    * Clear the broker cache (useful for testing or forcing refresh)
    */
   clearBrokerCache() {
-    this.brokerCache.clear();
+    this.brokerCache.clear()
   }
 
   /**
@@ -186,7 +192,7 @@ export class MSKClient {
       brokers: data.brokers,
       cachedAt: new Date(data.timestamp).toISOString(),
       expiresAt: new Date(data.timestamp + this.CACHE_TTL).toISOString(),
-      isExpired: Date.now() - data.timestamp >= this.CACHE_TTL
-    }));
+      isExpired: Date.now() - data.timestamp >= this.CACHE_TTL,
+    }))
   }
 }

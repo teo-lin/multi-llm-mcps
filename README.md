@@ -4,13 +4,13 @@ A comprehensive collection of Model Context Protocol (MCP) servers for Claude Co
 
 Availability status:
 
-- ✅ Claude Code
-- 🚧 Gemini
-- 🚧 GitHub Copilot
-- 🚧 Ollama (local)
-- 🚧 DeepSeek (local)
+- Claude Code - yes
+- Gemini - wip
+- GitHub Copilot
+- Ollama (local)
+- DeepSeek (local)
 
-## ⏭️ Quick Start
+## Quick Start
 
 git clone https://github.com/teo-lin/multi-llm-mcps
 cd mcp-servers
@@ -18,7 +18,7 @@ npm run setup
 
 Edit the `.env` files in each MCP directory with your credentials
 
-## 📦 Available MCP Servers
+## Available MCP Servers
 
 ### 1. **MySQL** (`mysql`)
 
@@ -182,7 +182,7 @@ AWS MSK (Managed Streaming for Kafka) with protobuf message decoding.
 
 ---
 
-## 🛠️ Management Scripts
+## Management Scripts
 
 ```bash
 # Setup everything (first time)
@@ -195,7 +195,7 @@ npm run register
 npm run unregister
 ```
 
-## 📚 Documentation
+## Documentation
 
 Each MCP server has its own README with detailed documentation:
 
@@ -209,7 +209,7 @@ Each MCP server has its own README with detailed documentation:
 - [Kafdrop README](Kafdrop/README.md)
 - [MSK README](MSK/README.md)
 
-## 🔧 Requirements
+## Requirements
 
 - **Node.js**: 25.2.1 (automatically installed by setup script)
 - **Claude Code**: Latest version
@@ -217,7 +217,7 @@ Each MCP server has its own README with detailed documentation:
 - **Atlassian CLI**: For Atlassian and CodeReview MCPs
 - **AWS CLI**: For CloudWatch MCP (credentials configured)
 
-## 🏗️ Architecture
+## Architecture
 
 All MCPs are registered in **user config** (`~/.claude.json`), making them available globally across all your projects.
 
@@ -234,14 +234,14 @@ All MCPs are registered in **user config** (`~/.claude.json`), making them avail
 └── msk
 ```
 
-## 🔒 Security
+## Security
 
 - Never commit `.env` files to version control
 - All `.env` files are in `.gitignore`
 - API tokens and credentials are stored locally only
 - Each MCP runs in isolated process
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please:
 
@@ -250,7 +250,7 @@ Contributions are welcome! Please:
 3. Make your changes
 4. Submit a pull request
 
-## 🆘 Support
+## Support
 
 For issues or questions:
 
@@ -259,7 +259,7 @@ For issues or questions:
 - Verify authentication: `gh auth status`, `acli auth status`
 - Check MCP health: `claude mcp list`
 
-# 🐇 Introduction to MCP Servers
+#  Introduction to MCP Servers
 
 ## What in the Devil's name are those...?
 
@@ -271,7 +271,7 @@ Now, since you cannot modify the built-in tools that Claude Code or Gemini CLI s
 
 Think of these as functions you can call. They're like little Lambdas or Google Functions, running locally. There's a plethora of them freely available, which may or may not come with massive security risks. Good luck with those. You can create them with Node, Python, whatever you fancy. You can ask your AI agent to build them for you. It's basically just a one-file project.
 
-Setup: Create a small server app exposing one or more functions, like code_review(pull_request_id), then register the tool so that your agent can "see" them (usually with mcp add my-code_review-server --scope user /path/to/server). Verify with `claude mcp list` to ensure it shows "✓ Connected".
+Setup: Create a small server app exposing one or more functions, like code_review(pull_request_id), then register the tool so that your agent can "see" them (usually with mcp add my-code_review-server --scope user /path/to/server). Verify with `claude mcp list` to ensure it shows " Connected".
 
 Run with - every service differs: mcp__code_review_review 1234 (Claude) or cursor.agent.codeReview(pull_request_id) (you guessed it, Cursor) etc. You can also @-mention them to toggle on/off, or use `/mcp` to see all available tools from connected servers.
 

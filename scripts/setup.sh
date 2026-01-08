@@ -2,7 +2,7 @@
 
 set -e  # Exit on error
 
-echo "🚀 Setting up Claude MCP Servers..."
+echo " Setting up Claude MCP Servers..."
 echo ""
 
 # Detect OS
@@ -13,7 +13,7 @@ case "${OS}" in
     *)          PLATFORM="UNKNOWN:${OS}"
 esac
 
-echo "📋 Detected platform: $PLATFORM"
+echo " Detected platform: $PLATFORM"
 echo ""
 
 # Function to check if command exists
@@ -25,9 +25,9 @@ command_exists() {
 # 1. Check and install Homebrew (macOS only)
 # =============================================================================
 if [ "$PLATFORM" = "Mac" ]; then
-    echo "🍺 Checking Homebrew..."
+    echo " Checking Homebrew..."
     if ! command_exists brew; then
-        echo "⚠️  Homebrew not found. Installing Homebrew..."
+        echo "  Homebrew not found. Installing Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
         # Add Homebrew to PATH
@@ -37,7 +37,7 @@ if [ "$PLATFORM" = "Mac" ]; then
             eval "$(/usr/local/bin/brew shellenv)"
         fi
     else
-        echo "✅ Homebrew already installed"
+        echo " Homebrew already installed"
     fi
     echo ""
 fi
@@ -45,17 +45,17 @@ fi
 # =============================================================================
 # 2. Check and install NVM
 # =============================================================================
-echo "📦 Checking NVM..."
+echo " Checking NVM..."
 export NVM_DIR="$HOME/.nvm"
 if [ ! -s "$NVM_DIR/nvm.sh" ]; then
-    echo "⚠️  NVM not found. Installing NVM..."
+    echo "  NVM not found. Installing NVM..."
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
     # Load NVM
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 else
-    echo "✅ NVM already installed"
+    echo " NVM already installed"
     # Load NVM
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 fi
@@ -69,39 +69,39 @@ NVMRC_PATH="$SCRIPT_DIR/../.nvmrc"
 
 if [ -f "$NVMRC_PATH" ]; then
     NODE_VERSION=$(cat "$NVMRC_PATH")
-    echo "📦 Installing Node.js $NODE_VERSION from .nvmrc..."
+    echo " Installing Node.js $NODE_VERSION from .nvmrc..."
     nvm install "$NODE_VERSION"
     nvm use "$NODE_VERSION"
-    echo "✅ Node.js $(node --version) active"
+    echo " Node.js $(node --version) active"
 else
-    echo "⚠️  .nvmrc not found, using default Node version"
+    echo "  .nvmrc not found, using default Node version"
 fi
 echo ""
 
 # =============================================================================
 # 4. Check and install Claude CLI
 # =============================================================================
-echo "🤖 Checking Claude CLI..."
+echo " Checking Claude CLI..."
 if ! command_exists claude; then
-    echo "⚠️  Claude CLI not found. Installing..."
+    echo "  Claude CLI not found. Installing..."
     if [ "$PLATFORM" = "Mac" ]; then
         brew install anthropics/claude/claude
     elif [ "$PLATFORM" = "Linux" ]; then
-        echo "❌ Please install Claude CLI manually from: https://docs.anthropic.com/en/docs/claude-code/installation"
+        echo " Please install Claude CLI manually from: https://docs.anthropic.com/en/docs/claude-code/installation"
         echo "   After installation, run this script again."
         exit 1
     fi
 else
-    echo "✅ Claude CLI already installed ($(claude --version 2>&1 | head -1))"
+    echo " Claude CLI already installed ($(claude --version 2>&1 | head -1))"
 fi
 echo ""
 
 # =============================================================================
 # 5. Check and install GitHub CLI
 # =============================================================================
-echo "🐙 Checking GitHub CLI..."
+echo " Checking GitHub CLI..."
 if ! command_exists gh; then
-    echo "⚠️  GitHub CLI not found. Installing..."
+    echo "  GitHub CLI not found. Installing..."
     if [ "$PLATFORM" = "Mac" ]; then
         brew install gh
     elif [ "$PLATFORM" = "Linux" ]; then
@@ -119,21 +119,21 @@ if ! command_exists gh; then
             sudo dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
             sudo dnf install gh -y
         else
-            echo "❌ Please install GitHub CLI manually from: https://cli.github.com/manual/installation"
+            echo " Please install GitHub CLI manually from: https://cli.github.com/manual/installation"
             echo "   After installation, run this script again."
         fi
     fi
 else
-    echo "✅ GitHub CLI already installed ($(gh --version | head -1))"
+    echo " GitHub CLI already installed ($(gh --version | head -1))"
 fi
 
 # Check GitHub authentication
 if command_exists gh; then
     if ! gh auth status &> /dev/null; then
-        echo "⚠️  GitHub CLI not authenticated. Please run: gh auth login"
+        echo "  GitHub CLI not authenticated. Please run: gh auth login"
         echo "   (You can do this after setup completes)"
     else
-        echo "✅ GitHub CLI authenticated"
+        echo " GitHub CLI authenticated"
     fi
 fi
 echo ""
@@ -141,29 +141,29 @@ echo ""
 # =============================================================================
 # 6. Check Atlassian CLI (optional - will warn if missing)
 # =============================================================================
-echo "🌊 Checking Atlassian CLI..."
+echo " Checking Atlassian CLI..."
 if ! command_exists acli; then
-    echo "⚠️  Atlassian CLI not found (optional - needed for CodeReview and Atlassian MCPs)"
+    echo "  Atlassian CLI not found (optional - needed for CodeReview and Atlassian MCPs)"
     echo "   Install from: https://bobswift.atlassian.net/wiki/spaces/ACLI/overview"
     echo "   Or install via npm: npm install -g @atlassian/forge-cli"
 else
-    echo "✅ Atlassian CLI already installed"
+    echo " Atlassian CLI already installed"
 fi
 echo ""
 
 # =============================================================================
 # 7. Check AWS CLI (optional - will warn if missing)
 # =============================================================================
-echo "☁️  Checking AWS CLI..."
+echo "  Checking AWS CLI..."
 if ! command_exists aws; then
-    echo "⚠️  AWS CLI not found (optional - needed for CloudWatch MCP)"
+    echo "  AWS CLI not found (optional - needed for CloudWatch MCP)"
     if [ "$PLATFORM" = "Mac" ]; then
         echo "   Install with: brew install awscli"
     elif [ "$PLATFORM" = "Linux" ]; then
         echo "   Install from: https://aws.amazon.com/cli/"
     fi
 else
-    echo "✅ AWS CLI already installed ($(aws --version))"
+    echo " AWS CLI already installed ($(aws --version))"
 fi
 echo ""
 
@@ -172,31 +172,31 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MCP_DIR="$ROOT_DIR/mcps"
 cd "$ROOT_DIR"
 
-echo "📂 MCP Directory: $MCP_DIR"
+echo " MCP Directory: $MCP_DIR"
 echo ""
 
 # Install root dependencies
-echo "📦 Installing shared dependencies..."
+echo " Installing shared dependencies..."
 npm install
 echo ""
 
 # Install dependencies for each MCP server
-echo "📦 Installing MCP server dependencies..."
+echo " Installing MCP server dependencies..."
 echo ""
 
-echo "1/8 Installing MySQL dependencies..."
+echo "1/9 Installing MySQL dependencies..."
 cd "$MCP_DIR/MySQL" && npm install
 
-echo "2/8 Installing Jira dependencies..."
+echo "2/9 Installing Jira dependencies..."
 cd "$MCP_DIR/Jira" && npm install
 
-echo "3/8 Installing GitHub dependencies..."
+echo "3/9 Installing GitHub dependencies..."
 cd "$MCP_DIR/GitHub" && npm install
 
-echo "4/8 Installing CodeReview dependencies..."
+echo "4/9 Installing CodeReview dependencies..."
 cd "$MCP_DIR/CodeReview" && npm install
 
-echo "5/8 Installing Atlassian dependencies..."
+echo "5/9 Installing Atlassian dependencies..."
 cd "$MCP_DIR/Atlassian" && npm install
 
 echo "6/9 Installing CloudWatch dependencies..."
@@ -208,11 +208,11 @@ cd "$MCP_DIR/AzureAD" && npm install
 echo "8/9 Installing Kafdrop dependencies..."
 cd "$MCP_DIR/Kafdrop" && npm install
 
-echo "9/9 Installing MSK dependencies..."
-cd "$MCP_DIR/MSK" && npm install
+echo "9/9 Installing SonarCloud dependencies..."
+cd "$MCP_DIR/SonarCloud" && npm install
 
 echo ""
-echo "📝 Setting up .env files..."
+echo " Setting up .env files..."
 
 # Function to copy .env.example to .env if it doesn't exist
 setup_env() {
@@ -222,12 +222,12 @@ setup_env() {
     if [ -f "$MCP_DIR/$dir/.env.example" ]; then
         if [ ! -f "$MCP_DIR/$dir/.env" ]; then
             cp "$MCP_DIR/$dir/.env.example" "$MCP_DIR/$dir/.env"
-            echo "✅ Created $name/.env"
+            echo " Created $name/.env"
         else
-            echo "⏭️  $name/.env already exists"
+            echo "  $name/.env already exists"
         fi
     else
-        echo "⚠️  No .env.example found for $name"
+        echo "  No .env.example found for $name"
     fi
 }
 
@@ -240,30 +240,30 @@ setup_env "Atlassian" "Atlassian"
 setup_env "CloudWatch" "CloudWatch"
 setup_env "AzureAD" "AzureAD"
 setup_env "Kafdrop" "Kafdrop"
-setup_env "MSK" "MSK"
+setup_env "SonarCloud" "SonarCloud"
 
 echo ""
 
 # =============================================================================
 # 8. Unregister old servers and register all MCP servers
 # =============================================================================
-echo "📝 Registering MCP servers with Claude Code..."
+echo " Registering MCP servers with Claude Code..."
 echo ""
 
 # Unregister any existing servers first (clean slate)
-echo "🧹 Cleaning up old registrations..."
+echo " Cleaning up old registrations..."
 bash "$ROOT_DIR/scripts/unregister-all.sh"
 
 echo ""
-echo "➕ Registering all MCP servers..."
+echo " Registering all MCP servers..."
 bash "$ROOT_DIR/scripts/register-all.sh"
 
 echo ""
-echo "✅ Setup complete!"
+echo " Setup complete!"
 echo ""
-echo "📋 Next steps:"
+echo " Next steps:"
 echo ""
-echo "1. 🔐 Configure credentials in .env files:"
+echo "1.  Configure credentials in .env files:"
 echo "   - MySQL/.env (database credentials)"
 echo "   - Jira/.env (Jira API token from https://id.atlassian.com/manage-profile/security/api-tokens)"
 echo "   - CloudWatch/.env (AWS credentials)"
@@ -271,15 +271,15 @@ echo "   - CodeReview/.env (GitHub repo + Jira URL)"
 echo "   - Atlassian/.env (Jira credentials)"
 echo "   - AzureAD/.env (Azure AD client ID)"
 echo "   - Kafdrop/.env (Kafdrop URL)"
-echo "   - MSK/.env (AWS credentials + MSK cluster ARN)"
+echo "   - SonarCloud/.env (SonarCloud token)"
 echo ""
-echo "2. 🔑 Authenticate CLIs (if not already done):"
+echo "2.  Authenticate CLIs (if not already done):"
 echo "   - GitHub: gh auth login"
 echo "   - Atlassian: acli jira auth login --url https://your-domain.atlassian.net"
 echo "   - AWS: aws configure (or use SSO)"
 echo ""
-echo "3. ✅ Verify installation:"
+echo "3.  Verify installation:"
 echo "   claude mcp list"
 echo ""
-echo "💡 Tip: To recreate .env files, delete them and run 'npm run setup' again"
+echo " Tip: To recreate .env files, delete them and run 'npm run setup' again"
 echo ""

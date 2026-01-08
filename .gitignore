@@ -26,6 +26,4 @@ Thumbs.db
 dist/
 build/
 *.tsbuildinfo
-mcps/MSK/.env.ssm-tunnel
-mcps/README-TESTING.md
-mcps/MSK/PLAN.md
+README-TESTING.md

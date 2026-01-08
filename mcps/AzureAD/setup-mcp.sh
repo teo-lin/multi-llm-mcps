@@ -23,20 +23,20 @@ echo -e "${YELLOW}[1/6]${NC} Checking prerequisites..."
 
 # Check Node.js
 if ! command -v node &> /dev/null; then
-    echo -e "${RED}✗ Node.js is not installed${NC}"
+    echo -e "${RED} Node.js is not installed${NC}"
     echo "  Please install Node.js >=25.2.1 from https://nodejs.org/"
     exit 1
 fi
 
 NODE_VERSION=$(node -v | cut -d'v' -f2)
-echo -e "${GREEN}✓ Node.js ${NODE_VERSION} detected${NC}"
+echo -e "${GREEN} Node.js ${NODE_VERSION} detected${NC}"
 
 # Step 2: Install Dependencies
 echo ""
 echo -e "${YELLOW}[2/6]${NC} Installing npm dependencies..."
 cd "$SCRIPT_DIR"
 npm install
-echo -e "${GREEN}✓ Dependencies installed${NC}"
+echo -e "${GREEN} Dependencies installed${NC}"
 
 # Step 3: Configure Environment
 echo ""
@@ -45,10 +45,10 @@ echo -e "${YELLOW}[3/6]${NC} Configuring environment..."
 if [ ! -f ".env" ]; then
     if [ -f ".env.example" ]; then
         cp .env.example .env
-        echo -e "${GREEN}✓ Created .env from .env.example${NC}"
+        echo -e "${GREEN} Created .env from .env.example${NC}"
     else
         touch .env
-        echo -e "${GREEN}✓ Created empty .env${NC}"
+        echo -e "${GREEN} Created empty .env${NC}"
     fi
 
     echo ""
@@ -67,9 +67,9 @@ AZURE_AUTHORITY=${AZURE_AUTHORITY}
 AZURE_SCOPES=${AZURE_SCOPES}
 EOF
 
-    echo -e "${GREEN}✓ Environment configured${NC}"
+    echo -e "${GREEN} Environment configured${NC}"
 else
-    echo -e "${GREEN}✓ .env already exists${NC}"
+    echo -e "${GREEN} .env already exists${NC}"
 fi
 
 # Step 4: Register with Claude
@@ -81,7 +81,7 @@ SCOPE=${SCOPE:-user}
 
 # Check if already registered
 if claude mcp list 2>/dev/null | grep -q "$MCP_NAME"; then
-    echo -e "${YELLOW}⚠ MCP already registered, updating...${NC}"
+    echo -e "${YELLOW} MCP already registered, updating...${NC}"
     claude mcp remove $MCP_NAME 2>/dev/null || true
 fi
 
@@ -91,12 +91,12 @@ source .env
 # Register with environment variables
 claude mcp add $MCP_NAME --scope $SCOPE --type stdio --command npx --args "-y,$PACKAGE_NAME" \
     --env "AZURE_CLIENT_ID=$AZURE_CLIENT_ID,AZURE_AUTHORITY=$AZURE_AUTHORITY,AZURE_SCOPES=$AZURE_SCOPES" || {
-    echo -e "${RED}✗ Failed to register with Claude${NC}"
+    echo -e "${RED} Failed to register with Claude${NC}"
     echo "  You can manually add this to your Claude config"
     exit 1
 }
 
-echo -e "${GREEN}✓ Registered with Claude ($SCOPE scope)${NC}"
+echo -e "${GREEN} Registered with Claude ($SCOPE scope)${NC}"
 
 # Step 5: Start Server (background test)
 echo ""
@@ -109,10 +109,10 @@ sleep 3
 
 # Check if server is running
 if ps -p $SERVER_PID > /dev/null; then
-    echo -e "${GREEN}✓ Server started successfully (PID: $SERVER_PID)${NC}"
+    echo -e "${GREEN} Server started successfully (PID: $SERVER_PID)${NC}"
     kill $SERVER_PID 2>/dev/null || true
 else
-    echo -e "${RED}✗ Server failed to start${NC}"
+    echo -e "${RED} Server failed to start${NC}"
     exit 1
 fi
 
@@ -121,15 +121,15 @@ echo ""
 echo -e "${YELLOW}[6/6]${NC} Running verification tests..."
 
 if npm run test &>/dev/null; then
-    npm test || echo -e "${YELLOW}⚠ Tests not available or failed${NC}"
+    npm test || echo -e "${YELLOW} Tests not available or failed${NC}"
 else
-    echo -e "${YELLOW}⚠ No tests found, skipping...${NC}"
+    echo -e "${YELLOW} No tests found, skipping...${NC}"
 fi
 
 # Success Summary
 echo ""
 echo -e "${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${GREEN}║                  ✓ Setup Complete!                         ║${NC}"
+echo -e "${GREEN}║                   Setup Complete!                         ║${NC}"
 echo -e "${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
 echo ""
 echo -e "${BLUE}Next steps:${NC}"

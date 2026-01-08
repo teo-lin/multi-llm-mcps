@@ -23,42 +23,42 @@ echo -e "${YELLOW}[1/6]${NC} Checking prerequisites..."
 
 # Check Node.js
 if ! command -v node &> /dev/null; then
-    echo -e "${RED}✗ Node.js is not installed${NC}"
+    echo -e "${RED} Node.js is not installed${NC}"
     echo "  Please install Node.js >=25.2.1 from https://nodejs.org/"
     exit 1
 fi
 
 NODE_VERSION=$(node -v | cut -d'v' -f2)
-echo -e "${GREEN}✓ Node.js ${NODE_VERSION} detected${NC}"
+echo -e "${GREEN} Node.js ${NODE_VERSION} detected${NC}"
 
 # Check GitHub CLI
 if ! command -v gh &> /dev/null; then
-    echo -e "${RED}✗ GitHub CLI (gh) is not installed${NC}"
+    echo -e "${RED} GitHub CLI (gh) is not installed${NC}"
     echo "  Please install from https://cli.github.com/"
     exit 1
 fi
-echo -e "${GREEN}✓ GitHub CLI detected${NC}"
+echo -e "${GREEN} GitHub CLI detected${NC}"
 
 # Step 2: Install Dependencies
 echo ""
 echo -e "${YELLOW}[2/6]${NC} Installing npm dependencies..."
 cd "$SCRIPT_DIR"
 npm install
-echo -e "${GREEN}✓ Dependencies installed${NC}"
+echo -e "${GREEN} Dependencies installed${NC}"
 
 # Step 3: Authenticate GitHub CLI
 echo ""
 echo -e "${YELLOW}[3/6]${NC} Authenticating GitHub CLI..."
 
 if ! gh auth status &>/dev/null; then
-    echo -e "${YELLOW}⚠ GitHub CLI not authenticated${NC}"
+    echo -e "${YELLOW} GitHub CLI not authenticated${NC}"
     gh auth login
 fi
 
 if gh auth status &>/dev/null; then
-    echo -e "${GREEN}✓ GitHub CLI authenticated${NC}"
+    echo -e "${GREEN} GitHub CLI authenticated${NC}"
 else
-    echo -e "${RED}✗ GitHub authentication failed${NC}"
+    echo -e "${RED} GitHub authentication failed${NC}"
     exit 1
 fi
 
@@ -71,18 +71,18 @@ SCOPE=${SCOPE:-user}
 
 # Check if already registered
 if claude mcp list 2>/dev/null | grep -q "$MCP_NAME"; then
-    echo -e "${YELLOW}⚠ MCP already registered, updating...${NC}"
+    echo -e "${YELLOW} MCP already registered, updating...${NC}"
     claude mcp remove $MCP_NAME 2>/dev/null || true
 fi
 
 # Register
 claude mcp add $MCP_NAME --scope $SCOPE --type stdio --command npx --args "-y,$PACKAGE_NAME" || {
-    echo -e "${RED}✗ Failed to register with Claude${NC}"
+    echo -e "${RED} Failed to register with Claude${NC}"
     echo "  You can manually add this to your Claude config"
     exit 1
 }
 
-echo -e "${GREEN}✓ Registered with Claude ($SCOPE scope)${NC}"
+echo -e "${GREEN} Registered with Claude ($SCOPE scope)${NC}"
 
 # Step 5: Start Server (background test)
 echo ""
@@ -95,10 +95,10 @@ sleep 3
 
 # Check if server is running
 if ps -p $SERVER_PID > /dev/null; then
-    echo -e "${GREEN}✓ Server started successfully (PID: $SERVER_PID)${NC}"
+    echo -e "${GREEN} Server started successfully (PID: $SERVER_PID)${NC}"
     kill $SERVER_PID 2>/dev/null || true
 else
-    echo -e "${RED}✗ Server failed to start${NC}"
+    echo -e "${RED} Server failed to start${NC}"
     exit 1
 fi
 
@@ -107,15 +107,15 @@ echo ""
 echo -e "${YELLOW}[6/6]${NC} Running verification tests..."
 
 if npm run test &>/dev/null; then
-    npm test || echo -e "${YELLOW}⚠ Tests not available or failed${NC}"
+    npm test || echo -e "${YELLOW} Tests not available or failed${NC}"
 else
-    echo -e "${YELLOW}⚠ No tests found, skipping...${NC}"
+    echo -e "${YELLOW} No tests found, skipping...${NC}"
 fi
 
 # Success Summary
 echo ""
 echo -e "${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${GREEN}║                  ✓ Setup Complete!                         ║${NC}"
+echo -e "${GREEN}║                   Setup Complete!                         ║${NC}"
 echo -e "${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
 echo ""
 echo -e "${BLUE}Next steps:${NC}"

@@ -22,12 +22,12 @@ else
   )
 fi
 
-echo "🔍 Interactive MCP Package Testing via npx"
+echo " Interactive MCP Package Testing via npx"
 echo ""
 
 for pkg in "${PACKAGES[@]}"; do
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo "📦 Testing: $pkg"
+  echo " Testing: $pkg"
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo ""
 
@@ -81,26 +81,26 @@ setTimeout(() => {
 
 // Collect results and exit
 setTimeout(() => {
-  console.log('\n📊 Results:');
+  console.log('\n Results:');
   console.log('─────────────────────────────────────');
 
   if (stderr.length > 0) {
-    console.log('📄 Server logs:');
+    console.log(' Server logs:');
     stderr.forEach(line => {
       if (line.trim()) console.log('  ', line.trim());
     });
   }
 
   if (output.length > 0) {
-    console.log('\n📨 MCP Responses:');
+    console.log('\n MCP Responses:');
     output.forEach(line => {
       try {
         const parsed = JSON.parse(line);
         if (parsed.id === 1) {
-          console.log('  ✅ Initialize response received');
+          console.log('   Initialize response received');
         } else if (parsed.id === 2) {
           const tools = parsed.result?.tools || [];
-          console.log(`  ✅ Tools list received: ${tools.length} tools`);
+          console.log(`   Tools list received: ${tools.length} tools`);
           tools.forEach(t => console.log(`     - ${t.name}`));
         }
       } catch (e) {
@@ -108,7 +108,7 @@ setTimeout(() => {
       }
     });
   } else {
-    console.log('❌ No MCP responses received');
+    console.log(' No MCP responses received');
   }
 
   mcp.kill();
@@ -122,4 +122,4 @@ done
 
 rm -f /tmp/mcp-test.js
 
-echo "✨ Interactive testing complete!"
+echo " Interactive testing complete!"

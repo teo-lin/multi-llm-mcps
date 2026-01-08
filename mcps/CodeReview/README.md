@@ -4,12 +4,12 @@ Automated code review server that integrates GitHub PRs with Jira tickets for co
 
 ## Features
 
-- 🔄 **GitHub PR Integration**: Fetches PR diffs and metadata
-- 🎫 **Jira Integration**: Retrieves requirements and acceptance criteria via Atlassian CLI
-- 🧪 **Test Execution**: Pulls branch locally and runs tests
-- 🔍 **Lint Checking**: Runs linting to ensure code quality
-- 💬 **AI-Powered Analysis**: Generates review comments with file:line references
-- 📝 **Formatted Output**: Clean markdown report with all findings
+-  **GitHub PR Integration**: Fetches PR diffs and metadata
+-  **Jira Integration**: Retrieves requirements and acceptance criteria via Atlassian CLI
+-  **Test Execution**: Pulls branch locally and runs tests
+-  **Lint Checking**: Runs linting to ensure code quality
+-  **AI-Powered Analysis**: Generates review comments with file:line references
+-  **Formatted Output**: Clean markdown report with all findings
 
 ## Prerequisites
 
@@ -72,19 +72,19 @@ code_review pr_name: "123" working_directory: "/path/to/your/repo"
 ```markdown
 # Code Review: 123
 
-## 🎫 Jira Ticket: PAB-2197
+##  Jira Ticket: PAB-2197
 **Summary:** Implement user authentication with JWT
 **Status:** In Progress
 **Description:** Add JWT-based authentication system
 **Acceptance Criteria:** Users should be able to login and receive tokens
 
-## 🧪 Test Results
-**Status:** ✅ PASSED
+##  Test Results
+**Status:**  PASSED
 
-## 🔍 Lint Results
-**Status:** ✅ PASSED
+##  Lint Results
+**Status:**  PASSED
 
-## 💬 Review Comments
+##  Review Comments
 
 • **src/auth.js:45** → Remove console.log before merging
 • **src/types.js:12** → Avoid "any" type, be more specific

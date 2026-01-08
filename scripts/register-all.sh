@@ -4,8 +4,8 @@
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MCP_DIR="$ROOT_DIR/mcps"
 
-echo "➡️ Registering all MCP servers with Claude Code..."
-echo "📂 MCP Directory: $MCP_DIR"
+echo " Registering all MCP servers with Claude Code..."
+echo " MCP Directory: $MCP_DIR"
 echo ""
 
 # Register each server in user config (--scope user)
@@ -33,14 +33,14 @@ claude mcp add azuread "$MCP_DIR/AzureAD/start-mcp.sh" --scope user
 echo "8/9 Registering Kafdrop server..."
 claude mcp add kafdrop "$MCP_DIR/Kafdrop/start-mcp.sh" --scope user
 
-echo "9/9 Registering MSK server..."
-claude mcp add msk "$MCP_DIR/MSK/start-mcp.sh" --scope user
+echo "9/9 Registering SonarCloud server..."
+claude mcp add sonarcloud "$MCP_DIR/SonarCloud/start-mcp.sh" --scope user
 
 echo ""
-echo "✅ All servers registered!"
+echo " All servers registered!"
 echo ""
-echo "📋 Verify with: claude mcp list"
+echo " Verify with: claude mcp list"
 echo ""
-echo "⚠️  Note: Some servers may show as 'Failed to connect' until you:"
+echo "  Note: Some servers may show as 'Failed to connect' until you:"
 echo "   - Configure .env files (MySQL, Jira, CloudWatch, AzureAD)"
 echo "   - Authenticate CLIs (GitHub: gh auth login, Atlassian: acli auth login)"

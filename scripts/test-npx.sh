@@ -24,13 +24,13 @@ passed=0
 failed=0
 failed_packages=()
 
-echo "🚀 Testing MCP packages via npx (npm installation test)..."
-echo "⚠️  Note: This tests published versions on npm"
+echo " Testing MCP packages via npx (npm installation test)..."
+echo "  Note: This tests published versions on npm"
 echo ""
 
 for pkg in "${PACKAGES[@]}"; do
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  echo "📦 Testing: $pkg"
+  echo " Testing: $pkg"
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
   # Create a test that sends initialize and list tools commands
@@ -59,10 +59,10 @@ EOF
     # Check if we got valid MCP responses
     if grep -q '"jsonrpc":"2.0"' /tmp/mcp-test-output.txt && \
        (grep -q '"result"' /tmp/mcp-test-output.txt || grep -q '"capabilities"' /tmp/mcp-test-output.txt); then
-      echo "✅ $pkg: Server started and responded to MCP protocol"
+      echo " $pkg: Server started and responded to MCP protocol"
       passed=$((passed+1))
     else
-      echo "⚠️  $pkg: Server started but MCP protocol response unclear"
+      echo "  $pkg: Server started but MCP protocol response unclear"
       # Show first few lines of output for debugging
       echo "Output preview:"
       head -5 /tmp/mcp-test-output.txt
@@ -73,17 +73,17 @@ EOF
     if [ $exit_code -eq 124 ]; then
       # Timeout - server might be waiting for more input, which is actually OK
       if grep -q '"jsonrpc":"2.0"' /tmp/mcp-test-output.txt; then
-        echo "✅ $pkg: Server started successfully (timed out waiting for input)"
+        echo " $pkg: Server started successfully (timed out waiting for input)"
         passed=$((passed+1))
       else
-        echo "❌ $pkg: Failed to start or respond"
+        echo " $pkg: Failed to start or respond"
         echo "Output:"
         cat /tmp/mcp-test-output.txt
         failed=$((failed+1))
         failed_packages+=("$pkg (timeout)")
       fi
     else
-      echo "❌ $pkg: Failed to start (exit code: $exit_code)"
+      echo " $pkg: Failed to start (exit code: $exit_code)"
       echo "Output:"
       cat /tmp/mcp-test-output.txt
       failed=$((failed+1))
@@ -98,11 +98,11 @@ done
 rm -f /tmp/mcp-test-input.json /tmp/mcp-test-output.txt
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "📊 NPX Test Summary"
+echo " NPX Test Summary"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "Total packages: ${#PACKAGES[@]}"
-echo "✅ Passed: $passed"
-echo "❌ Failed: $failed"
+echo " Passed: $passed"
+echo " Failed: $failed"
 
 if [ $failed -gt 0 ]; then
   echo ""
@@ -111,11 +111,11 @@ if [ $failed -gt 0 ]; then
     echo "  • $pkg"
   done
   echo ""
-  echo "💡 Tip: Failed packages may not be published yet or have issues with npm installation"
+  echo " Tip: Failed packages may not be published yet or have issues with npm installation"
   exit 1
 else
   echo ""
-  echo "✨ All npx tests passed!"
-  echo "📦 All packages are installable and runnable via npx"
+  echo " All npx tests passed!"
+  echo " All packages are installable and runnable via npx"
   exit 0
 fi

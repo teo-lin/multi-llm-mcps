@@ -17,38 +17,38 @@ import {
   EmployeeQualificationsChanged,
   Notification,
   Substitute,
-  Timestamp
-} from '@doctaridev/io.planer.library.npm.protobuf';
+  Timestamp,
+} from "@doctaridev/io.planer.library.npm.protobuf"
 
 /**
  * ProtobufDecoder - Handles decoding of protobuf messages using the custom library
- * Matches backend pattern from /Users/teolin/_WORK/done 👍/🛄 BE/src/_integrations/Protobuf/Protobuf.service.ts
+ * Matches backend pattern from /Users/teolin/_WORK/done / BE/src/_integrations/Protobuf/Protobuf.service.ts
  */
 export class ProtobufDecoder {
   constructor() {
     // Map of message type names to their IMessageType instances
     // These are the pre-compiled message types from the protobuf library
     this.messageTypes = new Map([
-      ['UserAvailabilityException', UserAvailabilityException],
-      ['GenericAbsencePeriod', GenericAbsencePeriod],
-      ['GenericAbsencePeriodType', GenericAbsencePeriodType],
-      ['Customer', Customer],
-      ['User', User],
-      ['CustomerPreference', CustomerPreference],
-      ['Location', Location],
-      ['PublicHolidaysV2', PublicHolidaysV2],
-      ['ShiftGroupIdentificationChanged', ShiftGroupIdentificationChanged],
-      ['ShiftGroupUserAvailabilityType', ShiftGroupUserAvailabilityType],
-      ['UserAvailabilityType', UserAvailabilityType],
-      ['ExternalApiConfiguration', ExternalApiConfiguration],
-      ['UserRecurringAbsenceMonth', UserRecurringAbsenceMonth],
-      ['EmployeeQualificationsChanged', EmployeeQualificationsChanged],
-      ['Notification', Notification],
-      ['Substitute', Substitute],
-      ['Envelope', Envelope],
-      ['Any', Any],
-      ['Timestamp', Timestamp]
-    ]);
+      ["UserAvailabilityException", UserAvailabilityException],
+      ["GenericAbsencePeriod", GenericAbsencePeriod],
+      ["GenericAbsencePeriodType", GenericAbsencePeriodType],
+      ["Customer", Customer],
+      ["User", User],
+      ["CustomerPreference", CustomerPreference],
+      ["Location", Location],
+      ["PublicHolidaysV2", PublicHolidaysV2],
+      ["ShiftGroupIdentificationChanged", ShiftGroupIdentificationChanged],
+      ["ShiftGroupUserAvailabilityType", ShiftGroupUserAvailabilityType],
+      ["UserAvailabilityType", UserAvailabilityType],
+      ["ExternalApiConfiguration", ExternalApiConfiguration],
+      ["UserRecurringAbsenceMonth", UserRecurringAbsenceMonth],
+      ["EmployeeQualificationsChanged", EmployeeQualificationsChanged],
+      ["Notification", Notification],
+      ["Substitute", Substitute],
+      ["Envelope", Envelope],
+      ["Any", Any],
+      ["Timestamp", Timestamp],
+    ])
   }
 
   /**
@@ -56,7 +56,7 @@ export class ProtobufDecoder {
    * @returns {string[]} - Sorted array of message type names
    */
   listMessageTypes() {
-    return Array.from(this.messageTypes.keys()).sort();
+    return Array.from(this.messageTypes.keys()).sort()
   }
 
   /**
@@ -70,30 +70,30 @@ export class ProtobufDecoder {
    */
   decode(base64Message, messageTypeName) {
     // 1. Decode base64 to Envelope
-    const buffer = Buffer.from(base64Message, 'base64');
-    const envelope = Envelope.fromBinary(buffer);
+    const buffer = Buffer.from(base64Message, "base64")
+    const envelope = Envelope.fromBinary(buffer)
 
     if (!envelope.payload) {
-      throw new Error('No payload in envelope');
+      throw new Error("No payload in envelope")
     }
 
     // 2. Get message type
-    const MessageType = this.messageTypes.get(messageTypeName);
+    const MessageType = this.messageTypes.get(messageTypeName)
     if (!MessageType) {
-      const available = this.listMessageTypes().slice(0, 10).join(', ');
+      const available = this.listMessageTypes().slice(0, 10).join(", ")
       throw new Error(
         `Unknown message type: "${messageTypeName}". ` +
-        `Available types (showing first 10): ${available}... ` +
-        `Use list_protobuf_types tool to see all.`
-      );
+          `Available types (showing first 10): ${available}... ` +
+          `Use list_protobuf_types tool to see all.`
+      )
     }
 
     // 3. Unpack from Any wrapper (matching backend pattern)
-    let message;
+    let message
     try {
-      message = Any.unpack(envelope.payload, MessageType);
+      message = Any.unpack(envelope.payload, MessageType)
     } catch (error) {
-      throw new Error(`Failed to unpack message: ${error.message}`);
+      throw new Error(`Failed to unpack message: ${error.message}`)
     }
 
     // 4. Return both envelope metadata and decoded message
@@ -103,10 +103,10 @@ export class ProtobufDecoder {
         envelopeVersion: envelope.envelopeVersion || null,
         messageCreationTime: envelope.messageCreationTimeUtc
           ? this._formatTimestamp(envelope.messageCreationTimeUtc)
-          : null
+          : null,
       },
-      message: this._toPlainObject(message, MessageType)
-    };
+      message: this._toPlainObject(message, MessageType),
+    }
   }
 
   /**
@@ -119,18 +119,20 @@ export class ProtobufDecoder {
    */
   tryDecode(base64Message, messageTypeName) {
     try {
-      const decoded = this.decode(base64Message, messageTypeName);
+      const decoded = this.decode(base64Message, messageTypeName)
       return {
         success: true,
-        data: decoded
-      };
+        data: decoded,
+      }
     } catch (error) {
       return {
         success: false,
         error: error.message,
         rawBase64: base64Message,
-        suggestion: `Try one of these types: ${this.listMessageTypes().slice(0, 5).join(', ')}`
-      };
+        suggestion: `Try one of these types: ${this.listMessageTypes()
+          .slice(0, 5)
+          .join(", ")}`,
+      }
     }
   }
 
@@ -145,20 +147,20 @@ export class ProtobufDecoder {
    */
   _toPlainObject(message, MessageType) {
     // Use protobuf-ts toObject method for proper conversion
-    if (MessageType.toObject && typeof MessageType.toObject === 'function') {
+    if (MessageType.toObject && typeof MessageType.toObject === "function") {
       return MessageType.toObject(message, {
-        longs: String,        // Convert longs to strings
-        enums: String,        // Convert enums to strings
-        bytes: String,        // Convert bytes to base64 strings
-        defaults: true,       // Include default values
-        arrays: true,         // Include empty arrays
-        objects: true,        // Include empty objects
-        oneofs: true          // Include oneof fields
-      });
+        longs: String, // Convert longs to strings
+        enums: String, // Convert enums to strings
+        bytes: String, // Convert bytes to base64 strings
+        defaults: true, // Include default values
+        arrays: true, // Include empty arrays
+        objects: true, // Include empty objects
+        oneofs: true, // Include oneof fields
+      })
     }
 
     // Fallback: return message as-is
-    return message;
+    return message
   }
 
   /**
@@ -169,21 +171,22 @@ export class ProtobufDecoder {
    * @returns {string|null} - ISO 8601 timestamp string
    */
   _formatTimestamp(timestamp) {
-    if (!timestamp) return null;
+    if (!timestamp) return null
 
     try {
       // Protobuf Timestamp has seconds and nanos
       if (timestamp.seconds !== undefined) {
-        const seconds = typeof timestamp.seconds === 'string'
-          ? parseInt(timestamp.seconds, 10)
-          : timestamp.seconds;
-        const nanos = timestamp.nanos || 0;
-        const milliseconds = seconds * 1000 + Math.floor(nanos / 1000000);
-        return new Date(milliseconds).toISOString();
+        const seconds =
+          typeof timestamp.seconds === "string"
+            ? parseInt(timestamp.seconds, 10)
+            : timestamp.seconds
+        const nanos = timestamp.nanos || 0
+        const milliseconds = seconds * 1000 + Math.floor(nanos / 1000000)
+        return new Date(milliseconds).toISOString()
       }
-      return null;
+      return null
     } catch (error) {
-      return null;
+      return null
     }
   }
 
@@ -196,8 +199,8 @@ export class ProtobufDecoder {
    */
   decodeEnvelopeOnly(base64Message) {
     try {
-      const buffer = Buffer.from(base64Message, 'base64');
-      const envelope = Envelope.fromBinary(buffer);
+      const buffer = Buffer.from(base64Message, "base64")
+      const envelope = Envelope.fromBinary(buffer)
 
       return {
         correlationId: envelope.correlationId || null,
@@ -205,10 +208,10 @@ export class ProtobufDecoder {
         messageCreationTime: envelope.messageCreationTimeUtc
           ? this._formatTimestamp(envelope.messageCreationTimeUtc)
           : null,
-        hasPayload: !!envelope.payload
-      };
+        hasPayload: !!envelope.payload,
+      }
     } catch (error) {
-      throw new Error(`Failed to decode envelope: ${error.message}`);
+      throw new Error(`Failed to decode envelope: ${error.message}`)
     }
   }
 }

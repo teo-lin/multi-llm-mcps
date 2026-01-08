@@ -10,10 +10,10 @@
 # ./test-ssm-tunnel.sh
 #
 # Terminal 2:
-# cd /Users/teolin/_WORK/done\ 👍/✴️\ AI/mcps/MSK
+# cd /Users/teolin/_WORK/done\ /\ AI/mcps/MSK
 # node test-kafka-localhost.js
 
-echo "🔌 Starting SSM port forwarding to MSK broker..."
+echo " Starting SSM port forwarding to MSK broker..."
 echo ""
 echo "This will forward localhost:9094 → Bastion → MSK broker b-1:9094"
 echo ""
