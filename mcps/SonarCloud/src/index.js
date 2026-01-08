@@ -258,7 +258,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(status, null, 2),
+              text: `✴️ ✴️ ✴️ ✴️  MCP.SonarCloud: get_project_status ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(status, null, 2)}`,
             },
           ],
         };
@@ -278,7 +278,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(issues, null, 2),
+              text: `✴️ ✴️ ✴️ ✴️  MCP.SonarCloud: get_issues ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(issues, null, 2)}`,
             },
           ],
         };
@@ -290,7 +290,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(issue, null, 2),
+              text: `✴️ ✴️ ✴️ ✴️  MCP.SonarCloud: get_issue_details ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(issue, null, 2)}`,
             },
           ],
         };
@@ -305,7 +305,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(measures, null, 2),
+              text: `✴️ ✴️ ✴️ ✴️  MCP.SonarCloud: get_measures ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(measures, null, 2)}`,
             },
           ],
         };
@@ -323,7 +323,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(hotspots, null, 2),
+              text: `✴️ ✴️ ✴️ ✴️  MCP.SonarCloud: get_security_hotspots ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(hotspots, null, 2)}`,
             },
           ],
         };
@@ -335,7 +335,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(hotspot, null, 2),
+              text: `✴️ ✴️ ✴️ ✴️  MCP.SonarCloud: get_hotspot_details ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(hotspot, null, 2)}`,
             },
           ],
         };
@@ -352,7 +352,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(files, null, 2),
+              text: `✴️ ✴️ ✴️ ✴️  MCP.SonarCloud: get_files ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(files, null, 2)}`,
             },
           ],
         };
@@ -368,7 +368,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: source,
+              text: `✴️ ✴️ ✴️ ✴️  MCP.SonarCloud: get_source_code ✴️ ✴️ ✴️ ✴️\n\n${source}`,
             },
           ],
         };
@@ -387,7 +387,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(rules, null, 2),
+              text: `✴️ ✴️ ✴️ ✴️  MCP.SonarCloud: get_rules ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(rules, null, 2)}`,
             },
           ],
         };
@@ -399,7 +399,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(rule, null, 2),
+              text: `✴️ ✴️ ✴️ ✴️  MCP.SonarCloud: get_rule_details ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(rule, null, 2)}`,
             },
           ],
         };
@@ -415,7 +415,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(analyses, null, 2),
+              text: `✴️ ✴️ ✴️ ✴️  MCP.SonarCloud: get_analyses_history ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(analyses, null, 2)}`,
             },
           ],
         };
@@ -459,7 +459,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: JSON.stringify(summary, null, 2),
+              text: `✴️ ✴️ ✴️ ✴️  MCP.SonarCloud: get_issues_summary ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(summary, null, 2)}`,
             },
           ],
         };

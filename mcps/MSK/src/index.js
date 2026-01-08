@@ -244,7 +244,7 @@ class MSKMCPServer {
     return {
       content: [{
         type: 'text',
-        text: `✴️ MSK MCP: list_clusters ✴️\n\n${JSON.stringify({
+        text: `✴️ ✴️ ✴️ ✴️  MCP.MSK: list_clusters ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({
           status: 'success',
           count: clusters.length,
           clusters
@@ -262,7 +262,7 @@ class MSKMCPServer {
     return {
       content: [{
         type: 'text',
-        text: `✴️ MSK MCP: get_cluster_details ✴️\n\n${JSON.stringify({
+        text: `✴️ ✴️ ✴️ ✴️  MCP.MSK: get_cluster_details ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({
           status: 'success',
           cluster: details,
           bootstrapBrokers: brokers
@@ -280,7 +280,7 @@ class MSKMCPServer {
     return {
       content: [{
         type: 'text',
-        text: `✴️ MSK MCP: list_topics ✴️\n\n${JSON.stringify({
+        text: `✴️ ✴️ ✴️ ✴️  MCP.MSK: list_topics ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({
           status: 'success',
           cluster: clusterArn,
           count: topics.length,
@@ -299,7 +299,7 @@ class MSKMCPServer {
     return {
       content: [{
         type: 'text',
-        text: `✴️ MSK MCP: get_topic_metadata ✴️\n\n${JSON.stringify({
+        text: `✴️ ✴️ ✴️ ✴️  MCP.MSK: get_topic_metadata ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({
           status: 'success',
           cluster: clusterArn,
           topic: metadata
@@ -382,7 +382,7 @@ class MSKMCPServer {
     return {
       content: [{
         type: 'text',
-        text: `✴️ MSK MCP: browse_messages ✴️\n\n${JSON.stringify({
+        text: `✴️ ✴️ ✴️ ✴️  MCP.MSK: browse_messages ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({
           status: 'success',
           cluster: clusterArn,
           topic: topicName,
@@ -460,7 +460,7 @@ class MSKMCPServer {
     return {
       content: [{
         type: 'text',
-        text: `✴️ MSK MCP: search_messages ✴️\n\n${JSON.stringify({
+        text: `✴️ ✴️ ✴️ ✴️  MCP.MSK: search_messages ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({
           status: 'success',
           cluster: clusterArn,
           topic: topicName,
@@ -480,7 +480,7 @@ class MSKMCPServer {
     return {
       content: [{
         type: 'text',
-        text: `✴️ MSK MCP: list_protobuf_types ✴️\n\n${JSON.stringify({
+        text: `✴️ ✴️ ✴️ ✴️  MCP.MSK: list_protobuf_types ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({
           status: 'success',
           count: types.length,
           types
@@ -497,7 +497,7 @@ class MSKMCPServer {
     return {
       content: [{
         type: 'text',
-        text: `✴️ MSK MCP: ${toolName} ✴️\n\n${JSON.stringify({
+        text: `✴️ ✴️ ✴️ ✴️  MCP.MSK: ${toolName} ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({
           status: 'error',
           errorType,
           message: error instanceof Error ? error.message : String(error),

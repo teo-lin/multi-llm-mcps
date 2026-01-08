@@ -217,7 +217,7 @@ class CloudWatchLogsMCPServer {
             content: [
               {
                 type: 'text',
-                text: `✴️ CloudWatch MCP: query_logs ✴️\n\n${JSON.stringify({
+                text: `✴️ ✴️ ✴️ ✴️  MCP.CloudWatch: query_logs ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({
                   status: 'success',
                   queryId: startQueryResponse.queryId,
                   recordsMatched: resultsResponse.statistics?.recordsMatched || 0,
@@ -251,7 +251,7 @@ class CloudWatchLogsMCPServer {
         content: [
           {
             type: 'text',
-            text: `✴️ CloudWatch MCP: query_logs ✴️\n\n${JSON.stringify({ status: 'timeout', message: 'Query timed out' }, null, 2)}`,
+            text: `✴️ ✴️ ✴️ ✴️  MCP.CloudWatch: query_logs ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({ status: 'timeout', message: 'Query timed out' }, null, 2)}`,
           },
         ],
       };
@@ -260,7 +260,7 @@ class CloudWatchLogsMCPServer {
         content: [
           {
             type: 'text',
-            text: `✴️ CloudWatch MCP: query_logs ✴️\n\n${JSON.stringify({
+            text: `✴️ ✴️ ✴️ ✴️  MCP.CloudWatch: query_logs ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({
               status: 'error',
               message: error instanceof Error ? error.message : 'Unknown error'
             }, null, 2)}`,
@@ -287,7 +287,7 @@ class CloudWatchLogsMCPServer {
         content: [
           {
             type: 'text',
-            text: `✴️ CloudWatch MCP: list_log_groups ✴️\n\n${JSON.stringify({
+            text: `✴️ ✴️ ✴️ ✴️  MCP.CloudWatch: list_log_groups ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({
               status: 'success',
               count: logGroups.length,
               logGroups: logGroups.map(lg => ({
@@ -305,7 +305,7 @@ class CloudWatchLogsMCPServer {
         content: [
           {
             type: 'text',
-            text: `✴️ CloudWatch MCP: list_log_groups ✴️\n\n${JSON.stringify({
+            text: `✴️ ✴️ ✴️ ✴️  MCP.CloudWatch: list_log_groups ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({
               status: 'error',
               message: error instanceof Error ? error.message : 'Unknown error'
             }, null, 2)}`,

@@ -184,7 +184,7 @@ class AtlassianServer {
       content: [
         {
           type: "text",
-          text: `✴️ Atlassian MCP: jira_ticket_info ✴️\n\n${JSON.stringify(ticket, null, 2)}`,
+          text: `✴️ ✴️ ✴️ ✴️  MCP.Atlassian: jira_ticket_info ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(ticket, null, 2)}`,
         },
       ],
     };
@@ -197,7 +197,7 @@ class AtlassianServer {
       content: [
         {
           type: "text",
-          text: `✴️ Atlassian MCP: jira_extract_ticket_from_text ✴️\n\n${JSON.stringify({ ticketKey }, null, 2)}`,
+          text: `✴️ ✴️ ✴️ ✴️  MCP.Atlassian: jira_extract_ticket_from_text ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({ ticketKey }, null, 2)}`,
         },
       ],
     };
@@ -210,7 +210,7 @@ class AtlassianServer {
       content: [
         {
           type: "text",
-          text: `✴️ Atlassian MCP: jira_open_ticket ✴️\n\n${JSON.stringify({ opened: true, ticket: args.ticket_key }, null, 2)}`,
+          text: `✴️ ✴️ ✴️ ✴️  MCP.Atlassian: jira_open_ticket ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({ opened: true, ticket: args.ticket_key }, null, 2)}`,
         },
       ],
     };
@@ -223,7 +223,7 @@ class AtlassianServer {
       content: [
         {
           type: "text",
-          text: `✴️ Atlassian MCP: jira_auth_status ✴️\n\n${JSON.stringify({ authenticated: isAuthenticated }, null, 2)}`,
+          text: `✴️ ✴️ ✴️ ✴️  MCP.Atlassian: jira_auth_status ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify({ authenticated: isAuthenticated }, null, 2)}`,
         },
       ],
     };

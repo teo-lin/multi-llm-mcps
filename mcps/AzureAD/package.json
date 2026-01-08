@@ -1,6 +1,6 @@
 {
   "name": "@teolin/mcp-azure-ad",
-  "version": "3.2.5",
+  "version": "3.2.6",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for Azure AD authentication with device code flow",

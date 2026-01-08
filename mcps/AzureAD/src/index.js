@@ -210,7 +210,7 @@ class AzureADMCPServer {
       content: [
         {
           type: 'text',
-          text: `✴️ AzureAD MCP: authenticate ✴️\n\n✅ Successfully authenticated with Azure AD\n\nToken expires: ${this.tokenExpiry?.toLocaleString()}`,
+          text: `✴️ ✴️ ✴️ ✴️  MCP.AzureAD: authenticate ✴️ ✴️ ✴️ ✴️\n\n✅ Successfully authenticated with Azure AD\n\nToken expires: ${this.tokenExpiry?.toLocaleString()}`,
         },
       ],
     };
@@ -222,7 +222,7 @@ class AzureADMCPServer {
       content: [
         {
           type: 'text',
-          text: `✴️ AzureAD MCP: get_access_token ✴️\n\nAccess Token:\n\n${token}\n\nExpires: ${this.tokenExpiry?.toLocaleString()}`,
+          text: `✴️ ✴️ ✴️ ✴️  MCP.AzureAD: get_access_token ✴️ ✴️ ✴️ ✴️\n\nAccess Token:\n\n${token}\n\nExpires: ${this.tokenExpiry?.toLocaleString()}`,
         },
       ],
     };
@@ -238,7 +238,7 @@ class AzureADMCPServer {
       content: [
         {
           type: 'text',
-          text: `✴️ AzureAD MCP: check_auth_status ✴️\n\n${status}`,
+          text: `✴️ ✴️ ✴️ ✴️  MCP.AzureAD: check_auth_status ✴️ ✴️ ✴️ ✴️\n\n${status}`,
         },
       ],
     };
@@ -258,7 +258,7 @@ class AzureADMCPServer {
       content: [
         {
           type: 'text',
-          text: '✴️ AzureAD MCP: clear_token_cache ✴️\n\n✅ Token cache cleared',
+          text: '✴️ ✴️ ✴️ ✴️  MCP.AzureAD: clear_token_cache ✴️ ✴️ ✴️ ✴️\n\n✅ Token cache cleared',
         },
       ],
     };
@@ -286,7 +286,7 @@ class AzureADMCPServer {
         content: [
           {
             type: 'text',
-            text: `✴️ AzureAD MCP: make_authenticated_request ✴️\n\nStatus: ${response.status} ${response.statusText}\n\nResponse:\n\n${JSON.stringify(response.data, null, 2)}`,
+            text: `✴️ ✴️ ✴️ ✴️  MCP.AzureAD: make_authenticated_request ✴️ ✴️ ✴️ ✴️\n\nStatus: ${response.status} ${response.statusText}\n\nResponse:\n\n${JSON.stringify(response.data, null, 2)}`,
           },
         ],
       };

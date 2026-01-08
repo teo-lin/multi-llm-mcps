@@ -172,7 +172,7 @@ class MySQLMCPServer {
               content: [
                 {
                   type: "text",
-                  text: `◆◆◆✴️◆◆◆ MySQL MCP Server: query ◆◆◆✴️◆◆◆\n\n${JSON.stringify(result, null, 2)}`,
+                  text: `✴️ ✴️ ✴️ ✴️  MCP.MySQL: query ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(result, null, 2)}`,
                 },
               ],
             };
@@ -184,7 +184,7 @@ class MySQLMCPServer {
               content: [
                 {
                   type: "text",
-                  text: `◆◆◆✴️◆◆◆ MySQL MCP Server: list_databases ◆◆◆✴️◆◆◆\n\n${JSON.stringify(result.rows, null, 2)}`,
+                  text: `✴️ ✴️ ✴️ ✴️  MCP.MySQL: list_databases ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(result.rows, null, 2)}`,
                 },
               ],
             };
@@ -202,7 +202,7 @@ class MySQLMCPServer {
               content: [
                 {
                   type: "text",
-                  text: `◆◆◆✴️◆◆◆ MySQL MCP Server: list_tables ◆◆◆✴️◆◆◆\n\n${JSON.stringify(result.rows, null, 2)}`,
+                  text: `✴️ ✴️ ✴️ ✴️  MCP.MySQL: list_tables ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(result.rows, null, 2)}`,
                 },
               ],
             };
@@ -221,7 +221,7 @@ class MySQLMCPServer {
               content: [
                 {
                   type: "text",
-                  text: `◆◆◆✴️◆◆◆ MySQL MCP Server: describe_table ◆◆◆✴️◆◆◆\n\n${JSON.stringify(result.rows, null, 2)}`,
+                  text: `✴️ ✴️ ✴️ ✴️  MCP.MySQL: describe_table ✴️ ✴️ ✴️ ✴️\n\n${JSON.stringify(result.rows, null, 2)}`,
                 },
               ],
             };

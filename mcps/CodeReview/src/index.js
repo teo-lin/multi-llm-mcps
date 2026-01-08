@@ -112,7 +112,7 @@ class CodeReviewServer {
           content: [
             {
               type: "text",
-              text: `✴️ CodeReview MCP: codereview ✴️\n\n${review}`,
+              text: `✴️ ✴️ ✴️ ✴️  MCP.CodeReview: codereview ✴️ ✴️ ✴️ ✴️\n\n${review}`,
             },
           ],
         };
