@@ -1,6 +1,6 @@
 {
   "name": "@teolin/mcp-msk",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for AWS MSK (Managed Streaming for Kafka) with protobuf decoding",

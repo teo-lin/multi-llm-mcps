@@ -19,33 +19,66 @@ Automated code review server that integrates GitHub PRs with Jira tickets for co
 
 ## Installation
 
-### Option 1: Install from npm (Recommended)
+---
+
+### Option 1: Using npx (No Installation)
+
+#### Setup
+
+```bash
+# Either User scope (available in all projects)
+claude mcp add codereview -s user -- npx -y @teolin/code-review-agent
+
+# Or Project scope (shared with team via git)
+claude mcp add codereview -s project -- npx -y @teolin/code-review-agent
+```
+
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/code-review-agent` on start)
+
+---
+
+### Option 2: Global npm Installation
+
+#### Setup
 
 ```bash
 npm install -g @teolin/code-review-agent
+
+# Either User scope (available in all projects)
+claude mcp add codereview -s user -- codereview-mcp
+
+# Or Project scope (shared with team via git)
+claude mcp add codereview -s project -- codereview-mcp
 ```
 
-### Option 2: Install locally
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `codereview-mcp` on start)
+
+---
+
+### Option 3: Local Installation
+
+#### Setup
 
 ```bash
 npm install @teolin/code-review-agent
+
+# Either User scope (available in all projects)
+claude mcp add codereview -s user -- node ./node_modules/@teolin/code-review-agent/src/index.js
+
+# Or Project scope (shared with team via git)
+claude mcp add codereview -s project -- node ./node_modules/@teolin/code-review-agent/src/index.js
 ```
 
-### Option 3: Use with npx (no installation)
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `node ./node_modules/@teolin/code-review-agent/src/index.js` on start)
 
-```bash
-npx -y @teolin/code-review-agent
-```
+---
 
-## Setup
+## Configuration
 
-### 1. Install Dependencies
-
-```bash
-npm install
-```
-
-### 2. Authenticate Required Services
+### Authenticate Required Services
 
 ```bash
 # GitHub CLI
@@ -53,18 +86,6 @@ gh auth login
 
 # Atlassian CLI
 acli auth login --url https://your-domain.atlassian.net
-```
-
-## Usage
-
-### In Claude Code
-
-```bash
-# Review a specific PR (from any repository)
-code_review pr_name: "123" working_directory: "/path/to/your/repo"
-
-# Or use the tool directly:
-/mcp code_review {"pr_name": "123", "working_directory": "/path/to/your/repo"}
 ```
 
 ### Example Output
@@ -126,71 +147,6 @@ To test the MCP server:
 
 ```bash
 npm test
-```
-
-## Integration with Claude Code
-
-Claude Code supports three scopes for MCP server configuration:
-
-- **User scope** (`~/.claude.json`): Available across all projects
-- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
-- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
-
-### Quick Setup with CLI (Recommended)
-
-```bash
-# User scope (available in all projects)
-claude mcp add codereview --scope user
-
-# Project scope (shared with team via git)
-claude mcp add codereview --scope project
-```
-
-### Manual Configuration
-
-#### Using npx (Recommended - no installation needed)
-
-Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
-
-```json
-{
-  "mcpServers": {
-    "codereview": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@teolin/code-review-agent"]
-    }
-  }
-}
-```
-
-#### Using global installation
-
-```json
-{
-  "mcpServers": {
-    "codereview": {
-      "type": "stdio",
-      "command": "codereview-mcp"
-    }
-  }
-}
-```
-
-#### Using local installation
-
-```json
-{
-  "mcpServers": {
-    "codereview": {
-      "type": "stdio",
-      "command": "node",
-      "args": [
-        "./node_modules/@teolin/code-review-agent/src/index.js"
-      ]
-    }
-  }
-}
 ```
 
 ## Troubleshooting

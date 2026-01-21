@@ -17,25 +17,64 @@ Model Context Protocol (MCP) server for Azure Active Directory authentication us
 
 ## Installation
 
-### Option 1: Install from npm (Recommended)
+---
+
+### Option 1: Using npx (No Installation)
+
+#### Setup
+
+```bash
+# Either User scope (available in all projects)
+claude mcp add azuread -s user -- npx -y @teolin/mcp-azure-ad
+
+# Or Project scope (shared with team via git)
+claude mcp add azuread -s project -- npx -y @teolin/mcp-azure-ad
+```
+
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-azure-ad` on start)
+
+---
+
+### Option 2: Global npm Installation
+
+#### Setup
 
 ```bash
 npm install -g @teolin/mcp-azure-ad
+
+# Either User scope (available in all projects)
+claude mcp add azuread -s user -- azuread-mcp
+
+# Or Project scope (shared with team via git)
+claude mcp add azuread -s project -- azuread-mcp
 ```
 
-### Option 2: Install locally
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `azuread-mcp` on start)
+
+---
+
+### Option 3: Local Installation
+
+#### Setup
 
 ```bash
 npm install @teolin/mcp-azure-ad
+
+# Either User scope (available in all projects)
+claude mcp add azuread -s user -- node ./node_modules/@teolin/mcp-azure-ad/src/index.js
+
+# Or Project scope (shared with team via git)
+claude mcp add azuread -s project -- node ./node_modules/@teolin/mcp-azure-ad/src/index.js
 ```
 
-### Option 3: Use with npx (no installation)
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `node ./node_modules/@teolin/mcp-azure-ad/src/index.js` on start)
 
-```bash
-npx -y @teolin/mcp-azure-ad
-```
+---
 
-## Setup
+## Configuration
 
 ### 1. Register an Application in Azure AD
 
@@ -50,10 +89,9 @@ npx -y @teolin/mcp-azure-ad
 6. Go to **Authentication** > **Advanced settings**
 7. Enable "Allow public client flows"
 
-### 2. Configure Environment
+### 2. Environment Variables
 
 ```bash
-npm install
 cp .env.example .env
 ```
 
@@ -61,20 +99,6 @@ Edit `.env` and set:
 - `AZURE_CLIENT_ID`: Your application's client ID from Azure Portal
 - `AZURE_AUTHORITY`: Authority URL (use `https://login.microsoftonline.com/common` for multi-tenant)
 - `AZURE_SCOPES`: Required scopes (e.g., `https://graph.microsoft.com/.default`)
-
-## Usage
-
-### Starting the Server
-
-```bash
-npm start
-```
-
-### Running Tests
-
-```bash
-npm test
-```
 
 ## Available Tools
 
@@ -136,86 +160,6 @@ const response = await mcpClient.call('azuread-server', 'make_authenticated_requ
   url: 'https://your-protected-api.com/endpoint',
   method: 'GET'
 });
-```
-
-## Integration with Claude Code
-
-Claude Code supports three scopes for MCP server configuration:
-
-- **User scope** (`~/.claude.json`): Available across all projects
-- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
-- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
-
-### Quick Setup with CLI (Recommended)
-
-```bash
-# User scope (available in all projects)
-claude mcp add azuread --scope user
-
-# Project scope (shared with team via git)
-claude mcp add azuread --scope project
-```
-
-### Manual Configuration
-
-#### Using npx (Recommended - no installation needed)
-
-Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
-
-```json
-{
-  "mcpServers": {
-    "azuread": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@teolin/mcp-azure-ad"],
-      "env": {
-        "AZURE_CLIENT_ID": "your-client-id",
-        "AZURE_AUTHORITY": "https://login.microsoftonline.com/common",
-        "AZURE_SCOPES": "https://graph.microsoft.com/.default"
-      }
-    }
-  }
-}
-```
-
-#### Using global installation
-
-```json
-{
-  "mcpServers": {
-    "azuread": {
-      "type": "stdio",
-      "command": "azuread-mcp",
-      "env": {
-        "AZURE_CLIENT_ID": "your-client-id",
-        "AZURE_AUTHORITY": "https://login.microsoftonline.com/common",
-        "AZURE_SCOPES": "https://graph.microsoft.com/.default"
-      }
-    }
-  }
-}
-```
-
-#### Using local installation
-
-```json
-{
-  "mcpServers": {
-    "azuread": {
-      "type": "stdio",
-      "command": "node",
-      "args": [
-        "./node_modules/@teolin/mcp-azure-ad/src/index.js"
-      ],
-      "env": {
-        "AZURE_CLIENT_ID": "your-client-id",
-        "AZURE_AUTHORITY": "https://login.microsoftonline.com/common",
-        "AZURE_SCOPES": "https://graph.microsoft.com/.default"
-      }
-    }
-  }
-}
 ```
 
 ## Troubleshooting

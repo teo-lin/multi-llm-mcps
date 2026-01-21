@@ -13,29 +13,7 @@ Model Context Protocol server for GitHub operations using GitHub CLI (`gh`).
 - Node.js >=18.0.0
 - GitHub CLI (`gh`) installed and authenticated
 
-## Installation
-
-### Option 1: Install from npm (Recommended)
-
-```bash
-npm install -g @teolin/mcp-github
-```
-
-### Option 2: Install locally
-
-```bash
-npm install @teolin/mcp-github
-```
-
-### Option 3: Use with npx (no installation)
-
-```bash
-npx -y @teolin/mcp-github
-```
-
-## Setup
-
-### 1. Install GitHub CLI
+### Install GitHub CLI
 
 ```bash
 # macOS
@@ -48,32 +26,67 @@ sudo apt update
 sudo apt install gh
 ```
 
-### 2. Authenticate with GitHub CLI
+### Authenticate with GitHub CLI
 
 ```bash
 gh auth login
 ```
 
-## Usage
+---
 
-### Running as a standalone server
+## Option 1: Using npx (No Installation, but makes external web call to npmjs every use)
 
-```bash
-# If installed globally
-mcp-github
-
-# If installed locally
-npx @teolin/mcp-github
-
-# Or using npm start (for development)
-npm start
-```
-
-### Running tests
+### Setup
 
 ```bash
-npm test
+# Either User scope (available in all projects)
+claude mcp add github -s user -- npx -y @teolin/mcp-github
+
+# Or Project scope (shared with team via git)
+claude mcp add github -s project -- npx -y @teolin/mcp-github
 ```
+
+### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-github` on start)
+
+---
+
+## Option 2: Global npm Installation
+
+### Setup
+
+```bash
+npm install -g @teolin/mcp-github
+
+# Either User scope (available in all projects)
+claude mcp add github -s user -- mcp-github
+
+# Or Project scope (shared with team via git)
+claude mcp add github -s project -- mcp-github
+```
+
+### Usage
+Automatic. Claude will use it when needed. (Startup Managed by Claude MCP server lifecyle - it simply runs `mcp-github` on start)
+---
+
+## Option 3: Local Installation
+
+### Setup
+
+```bash
+npm install @teolin/mcp-github
+
+# Either User scope (available in all projects)
+claude mcp add github -s user -- node ./node_modules/@teolin/mcp-github/src/index.js
+
+# Or Project scope (shared with team via git)
+claude mcp add github -s project -- node ./node_modules/@teolin/mcp-github/src/index.js
+```
+
+### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `node ./node_modules/@teolin/mcp-github/src/index.js` on start)
+
+---
 
 ## Available Tools
 
@@ -86,71 +99,6 @@ The server supports multiple PR identifier formats:
 - **PR with hash**: `#123`
 - **PR URL**: `https://github.com/owner/repo/pull/123`
 - **Branch name**: `feat/PAB-123-feature-name`
-
-## Integration with Claude Code
-
-Claude Code supports three scopes for MCP server configuration:
-
-- **User scope** (`~/.claude.json`): Available across all projects
-- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
-- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
-
-### Quick Setup with CLI (Recommended)
-
-```bash
-# User scope (available in all projects)
-claude mcp add github --scope user
-
-# Project scope (shared with team via git)
-claude mcp add github --scope project
-```
-
-### Manual Configuration
-
-#### Using npx (Recommended - no installation needed)
-
-Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
-
-```json
-{
-  "mcpServers": {
-    "github": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@teolin/mcp-github"]
-    }
-  }
-}
-```
-
-#### Using global installation
-
-```json
-{
-  "mcpServers": {
-    "github": {
-      "type": "stdio",
-      "command": "mcp-github"
-    }
-  }
-}
-```
-
-#### Using local installation
-
-```json
-{
-  "mcpServers": {
-    "github": {
-      "type": "stdio",
-      "command": "node",
-      "args": [
-        "./node_modules/@teolin/mcp-github/src/index.js"
-      ]
-    }
-  }
-}
-```
 
 ## Usage Examples
 

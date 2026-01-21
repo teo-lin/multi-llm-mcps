@@ -19,9 +19,62 @@ Model Context Protocol (MCP) server for inspecting and managing Kafka clusters v
 
 ## Installation
 
+---
+
+### Option 1: Using npx (No Installation)
+
+#### Setup
+
 ```bash
-npm install
+# Either User scope (available in all projects)
+claude mcp add kafdrop -s user -- npx -y @teolin/mcp-kafdrop
+
+# Or Project scope (shared with team via git)
+claude mcp add kafdrop -s project -- npx -y @teolin/mcp-kafdrop
 ```
+
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-kafdrop` on start)
+
+---
+
+### Option 2: Global npm Installation
+
+#### Setup
+
+```bash
+npm install -g @teolin/mcp-kafdrop
+
+# Either User scope (available in all projects)
+claude mcp add kafdrop -s user -- kafdrop-mcp
+
+# Or Project scope (shared with team via git)
+claude mcp add kafdrop -s project -- kafdrop-mcp
+```
+
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `kafdrop-mcp` on start)
+
+---
+
+### Option 3: Local Installation
+
+#### Setup
+
+```bash
+npm install @teolin/mcp-kafdrop
+
+# Either User scope (available in all projects)
+claude mcp add kafdrop -s user -- node ./node_modules/@teolin/mcp-kafdrop/src/index.js
+
+# Or Project scope (shared with team via git)
+claude mcp add kafdrop -s project -- node ./node_modules/@teolin/mcp-kafdrop/src/index.js
+```
+
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `node ./node_modules/@teolin/mcp-kafdrop/src/index.js` on start)
+
+---
 
 ## Configuration
 
@@ -35,20 +88,6 @@ Configure the following environment variables:
 
 - `KAFDROP_URL`: URL of your Kafdrop instance (default: `http://localhost:9000`)
 - `KAFDROP_API_TIMEOUT`: API request timeout in milliseconds (default: `30000`)
-
-## Usage
-
-### Starting the Server
-
-```bash
-npm start
-```
-
-### Running Tests
-
-```bash
-npm test
-```
 
 ## Available Tools
 
@@ -85,80 +124,6 @@ Search for messages containing specific text.
   - `search_term` (string, required)
   - `partition` (number, optional)
   - `max_results` (number, default: 50)
-
-## Integration with Claude Code
-
-Claude Code supports three scopes for MCP server configuration:
-
-- **User scope** (`~/.claude.json`): Available across all projects
-- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
-- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
-
-### Quick Setup with CLI (Recommended)
-
-```bash
-# User scope (available in all projects)
-claude mcp add kafdrop --scope user
-
-# Project scope (shared with team via git)
-claude mcp add kafdrop --scope project
-```
-
-### Manual Configuration
-
-#### Using npx (Recommended - no installation needed)
-
-Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
-
-```json
-{
-  "mcpServers": {
-    "kafdrop": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@teolin/mcp-kafdrop"],
-      "env": {
-        "KAFDROP_URL": "http://localhost:9000"
-      }
-    }
-  }
-}
-```
-
-#### Using global installation
-
-```json
-{
-  "mcpServers": {
-    "kafdrop": {
-      "type": "stdio",
-      "command": "kafdrop-mcp",
-      "env": {
-        "KAFDROP_URL": "http://localhost:9000"
-      }
-    }
-  }
-}
-```
-
-#### Using local installation
-
-```json
-{
-  "mcpServers": {
-    "kafdrop": {
-      "type": "stdio",
-      "command": "node",
-      "args": [
-        "./node_modules/@teolin/mcp-kafdrop/src/index.js"
-      ],
-      "env": {
-        "KAFDROP_URL": "http://localhost:9000"
-      }
-    }
-  }
-}
-```
 
 ## Troubleshooting
 

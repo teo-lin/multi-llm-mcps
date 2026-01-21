@@ -16,27 +16,66 @@ MCP server for MySQL 8.0 with connection pooling and parameterized queries.
 
 ## Installation
 
-### Option 1: Use with npx (Recommended - no installation needed)
+---
+
+### Option 1: Using npx (No Installation)
+
+#### Setup
 
 ```bash
-npx -y @teolin/mcp-local-mysql
+# Either User scope (available in all projects)
+claude mcp add mysql -s user -- npx -y @teolin/mcp-local-mysql
+
+# Or Project scope (shared with team via git)
+claude mcp add mysql -s project -- npx -y @teolin/mcp-local-mysql
 ```
 
-### Option 2: Install from npm globally
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-local-mysql` on start)
+
+---
+
+### Option 2: Global npm Installation
+
+#### Setup
 
 ```bash
 npm install -g @teolin/mcp-local-mysql
+
+# Either User scope (available in all projects)
+claude mcp add mysql -s user -- mysql-mcp
+
+# Or Project scope (shared with team via git)
+claude mcp add mysql -s project -- mysql-mcp
 ```
 
-### Option 3: Install locally
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `mysql-mcp` on start)
+
+---
+
+### Option 3: Local Installation
+
+#### Setup
 
 ```bash
 npm install @teolin/mcp-local-mysql
+
+# Either User scope (available in all projects)
+claude mcp add mysql -s user -- node ./node_modules/@teolin/mcp-local-mysql/src/index.js
+
+# Or Project scope (shared with team via git)
+claude mcp add mysql -s project -- node ./node_modules/@teolin/mcp-local-mysql/src/index.js
 ```
 
-## Setup
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `node ./node_modules/@teolin/mcp-local-mysql/src/index.js` on start)
 
-1. Configure `.env`:
+---
+
+## Configuration
+
+Configure `.env`:
 ```bash
 cp .env.example .env
 # Edit .env with your MySQL credentials
@@ -49,119 +88,12 @@ Required environment variables:
 - `MYSQL_PASSWORD` - MySQL password
 - `MYSQL_DATABASE` - Default database name
 
-## Usage
-
-### Running as a standalone server
-
-```bash
-# If installed globally
-mysql-mcp
-
-# If installed locally or using npx
-npx @teolin/mcp-local-mysql
-
-# Or using npm start (for development)
-npm start
-```
-
-### Running tests
-
-```bash
-npm test
-```
-
 ## Available Tools
 
 - `query` - Execute SQL queries (supports parameterized queries with `?` placeholders)
 - `list_databases` - List all databases
 - `list_tables` - List tables in a database
 - `describe_table` - Show table structure
-
-## Integration with Claude Code
-
-Claude Code supports three scopes for MCP server configuration:
-
-- **User scope** (`~/.claude.json`): Available across all projects
-- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
-- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
-
-### Quick Setup with CLI (Recommended)
-
-```bash
-# User scope (available in all projects)
-claude mcp add mysql --scope user
-
-# Project scope (shared with team via git)
-claude mcp add mysql --scope project
-```
-
-### Manual Configuration
-
-#### Using npx (Recommended - no installation needed)
-
-Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
-
-```json
-{
-  "mcpServers": {
-    "mysql": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@teolin/mcp-local-mysql"],
-      "env": {
-        "MYSQL_HOST": "localhost",
-        "MYSQL_PORT": "3306",
-        "MYSQL_USER": "root",
-        "MYSQL_PASSWORD": "your_password",
-        "MYSQL_DATABASE": "your_database"
-      }
-    }
-  }
-}
-```
-
-#### Using global installation
-
-```json
-{
-  "mcpServers": {
-    "mysql": {
-      "type": "stdio",
-      "command": "mysql-mcp",
-      "env": {
-        "MYSQL_HOST": "localhost",
-        "MYSQL_PORT": "3306",
-        "MYSQL_USER": "root",
-        "MYSQL_PASSWORD": "your_password",
-        "MYSQL_DATABASE": "your_database"
-      }
-    }
-  }
-}
-```
-
-#### Using local installation
-
-```json
-{
-  "mcpServers": {
-    "mysql": {
-      "type": "stdio",
-      "command": "node",
-      "args": [
-        "./node_modules/@teolin/mcp-local-mysql/src/index.js"
-      ],
-      "env": {
-        "MYSQL_HOST": "localhost",
-        "MYSQL_PORT": "3306",
-        "MYSQL_USER": "root",
-        "MYSQL_PASSWORD": "your_password",
-        "MYSQL_DATABASE": "your_database"
-      }
-    }
-  }
-}
-```
 
 ## Publishing
 

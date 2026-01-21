@@ -18,25 +18,64 @@ MCP server for querying AWS CloudWatch Logs with Log Insights.
 
 ## Installation
 
-### Option 1: Install from npm (Recommended)
+---
+
+### Option 1: Using npx (No Installation)
+
+#### Setup
+
+```bash
+# Either User scope (available in all projects)
+claude mcp add cloudwatch -s user -- npx -y @teolin/mcp-cloudwatch-logs
+
+# Or Project scope (shared with team via git)
+claude mcp add cloudwatch -s project -- npx -y @teolin/mcp-cloudwatch-logs
+```
+
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-cloudwatch-logs` on start)
+
+---
+
+### Option 2: Global npm Installation
+
+#### Setup
 
 ```bash
 npm install -g @teolin/mcp-cloudwatch-logs
+
+# Either User scope (available in all projects)
+claude mcp add cloudwatch -s user -- cloudwatch-mcp
+
+# Or Project scope (shared with team via git)
+claude mcp add cloudwatch -s project -- cloudwatch-mcp
 ```
 
-### Option 2: Install locally
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `cloudwatch-mcp` on start)
+
+---
+
+### Option 3: Local Installation
+
+#### Setup
 
 ```bash
 npm install @teolin/mcp-cloudwatch-logs
+
+# Either User scope (available in all projects)
+claude mcp add cloudwatch -s user -- node ./node_modules/@teolin/mcp-cloudwatch-logs/src/index.js
+
+# Or Project scope (shared with team via git)
+claude mcp add cloudwatch -s project -- node ./node_modules/@teolin/mcp-cloudwatch-logs/src/index.js
 ```
 
-### Option 3: Use with npx (no installation)
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `node ./node_modules/@teolin/mcp-cloudwatch-logs/src/index.js` on start)
 
-```bash
-npx -y @teolin/mcp-cloudwatch-logs
-```
+---
 
-## Setup
+## Configuration
 
 ### Configure AWS Credentials
 
@@ -50,27 +89,6 @@ aws configure
 export AWS_ACCESS_KEY_ID=your_key
 export AWS_SECRET_ACCESS_KEY=your_secret
 export AWS_REGION=us-east-1
-```
-
-## Usage
-
-### Running as a standalone server
-
-```bash
-# If installed globally
-cloudwatch-mcp
-
-# If installed locally
-npx @teolin/mcp-cloudwatch-logs
-
-# Or using npm start (for development)
-npm start
-```
-
-### Running tests
-
-```bash
-npm test
 ```
 
 ## Available Tools
@@ -110,82 +128,6 @@ Get recent log entries from a specific log group.
 - `hours` (number): Hours to look back (default: 1)
 - `limit` (number): Maximum entries (default: 100)
 - `filterPattern` (string, optional): Filter pattern for log entries
-
-## Integration with Claude Code
-
-Claude Code supports three scopes for MCP server configuration:
-
-- **User scope** (`~/.claude.json`): Available across all projects
-- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
-- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
-
-### Quick Setup with CLI (Recommended)
-
-```bash
-# User scope (available in all projects)
-claude mcp add cloudwatch --scope user
-
-# Project scope (shared with team via git)
-claude mcp add cloudwatch --scope project
-```
-
-### Manual Configuration
-
-#### Using npx (Recommended - no installation needed)
-
-Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
-
-```json
-{
-  "mcpServers": {
-    "cloudwatch": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@teolin/mcp-cloudwatch-logs"],
-      "env": {
-        "AWS_REGION": "us-east-1"
-      }
-    }
-  }
-}
-```
-
-#### Using global installation
-
-```json
-{
-  "mcpServers": {
-    "cloudwatch": {
-      "type": "stdio",
-      "command": "cloudwatch-mcp",
-      "env": {
-        "AWS_REGION": "us-east-1"
-      }
-    }
-  }
-}
-```
-
-#### Using local installation
-
-```json
-{
-  "mcpServers": {
-    "cloudwatch": {
-      "type": "stdio",
-      "command": "node",
-      "args": [
-        "./node_modules/@teolin/mcp-cloudwatch-logs/src/index.js"
-      ],
-      "env": {
-        "AWS_REGION": "us-east-1"
-      }
-    }
-  }
-}
-```
-
-**Note:** AWS credentials will be automatically picked up from your environment or AWS CLI configuration.
 
 ## Troubleshooting
 

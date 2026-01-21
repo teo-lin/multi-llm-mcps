@@ -21,47 +21,83 @@ Model Context Protocol (MCP) server for SonarCloud and SonarQube integration. Pr
 
 ## Installation
 
-### Option 1: Use with npx (Recommended - no installation needed)
+---
+
+### Option 1: Using npx (No Installation)
+
+#### Setup
 
 ```bash
-npx -y @teolin/mcp-sonarcloud
+# Either User scope (available in all projects)
+claude mcp add sonarcloud -s user -- npx -y @teolin/mcp-sonarcloud
+
+# Or Project scope (shared with team via git)
+claude mcp add sonarcloud -s project -- npx -y @teolin/mcp-sonarcloud
 ```
 
-### Option 2: Install from npm globally
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-sonarcloud` on start)
+
+---
+
+### Option 2: Global npm Installation
+
+#### Setup
 
 ```bash
 npm install -g @teolin/mcp-sonarcloud
+
+# Either User scope (available in all projects)
+claude mcp add sonarcloud -s user -- sonarcloud-mcp
+
+# Or Project scope (shared with team via git)
+claude mcp add sonarcloud -s project -- sonarcloud-mcp
 ```
 
-### Option 3: Install locally
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `sonarcloud-mcp` on start)
+
+---
+
+### Option 3: Local Installation
+
+#### Setup
 
 ```bash
 npm install @teolin/mcp-sonarcloud
+
+# Either User scope (available in all projects)
+claude mcp add sonarcloud -s user -- node ./node_modules/@teolin/mcp-sonarcloud/src/index.js
+
+# Or Project scope (shared with team via git)
+claude mcp add sonarcloud -s project -- node ./node_modules/@teolin/mcp-sonarcloud/src/index.js
 ```
 
-## Setup
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `node ./node_modules/@teolin/mcp-sonarcloud/src/index.js` on start)
 
-1. **Get your SonarCloud credentials**:
-
-   **For SonarCloud:**
-   - Organization Key: Found in SonarCloud URL: `https://sonarcloud.io/organizations/{your-org-key}`
-   - Project Key: Found in project settings or URL: `https://sonarcloud.io/project/overview?id={project-key}`
-   - Token: Go to https://sonarcloud.io/account/security → Generate a new user token
-
-   **For self-hosted SonarQube:**
-   - Host URL: Your SonarQube server URL (e.g., `https://sonar.company.com`)
-   - Project Key: Found in project settings
-   - Token: My Account → Security → Generate token
-
-2. **Configure environment** (for development):
-   ```bash
-   cp .env.example .env
-   # Edit .env with your credentials
-   ```
+---
 
 ## Configuration
 
+### Get your SonarCloud credentials
+
+**For SonarCloud:**
+- Organization Key: Found in SonarCloud URL: `https://sonarcloud.io/organizations/{your-org-key}`
+- Project Key: Found in project settings or URL: `https://sonarcloud.io/project/overview?id={project-key}`
+- Token: Go to https://sonarcloud.io/account/security → Generate a new user token
+
+**For self-hosted SonarQube:**
+- Host URL: Your SonarQube server URL (e.g., `https://sonar.company.com`)
+- Project Key: Found in project settings
+- Token: My Account → Security → Generate token
+
 ### Environment Variables
+
+```bash
+cp .env.example .env
+# Edit .env with your credentials
+```
 
 ```bash
 # For SonarCloud (default)
@@ -75,27 +111,6 @@ SONAR_HOST_URL=https://your-sonarqube-instance.com
 SONAR_TOKEN=your_sonar_token_here
 SONAR_ORGANIZATION=your_organization_key  # Optional for SonarQube
 SONAR_PROJECT_KEY=your_project_key
-```
-
-## Usage
-
-### Running as a standalone server
-
-```bash
-# If installed globally
-sonarcloud-mcp
-
-# If installed locally or using npx
-npx @teolin/mcp-sonarcloud
-
-# Or using npm start (for development)
-npm start
-```
-
-### Running tests
-
-```bash
-npm test
 ```
 
 ## Available Tools
@@ -211,89 +226,6 @@ Get a comprehensive summary of all issues grouped by type and severity.
 - Total counts by type (bugs, vulnerabilities, code smells, security hotspots)
 - Breakdown by severity (BLOCKER, CRITICAL, MAJOR, MINOR, INFO)
 - Breakdown by status (OPEN, CONFIRMED, REOPENED, etc.)
-
-## Integration with Claude Code
-
-Claude Code supports three scopes for MCP server configuration:
-
-- **User scope** (`~/.claude.json`): Available across all projects
-- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
-- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
-
-### Quick Setup with CLI (Recommended)
-
-```bash
-# User scope (available in all projects)
-claude mcp add sonarcloud --scope user
-
-# Project scope (shared with team via git)
-claude mcp add sonarcloud --scope project
-```
-
-### Manual Configuration
-
-#### Using npx (Recommended - no installation needed)
-
-Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
-
-```json
-{
-  "mcpServers": {
-    "sonarcloud": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@teolin/mcp-sonarcloud"],
-      "env": {
-        "SONAR_HOST_URL": "https://sonarcloud.io",
-        "SONAR_TOKEN": "your_token",
-        "SONAR_ORGANIZATION": "your_org",
-        "SONAR_PROJECT_KEY": "your_project"
-      }
-    }
-  }
-}
-```
-
-#### Using global installation
-
-```json
-{
-  "mcpServers": {
-    "sonarcloud": {
-      "type": "stdio",
-      "command": "sonarcloud-mcp",
-      "env": {
-        "SONAR_HOST_URL": "https://sonarcloud.io",
-        "SONAR_TOKEN": "your_token",
-        "SONAR_ORGANIZATION": "your_org",
-        "SONAR_PROJECT_KEY": "your_project"
-      }
-    }
-  }
-}
-```
-
-#### Using local installation
-
-```json
-{
-  "mcpServers": {
-    "sonarcloud": {
-      "type": "stdio",
-      "command": "node",
-      "args": [
-        "./node_modules/@teolin/mcp-sonarcloud/src/index.js"
-      ],
-      "env": {
-        "SONAR_HOST_URL": "https://sonarcloud.io",
-        "SONAR_TOKEN": "your_token",
-        "SONAR_ORGANIZATION": "your_org",
-        "SONAR_PROJECT_KEY": "your_project"
-      }
-    }
-  }
-}
-```
 
 ## Publishing
 

@@ -117,18 +117,62 @@ List all available protobuf message types.
 - AWS credentials with MSK permissions
 - Access to MSK cluster (VPN/Direct Connect if in VPC)
 
-### Install from npm
+---
+
+### Option 1: Using npx (No Installation)
+
+#### Setup
+
+```bash
+# Either User scope (available in all projects)
+claude mcp add msk -s user -- npx -y @teolin/mcp-msk
+
+# Or Project scope (shared with team via git)
+claude mcp add msk -s project -- npx -y @teolin/mcp-msk
+```
+
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-msk` on start)
+
+---
+
+### Option 2: Global npm Installation
+
+#### Setup
 
 ```bash
 npm install -g @teolin/mcp-msk
+
+# Either User scope (available in all projects)
+claude mcp add msk -s user -- msk-mcp
+
+# Or Project scope (shared with team via git)
+claude mcp add msk -s project -- msk-mcp
 ```
 
-### Install locally
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `msk-mcp` on start)
+
+---
+
+### Option 3: Local Installation
+
+#### Setup
 
 ```bash
-cd mcps/MSK
-npm install
+npm install @teolin/mcp-msk
+
+# Either User scope (available in all projects)
+claude mcp add msk -s user -- node ./node_modules/@teolin/mcp-msk/src/index.js
+
+# Or Project scope (shared with team via git)
+claude mcp add msk -s project -- node ./node_modules/@teolin/mcp-msk/src/index.js
 ```
+
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `node ./node_modules/@teolin/mcp-msk/src/index.js` on start)
+
+---
 
 ## Configuration
 
@@ -146,18 +190,6 @@ MSK_AUTH_TYPE=TLS
 # Kafka Connection (optional)
 KAFKA_CONNECTION_TIMEOUT=30000
 KAFKA_REQUEST_TIMEOUT=30000
-```
-
-## Register with Claude Code
-
-```bash
-# Using start script
-claude mcp add msk /path/to/mcps/MSK/start-mcp.sh --scope user
-
-# Using npx
-claude mcp add msk --scope user --type stdio \
-  --command npx --args "-y,@teolin/mcp-msk" \
-  --env "AWS_REGION=us-east-1,MSK_AUTH_TYPE=TLS"
 ```
 
 ## IAM Permissions Required

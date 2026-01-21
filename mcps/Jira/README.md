@@ -20,36 +20,62 @@ Model Context Protocol server for integrating with Doctari's Jira instance.
 
 ## Installation
 
-### Option 1: Install from npm (Recommended)
+---
+
+### Option 1: Using npx (No Installation)
+
+#### Setup
+
+```bash
+# Either User scope (available in all projects)
+claude mcp add jira -s user -- npx -y @teolin/mcp-jira
+
+# Or Project scope (shared with team via git)
+claude mcp add jira -s project -- npx -y @teolin/mcp-jira
+```
+
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-jira` on start)
+
+---
+
+### Option 2: Global npm Installation
+
+#### Setup
 
 ```bash
 npm install -g @teolin/mcp-jira
+
+# Either User scope (available in all projects)
+claude mcp add jira -s user -- jira-mcp
+
+# Or Project scope (shared with team via git)
+claude mcp add jira -s project -- jira-mcp
 ```
 
-### Option 2: Install locally
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `jira-mcp` on start)
+
+---
+
+### Option 3: Local Installation
+
+#### Setup
 
 ```bash
 npm install @teolin/mcp-jira
+
+# Either User scope (available in all projects)
+claude mcp add jira -s user -- node ./node_modules/@teolin/mcp-jira/src/index.js
+
+# Or Project scope (shared with team via git)
+claude mcp add jira -s project -- node ./node_modules/@teolin/mcp-jira/src/index.js
 ```
 
-### Option 3: Use with npx (no installation)
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `node ./node_modules/@teolin/mcp-jira/src/index.js` on start)
 
-```bash
-npx -y @teolin/mcp-jira
-```
-
-## Setup
-
-1. **Install dependencies** (for development):
-   ```bash
-   npm install
-   ```
-
-2. **Setup environment**:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your Jira credentials
-   ```
+---
 
 ## Configuration
 
@@ -111,101 +137,6 @@ By default (`JIRA_AUTH_STRATEGY='auto'`), the MCP will:
 3. Provide detailed error messages if both methods fail
 
 This ensures maximum reliability across different environments.
-
-## Usage
-
-### Running as a standalone server
-
-```bash
-# If installed globally
-jira-mcp
-
-# If installed locally
-npx @teolin/mcp-jira
-
-# Or using npm start (for development)
-npm start
-```
-
-## Integration with Claude Code
-
-Claude Code supports three scopes for MCP server configuration:
-
-- **User scope** (`~/.claude.json`): Available across all projects
-- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
-- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
-
-### Quick Setup with CLI (Recommended)
-
-```bash
-# User scope (available in all projects)
-claude mcp add jira --scope user
-
-# Project scope (shared with team via git)
-claude mcp add jira --scope project
-```
-
-### Manual Configuration
-
-#### Using npx (Recommended - no installation needed)
-
-Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
-
-```json
-{
-  "mcpServers": {
-    "jira": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@teolin/mcp-jira"],
-      "env": {
-        "JIRA_BASE_URL": "https://your-domain.atlassian.net",
-        "JIRA_EMAIL": "your-email@example.com",
-        "JIRA_API_TOKEN": "your-api-token"
-      }
-    }
-  }
-}
-```
-
-#### Using global installation
-
-```json
-{
-  "mcpServers": {
-    "jira": {
-      "type": "stdio",
-      "command": "jira-mcp",
-      "env": {
-        "JIRA_BASE_URL": "https://your-domain.atlassian.net",
-        "JIRA_EMAIL": "your-email@example.com",
-        "JIRA_API_TOKEN": "your-api-token"
-      }
-    }
-  }
-}
-```
-
-#### Using local installation
-
-```json
-{
-  "mcpServers": {
-    "jira": {
-      "type": "stdio",
-      "command": "node",
-      "args": [
-        "./node_modules/@teolin/mcp-jira/src/index.js"
-      ],
-      "env": {
-        "JIRA_BASE_URL": "https://your-domain.atlassian.net",
-        "JIRA_EMAIL": "your-email@example.com",
-        "JIRA_API_TOKEN": "your-api-token"
-      }
-    }
-  }
-}
-```
 
 ## Available Tools
 

@@ -37,27 +37,66 @@ This is a **local stdio MCP server** that runs on your machine. For comparison w
 
 ## Installation
 
-### Option 1: Install from npm (Recommended)
+---
+
+### Option 1: Using npx (No Installation)
+
+#### Setup
+
+```bash
+# Either User scope (available in all projects)
+claude mcp add atlassian -s user -- npx -y @teolin/mcp-atlassian
+
+# Or Project scope (shared with team via git)
+claude mcp add atlassian -s project -- npx -y @teolin/mcp-atlassian
+```
+
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-atlassian` on start)
+
+---
+
+### Option 2: Global npm Installation
+
+#### Setup
 
 ```bash
 npm install -g @teolin/mcp-atlassian
+
+# Either User scope (available in all projects)
+claude mcp add atlassian -s user -- atlassian-mcp
+
+# Or Project scope (shared with team via git)
+claude mcp add atlassian -s project -- atlassian-mcp
 ```
 
-### Option 2: Install locally
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `atlassian-mcp` on start)
+
+---
+
+### Option 3: Local Installation
+
+#### Setup
 
 ```bash
 npm install @teolin/mcp-atlassian
+
+# Either User scope (available in all projects)
+claude mcp add atlassian -s user -- node ./node_modules/@teolin/mcp-atlassian/src/index.js
+
+# Or Project scope (shared with team via git)
+claude mcp add atlassian -s project -- node ./node_modules/@teolin/mcp-atlassian/src/index.js
 ```
 
-### Option 3: Use with npx (no installation)
+#### Usage
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `node ./node_modules/@teolin/mcp-atlassian/src/index.js` on start)
 
-```bash
-npx -y @teolin/mcp-atlassian
-```
+---
 
-## Setup
+## Configuration
 
-### 1. Install Atlassian CLI
+### Install Atlassian CLI
 
 ```bash
 # Install via npm
@@ -67,13 +106,7 @@ npm install -g @atlassian/forge-cli
 # https://developer.atlassian.com/console/install/
 ```
 
-### 2. Install Dependencies
-
-```bash
-npm install
-```
-
-### 3. Configure Environment
+### Environment Variables
 
 ```bash
 cp .env.example .env
@@ -95,7 +128,7 @@ Edit `.env` and configure authentication:
   - `'oauth'`: Use OAuth (acli) only
   - `'basic'`: Use Basic Auth (API token) only
 
-### 4. Authenticate (if not using auto-auth)
+### Authenticate (if not using auto-auth)
 
 ```bash
 acli jira auth login --url https://your-domain.atlassian.net
@@ -139,22 +172,6 @@ By default (`JIRA_AUTH_STRATEGY='auto'`), the MCP will:
 3. Provide detailed error messages if both methods fail
 
 This ensures maximum reliability across different environments and authentication setups.
-
-## Usage
-
-### Starting the Server
-
-```bash
-npm start
-# or
-./start-mcp.sh
-```
-
-### Running Tests
-
-```bash
-npm test
-```
 
 ## Available Tools
 
@@ -202,87 +219,6 @@ Check Atlassian CLI authentication status.
 ## Auto-Authentication
 
 The server attempts to authenticate automatically using `.env` credentials if the Atlassian CLI is not already authenticated. This provides a seamless experience without manual CLI authentication.
-
-## Integration with Claude Code
-
-Claude Code supports three scopes for MCP server configuration:
-
-- **User scope** (`~/.claude.json`): Available across all projects
-- **Local scope** (`~/.claude.json`): Project-specific, private to you (default)
-- **Project scope** (`.mcp.json` in project root): Team-shared, committed to git
-
-### Quick Setup with CLI (Recommended)
-
-```bash
-# User scope (available in all projects)
-claude mcp add atlassian --scope user
-
-# Project scope (shared with team via git)
-claude mcp add atlassian --scope project
-```
-
-### Manual Configuration
-
-#### Using npx (Recommended - no installation needed)
-
-Add to `.mcp.json` (project scope) or `~/.claude.json` (user scope):
-
-```json
-{
-  "mcpServers": {
-    "atlassian": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@teolin/mcp-atlassian"]
-    }
-  }
-}
-```
-
-#### Using global installation
-
-```json
-{
-  "mcpServers": {
-    "atlassian": {
-      "type": "stdio",
-      "command": "atlassian-mcp"
-    }
-  }
-}
-```
-
-#### Using local installation
-
-```json
-{
-  "mcpServers": {
-    "atlassian": {
-      "type": "stdio",
-      "command": "node",
-      "args": [
-        "./node_modules/@teolin/mcp-atlassian/src/index.js"
-      ]
-    }
-  }
-}
-```
-
-#### Using monorepo clone
-
-```json
-{
-  "mcpServers": {
-    "atlassian": {
-      "type": "stdio",
-      "command": "bash",
-      "args": [
-        "/path/to/multi-llm-mcps/mcps/Atlassian/start-mcp.sh"
-      ]
-    }
-  }
-}
-```
 
 ## Ticket Key Pattern
 
