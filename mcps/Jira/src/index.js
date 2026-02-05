@@ -134,6 +134,65 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         }
       }
 
+      case "create_ticket": {
+        const ticket = await jiraClient.createTicket({
+          projectKey: args.project_key,
+          summary: args.summary,
+          description: args.description,
+          issueType: args.issue_type || "Story",
+          parentKey: args.parent_key,
+          assigneeEmail: args.assignee_email,
+          sprintId: args.sprint_id,
+        })
+        return {
+          content: [
+            {
+              type: "text",
+              text: `•••••••••••• MCP.Jira: create_ticket ••••••••••••\nTicket created successfully!\n${JSON.stringify(
+                ticket,
+                null,
+                2
+              )}`,
+            },
+          ],
+        }
+      }
+
+      case "add_to_sprint": {
+        const result = await jiraClient.addToSprint(
+          args.sprint_id,
+          args.issue_keys
+        )
+        return {
+          content: [
+            {
+              type: "text",
+              text: `•••••••••••• MCP.Jira: add_to_sprint ••••••••••••\n${JSON.stringify(
+                result,
+                null,
+                2
+              )}`,
+            },
+          ],
+        }
+      }
+
+      case "get_active_sprint": {
+        const sprint = await jiraClient.getActiveSprintForBoard(args.board_id)
+        return {
+          content: [
+            {
+              type: "text",
+              text: `•••••••••••• MCP.Jira: get_active_sprint ••••••••••••\n${JSON.stringify(
+                sprint,
+                null,
+                2
+              )}`,
+            },
+          ],
+        }
+      }
+
       default:
         throw new Error(`Unknown tool: ${name}`)
     }

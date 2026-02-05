@@ -80,4 +80,76 @@ export const tools = [
       properties: {},
     },
   },
+  {
+    name: "create_ticket",
+    description: "Create a new Jira ticket",
+    inputSchema: {
+      type: "object",
+      properties: {
+        project_key: {
+          type: "string",
+          description: "Project key (e.g., PAB, PTLSNEW). Defaults to JIRA_DEFAULT_PROJECT",
+        },
+        summary: {
+          type: "string",
+          description: "Ticket summary/title",
+        },
+        description: {
+          type: "string",
+          description: "Ticket description",
+        },
+        issue_type: {
+          type: "string",
+          description: "Issue type (e.g., Story, Bug, Task, Sub-task)",
+          default: "Story",
+        },
+        parent_key: {
+          type: "string",
+          description: "Parent ticket key for sub-tasks or stories under epics (e.g., PAB-2241)",
+        },
+        assignee_email: {
+          type: "string",
+          description: "Email of the assignee (optional)",
+        },
+        sprint_id: {
+          type: "number",
+          description: "Sprint ID to add the ticket to (optional)",
+        },
+      },
+      required: ["summary"],
+    },
+  },
+  {
+    name: "add_to_sprint",
+    description: "Add one or more tickets to a sprint",
+    inputSchema: {
+      type: "object",
+      properties: {
+        sprint_id: {
+          type: "number",
+          description: "Sprint ID to add tickets to",
+        },
+        issue_keys: {
+          type: "array",
+          items: { type: "string" },
+          description: "Array of issue keys to add (e.g., ['PAB-123', 'PAB-456'])",
+        },
+      },
+      required: ["sprint_id", "issue_keys"],
+    },
+  },
+  {
+    name: "get_active_sprint",
+    description: "Get the active sprint for a board",
+    inputSchema: {
+      type: "object",
+      properties: {
+        board_id: {
+          type: "number",
+          description: "Board ID to get active sprint from",
+        },
+      },
+      required: ["board_id"],
+    },
+  },
 ]
