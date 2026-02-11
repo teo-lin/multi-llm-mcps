@@ -30,11 +30,12 @@ claude mcp add cloudwatch "$MCP_DIR/CloudWatch/start-mcp.sh" --scope user
 echo "7/9 Registering AzureAD server..."
 claude mcp add azuread "$MCP_DIR/AzureAD/start-mcp.sh" --scope user
 
-echo "8/9 Registering Kafdrop server..."
-claude mcp add kafdrop "$MCP_DIR/Kafdrop/start-mcp.sh" --scope user
-
-echo "9/9 Registering SonarCloud server..."
+echo "8/9 Registering SonarCloud server..."
 claude mcp add sonarcloud "$MCP_DIR/SonarCloud/start-mcp.sh" --scope user
+
+# echo "8/9 Registering Kafdrop server..."
+# claude mcp add kafdrop "$MCP_DIR/Kafdrop/start-mcp.sh" --scope user
+
 
 echo ""
 echo " All servers registered!"
