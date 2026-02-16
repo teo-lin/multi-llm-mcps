@@ -79,20 +79,27 @@ fi
 echo ""
 
 # =============================================================================
-# 4. Check and install Claude CLI
+# 4. Check Claude CLI profiles (claude, cc)
 # =============================================================================
-echo " Checking Claude CLI..."
-if ! command_exists claude; then
-    echo "  Claude CLI not found. Installing..."
+echo " Checking Claude CLI profiles..."
+CLAUDE_PROFILES=()
+for cmd in claude cc; do
+    if command_exists "$cmd"; then
+        CLAUDE_PROFILES+=("$cmd")
+        echo " $cmd found ($($cmd --version 2>&1 | head -1))"
+    fi
+done
+
+if [ ${#CLAUDE_PROFILES[@]} -eq 0 ]; then
+    echo "  No Claude CLI found (tried: claude, cc). Installing..."
     if [ "$PLATFORM" = "Mac" ]; then
         brew install anthropics/claude/claude
+        CLAUDE_PROFILES=(claude)
     elif [ "$PLATFORM" = "Linux" ]; then
         echo " Please install Claude CLI manually from: https://docs.anthropic.com/en/docs/claude-code/installation"
         echo "   After installation, run this script again."
         exit 1
     fi
-else
-    echo " Claude CLI already installed ($(claude --version 2>&1 | head -1))"
 fi
 echo ""
 
@@ -279,7 +286,7 @@ echo "   - Atlassian: acli jira auth login --url https://your-domain.atlassian.n
 echo "   - AWS: aws configure (or use SSO)"
 echo ""
 echo "3.  Verify installation:"
-echo "   claude mcp list"
+echo "   ${CLAUDE_PROFILES[0]} mcp list"
 echo ""
 echo " Tip: To recreate .env files, delete them and run 'npm run setup' again"
 echo ""
