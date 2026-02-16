@@ -26,14 +26,14 @@ MCP server for querying AWS CloudWatch Logs with Log Insights.
 
 ```bash
 # Either User scope (available in all projects)
-claude mcp add cloudwatch -s user -- npx -y @teolin/mcp-cloudwatch-logs
+claude mcp add cloudwatch --scope user -- npx --yes @teolin/mcp-cloudwatch-logs
 
 # Or Project scope (shared with team via git)
-claude mcp add cloudwatch -s project -- npx -y @teolin/mcp-cloudwatch-logs
+claude mcp add cloudwatch -s project -- npx --yes @teolin/mcp-cloudwatch-logs
 ```
 
 #### Usage
-Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-cloudwatch-logs` on start)
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx --yes @teolin/mcp-cloudwatch-logs` on start)
 
 ---
 
@@ -45,7 +45,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install -g @teolin/mcp-cloudwatch-logs
 
 # Either User scope (available in all projects)
-claude mcp add cloudwatch -s user -- cloudwatch-mcp
+claude mcp add cloudwatch --scope user -- cloudwatch-mcp
 
 # Or Project scope (shared with team via git)
 claude mcp add cloudwatch -s project -- cloudwatch-mcp
@@ -64,7 +64,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install @teolin/mcp-cloudwatch-logs
 
 # Either User scope (available in all projects)
-claude mcp add cloudwatch -s user -- node ./node_modules/@teolin/mcp-cloudwatch-logs/src/index.js
+claude mcp add cloudwatch --scope user -- node ./node_modules/@teolin/mcp-cloudwatch-logs/src/index.js
 
 # Or Project scope (shared with team via git)
 claude mcp add cloudwatch -s project -- node ./node_modules/@teolin/mcp-cloudwatch-logs/src/index.js
@@ -190,7 +190,7 @@ This package uses GitHub Actions for automated publishing. To publish a new vers
 3. **Verify the package**:
    ```bash
    # Test with npx (no installation)
-   npx -y @teolin/mcp-cloudwatch-logs
+   npx --yes @teolin/mcp-cloudwatch-logs
 
    # Or install globally and test
    npm install -g @teolin/mcp-cloudwatch-logs

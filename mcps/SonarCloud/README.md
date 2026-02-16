@@ -29,14 +29,14 @@ Model Context Protocol (MCP) server for SonarCloud and SonarQube integration. Pr
 
 ```bash
 # Either User scope (available in all projects)
-claude mcp add sonarcloud -s user -- npx -y @teolin/mcp-sonarcloud
+claude mcp add sonarcloud --scope user -- npx --yes @teolin/mcp-sonarcloud
 
 # Or Project scope (shared with team via git)
-claude mcp add sonarcloud -s project -- npx -y @teolin/mcp-sonarcloud
+claude mcp add sonarcloud -s project -- npx --yes @teolin/mcp-sonarcloud
 ```
 
 #### Usage
-Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-sonarcloud` on start)
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx --yes @teolin/mcp-sonarcloud` on start)
 
 ---
 
@@ -48,7 +48,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install -g @teolin/mcp-sonarcloud
 
 # Either User scope (available in all projects)
-claude mcp add sonarcloud -s user -- sonarcloud-mcp
+claude mcp add sonarcloud --scope user -- sonarcloud-mcp
 
 # Or Project scope (shared with team via git)
 claude mcp add sonarcloud -s project -- sonarcloud-mcp
@@ -67,7 +67,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install @teolin/mcp-sonarcloud
 
 # Either User scope (available in all projects)
-claude mcp add sonarcloud -s user -- node ./node_modules/@teolin/mcp-sonarcloud/src/index.js
+claude mcp add sonarcloud --scope user -- node ./node_modules/@teolin/mcp-sonarcloud/src/index.js
 
 # Or Project scope (shared with team via git)
 claude mcp add sonarcloud -s project -- node ./node_modules/@teolin/mcp-sonarcloud/src/index.js
@@ -273,7 +273,7 @@ This package uses GitHub Actions for automated publishing. To publish a new vers
 3. **Verify the package**:
    ```bash
    # Test with npx (no installation)
-   npx -y @teolin/mcp-sonarcloud
+   npx --yes @teolin/mcp-sonarcloud
 
    # Or install globally and test
    npm install -g @teolin/mcp-sonarcloud

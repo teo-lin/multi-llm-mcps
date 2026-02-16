@@ -283,23 +283,23 @@ Cons: more complex, needs a repo to share with the team.
 
 ## Manually register a single mcp server
 ```bash
-claude mcp add github "/Users/teolin/_WORK/done 👍/✴️  AI/mcps/GitHub/start-mcp.sh" --scope user
-
-# to remove
+## ADD GitHub 0.2k tokens
+claude mcp add github --scope user -- npx --yes @teolin/mcp-github
+# REMOVE
 claude mcp remove github --scope user
 ```
 
 ## Or... Install official ones and see your tokens fly out the window. Context window.
 ```bash
 
-## ADD GitHub 5.1k - 16k - 140k
+## ADD GitHub 5.1k tokens
 claude mcp add github --scope user -- npx --yes @modelcontextprotocol/server-github
 ## REMOVE
 claude mcp remove github --scope user 
 
-
-## Playwright 3.6k
+## ADD Playwright 3.6k tokens
 claude mcp add playwright --scope user -- npx --yes @playwright/mcp@latest
+## REMOVE
 claude mcp remove playwright --scope user 
 
 ```

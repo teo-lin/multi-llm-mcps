@@ -125,14 +125,14 @@ List all available protobuf message types.
 
 ```bash
 # Either User scope (available in all projects)
-claude mcp add msk -s user -- npx -y @teolin/mcp-msk
+claude mcp add msk --scope user -- npx --yes @teolin/mcp-msk
 
 # Or Project scope (shared with team via git)
-claude mcp add msk -s project -- npx -y @teolin/mcp-msk
+claude mcp add msk -s project -- npx --yes @teolin/mcp-msk
 ```
 
 #### Usage
-Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-msk` on start)
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx --yes @teolin/mcp-msk` on start)
 
 ---
 
@@ -144,7 +144,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install -g @teolin/mcp-msk
 
 # Either User scope (available in all projects)
-claude mcp add msk -s user -- msk-mcp
+claude mcp add msk --scope user -- msk-mcp
 
 # Or Project scope (shared with team via git)
 claude mcp add msk -s project -- msk-mcp
@@ -163,7 +163,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install @teolin/mcp-msk
 
 # Either User scope (available in all projects)
-claude mcp add msk -s user -- node ./node_modules/@teolin/mcp-msk/src/index.js
+claude mcp add msk --scope user -- node ./node_modules/@teolin/mcp-msk/src/index.js
 
 # Or Project scope (shared with team via git)
 claude mcp add msk -s project -- node ./node_modules/@teolin/mcp-msk/src/index.js
@@ -331,7 +331,7 @@ This package uses GitHub Actions for automated publishing. To publish a new vers
 3. **Verify the package**:
    ```bash
    # Test with npx (no installation)
-   npx -y @teolin/mcp-msk
+   npx --yes @teolin/mcp-msk
 
    # Or install globally and test
    npm install -g @teolin/mcp-msk

@@ -27,14 +27,14 @@ Automated code review server that integrates GitHub PRs with Jira tickets for co
 
 ```bash
 # Either User scope (available in all projects)
-claude mcp add codereview -s user -- npx -y @teolin/code-review-agent
+claude mcp add codereview --scope user -- npx --yes @teolin/code-review-agent
 
 # Or Project scope (shared with team via git)
-claude mcp add codereview -s project -- npx -y @teolin/code-review-agent
+claude mcp add codereview -s project -- npx --yes @teolin/code-review-agent
 ```
 
 #### Usage
-Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/code-review-agent` on start)
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx --yes @teolin/code-review-agent` on start)
 
 ---
 
@@ -46,7 +46,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install -g @teolin/code-review-agent
 
 # Either User scope (available in all projects)
-claude mcp add codereview -s user -- codereview-mcp
+claude mcp add codereview --scope user -- codereview-mcp
 
 # Or Project scope (shared with team via git)
 claude mcp add codereview -s project -- codereview-mcp
@@ -65,7 +65,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install @teolin/code-review-agent
 
 # Either User scope (available in all projects)
-claude mcp add codereview -s user -- node ./node_modules/@teolin/code-review-agent/src/index.js
+claude mcp add codereview --scope user -- node ./node_modules/@teolin/code-review-agent/src/index.js
 
 # Or Project scope (shared with team via git)
 claude mcp add codereview -s project -- node ./node_modules/@teolin/code-review-agent/src/index.js
@@ -202,7 +202,7 @@ This package uses GitHub Actions for automated publishing. To publish a new vers
 3. **Verify the package**:
    ```bash
    # Test with npx (no installation)
-   npx -y @teolin/code-review-agent
+   npx --yes @teolin/code-review-agent
 
    # Or install globally and test
    npm install -g @teolin/code-review-agent

@@ -24,14 +24,14 @@ MCP server for MySQL 8.0 with connection pooling and parameterized queries.
 
 ```bash
 # Either User scope (available in all projects)
-claude mcp add mysql -s user -- npx -y @teolin/mcp-local-mysql
+claude mcp add mysql --scope user -- npx --yes @teolin/mcp-local-mysql
 
 # Or Project scope (shared with team via git)
-claude mcp add mysql -s project -- npx -y @teolin/mcp-local-mysql
+claude mcp add mysql -s project -- npx --yes @teolin/mcp-local-mysql
 ```
 
 #### Usage
-Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-local-mysql` on start)
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx --yes @teolin/mcp-local-mysql` on start)
 
 ---
 
@@ -43,7 +43,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install -g @teolin/mcp-local-mysql
 
 # Either User scope (available in all projects)
-claude mcp add mysql -s user -- mysql-mcp
+claude mcp add mysql --scope user -- mysql-mcp
 
 # Or Project scope (shared with team via git)
 claude mcp add mysql -s project -- mysql-mcp
@@ -62,7 +62,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install @teolin/mcp-local-mysql
 
 # Either User scope (available in all projects)
-claude mcp add mysql -s user -- node ./node_modules/@teolin/mcp-local-mysql/src/index.js
+claude mcp add mysql --scope user -- node ./node_modules/@teolin/mcp-local-mysql/src/index.js
 
 # Or Project scope (shared with team via git)
 claude mcp add mysql -s project -- node ./node_modules/@teolin/mcp-local-mysql/src/index.js
@@ -141,7 +141,7 @@ This package uses GitHub Actions for automated publishing. To publish a new vers
 3. **Verify the package**:
    ```bash
    # Test with npx (no installation)
-   npx -y @teolin/mcp-local-mysql
+   npx --yes @teolin/mcp-local-mysql
 
    # Or install globally and test
    npm install -g @teolin/mcp-local-mysql

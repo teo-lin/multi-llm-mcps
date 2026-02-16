@@ -25,14 +25,14 @@ Model Context Protocol (MCP) server for Azure Active Directory authentication us
 
 ```bash
 # Either User scope (available in all projects)
-claude mcp add azuread -s user -- npx -y @teolin/mcp-azure-ad
+claude mcp add azuread --scope user -- npx --yes @teolin/mcp-azure-ad
 
 # Or Project scope (shared with team via git)
-claude mcp add azuread -s project -- npx -y @teolin/mcp-azure-ad
+claude mcp add azuread -s project -- npx --yes @teolin/mcp-azure-ad
 ```
 
 #### Usage
-Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-azure-ad` on start)
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx --yes @teolin/mcp-azure-ad` on start)
 
 ---
 
@@ -44,7 +44,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install -g @teolin/mcp-azure-ad
 
 # Either User scope (available in all projects)
-claude mcp add azuread -s user -- azuread-mcp
+claude mcp add azuread --scope user -- azuread-mcp
 
 # Or Project scope (shared with team via git)
 claude mcp add azuread -s project -- azuread-mcp
@@ -63,7 +63,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install @teolin/mcp-azure-ad
 
 # Either User scope (available in all projects)
-claude mcp add azuread -s user -- node ./node_modules/@teolin/mcp-azure-ad/src/index.js
+claude mcp add azuread --scope user -- node ./node_modules/@teolin/mcp-azure-ad/src/index.js
 
 # Or Project scope (shared with team via git)
 claude mcp add azuread -s project -- node ./node_modules/@teolin/mcp-azure-ad/src/index.js
@@ -231,7 +231,7 @@ This package uses GitHub Actions for automated publishing. To publish a new vers
 3. **Verify the package**:
    ```bash
    # Test with npx (no installation)
-   npx -y @teolin/mcp-azure-ad
+   npx --yes @teolin/mcp-azure-ad
 
    # Or install globally and test
    npm install -g @teolin/mcp-azure-ad

@@ -27,14 +27,14 @@ Model Context Protocol (MCP) server for inspecting and managing Kafka clusters v
 
 ```bash
 # Either User scope (available in all projects)
-claude mcp add kafdrop -s user -- npx -y @teolin/mcp-kafdrop
+claude mcp add kafdrop --scope user -- npx --yes @teolin/mcp-kafdrop
 
 # Or Project scope (shared with team via git)
-claude mcp add kafdrop -s project -- npx -y @teolin/mcp-kafdrop
+claude mcp add kafdrop -s project -- npx --yes @teolin/mcp-kafdrop
 ```
 
 #### Usage
-Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-kafdrop` on start)
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx --yes @teolin/mcp-kafdrop` on start)
 
 ---
 
@@ -46,7 +46,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install -g @teolin/mcp-kafdrop
 
 # Either User scope (available in all projects)
-claude mcp add kafdrop -s user -- kafdrop-mcp
+claude mcp add kafdrop --scope user -- kafdrop-mcp
 
 # Or Project scope (shared with team via git)
 claude mcp add kafdrop -s project -- kafdrop-mcp
@@ -65,7 +65,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install @teolin/mcp-kafdrop
 
 # Either User scope (available in all projects)
-claude mcp add kafdrop -s user -- node ./node_modules/@teolin/mcp-kafdrop/src/index.js
+claude mcp add kafdrop --scope user -- node ./node_modules/@teolin/mcp-kafdrop/src/index.js
 
 # Or Project scope (shared with team via git)
 claude mcp add kafdrop -s project -- node ./node_modules/@teolin/mcp-kafdrop/src/index.js
@@ -182,7 +182,7 @@ This package uses GitHub Actions for automated publishing. To publish a new vers
 3. **Verify the package**:
    ```bash
    # Test with npx (no installation)
-   npx -y @teolin/mcp-kafdrop
+   npx --yes @teolin/mcp-kafdrop
 
    # Or install globally and test
    npm install -g @teolin/mcp-kafdrop

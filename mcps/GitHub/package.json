@@ -1,6 +1,6 @@
 {
   "name": "@teolin/mcp-github",
-  "version": "3.3.4",
+  "version": "3.3.5",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for GitHub PR operations",

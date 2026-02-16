@@ -28,14 +28,14 @@ Model Context Protocol server for integrating with Doctari's Jira instance.
 
 ```bash
 # Either User scope (available in all projects)
-claude mcp add jira -s user -- npx -y @teolin/mcp-jira
+claude mcp add jira --scope user -- npx --yes @teolin/mcp-jira
 
 # Or Project scope (shared with team via git)
-claude mcp add jira -s project -- npx -y @teolin/mcp-jira
+claude mcp add jira -s project -- npx --yes @teolin/mcp-jira
 ```
 
 #### Usage
-Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-jira` on start)
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx --yes @teolin/mcp-jira` on start)
 
 ---
 
@@ -47,7 +47,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install -g @teolin/mcp-jira
 
 # Either User scope (available in all projects)
-claude mcp add jira -s user -- jira-mcp
+claude mcp add jira --scope user -- jira-mcp
 
 # Or Project scope (shared with team via git)
 claude mcp add jira -s project -- jira-mcp
@@ -66,7 +66,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install @teolin/mcp-jira
 
 # Either User scope (available in all projects)
-claude mcp add jira -s user -- node ./node_modules/@teolin/mcp-jira/src/index.js
+claude mcp add jira --scope user -- node ./node_modules/@teolin/mcp-jira/src/index.js
 
 # Or Project scope (shared with team via git)
 claude mcp add jira -s project -- node ./node_modules/@teolin/mcp-jira/src/index.js
@@ -228,7 +228,7 @@ This package uses GitHub Actions for automated publishing. To publish a new vers
 3. **Verify the package**:
    ```bash
    # Test with npx (no installation)
-   npx -y @teolin/mcp-jira
+   npx --yes @teolin/mcp-jira
 
    # Or install globally and test
    npm install -g @teolin/mcp-jira

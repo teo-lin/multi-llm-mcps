@@ -40,14 +40,14 @@ gh auth login
 
 ```bash
 # Either User scope (available in all projects)
-claude mcp add github -s user -- npx -y @teolin/mcp-github
+claude mcp add github --scope user -- npx --yes @teolin/mcp-github
 
 # Or Project scope (shared with team via git)
-claude mcp add github -s project -- npx -y @teolin/mcp-github
+claude mcp add github -s project -- npx --yes @teolin/mcp-github
 ```
 
 ### Usage
-Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-github` on start)
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx --yes @teolin/mcp-github` on start)
 
 ---
 
@@ -59,7 +59,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install -g @teolin/mcp-github
 
 # Either User scope (available in all projects)
-claude mcp add github -s user -- mcp-github
+claude mcp add github --scope user -- mcp-github
 
 # Or Project scope (shared with team via git)
 claude mcp add github -s project -- mcp-github
@@ -77,7 +77,7 @@ Automatic. Claude will use it when needed. (Startup Managed by Claude MCP server
 npm install @teolin/mcp-github
 
 # Either User scope (available in all projects)
-claude mcp add github -s user -- node ./node_modules/@teolin/mcp-github/src/index.js
+claude mcp add github --scope user -- node ./node_modules/@teolin/mcp-github/src/index.js
 
 # Or Project scope (shared with team via git)
 claude mcp add github -s project -- node ./node_modules/@teolin/mcp-github/src/index.js
@@ -196,7 +196,7 @@ This package uses GitHub Actions for automated publishing. To publish a new vers
 3. **Verify the package**:
    ```bash
    # Test with npx (no installation)
-   npx -y @teolin/mcp-github
+   npx --yes @teolin/mcp-github
 
    # Or install globally and test
    npm install -g @teolin/mcp-github

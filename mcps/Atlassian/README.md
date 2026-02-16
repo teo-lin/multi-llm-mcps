@@ -45,14 +45,14 @@ This is a **local stdio MCP server** that runs on your machine. For comparison w
 
 ```bash
 # Either User scope (available in all projects)
-claude mcp add atlassian -s user -- npx -y @teolin/mcp-atlassian
+claude mcp add atlassian --scope user -- npx --yes @teolin/mcp-atlassian
 
 # Or Project scope (shared with team via git)
-claude mcp add atlassian -s project -- npx -y @teolin/mcp-atlassian
+claude mcp add atlassian -s project -- npx --yes @teolin/mcp-atlassian
 ```
 
 #### Usage
-Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx -y @teolin/mcp-atlassian` on start)
+Automatic. Claude will use it when needed. (Startup managed by Claude MCP server lifecycle - it simply runs `npx --yes @teolin/mcp-atlassian` on start)
 
 ---
 
@@ -64,7 +64,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install -g @teolin/mcp-atlassian
 
 # Either User scope (available in all projects)
-claude mcp add atlassian -s user -- atlassian-mcp
+claude mcp add atlassian --scope user -- atlassian-mcp
 
 # Or Project scope (shared with team via git)
 claude mcp add atlassian -s project -- atlassian-mcp
@@ -83,7 +83,7 @@ Automatic. Claude will use it when needed. (Startup managed by Claude MCP server
 npm install @teolin/mcp-atlassian
 
 # Either User scope (available in all projects)
-claude mcp add atlassian -s user -- node ./node_modules/@teolin/mcp-atlassian/src/index.js
+claude mcp add atlassian --scope user -- node ./node_modules/@teolin/mcp-atlassian/src/index.js
 
 # Or Project scope (shared with team via git)
 claude mcp add atlassian -s project -- node ./node_modules/@teolin/mcp-atlassian/src/index.js
@@ -293,7 +293,7 @@ This package uses GitHub Actions for automated publishing. To publish a new vers
 3. **Verify the package**:
    ```bash
    # Test with npx (no installation)
-   npx -y @teolin/mcp-atlassian
+   npx --yes @teolin/mcp-atlassian
 
    # Or install globally and test
    npm install -g @teolin/mcp-atlassian
