@@ -15,12 +15,25 @@ SERVERS=(
   "sonarcloud:SonarCloud"
 )
 
+# Detect available Claude profiles
+PROFILES=()
+for cmd in claude cc; do
+  if command -v "$cmd" &>/dev/null; then
+    PROFILES+=("$cmd")
+  fi
+done
+
+if [ ${#PROFILES[@]} -eq 0 ]; then
+  echo "  No Claude CLI found (tried: claude, cc). Please install Claude Code first."
+  exit 1
+fi
+
 echo " Registering all MCP servers with Claude Code..."
 echo " MCP Directory: $MCP_DIR"
-echo " Profiles found: claude cc"
+echo " Profiles found: ${PROFILES[*]}"
 echo ""
 
-for profile in claude cc; do
+for profile in "${PROFILES[@]}"; do
   echo "  Profile: $profile"
   for i in "${!SERVERS[@]}"; do
     IFS=: read -r name dir <<< "${SERVERS[$i]}"
@@ -36,7 +49,7 @@ done
 
 echo " All servers registered!"
 echo ""
-echo " Verify with: ${PROFILES[0]} mcp list"
+echo " Verify with: ${PROFILES[0]:-claude} mcp list"
 echo ""
 echo "  Note: Some servers may show as 'Failed to connect' until you:"
 echo "   - Configure .env files (MySQL, Jira, CloudWatch, AzureAD)"

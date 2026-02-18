@@ -290,7 +290,7 @@ echo "   - Atlassian: acli jira auth login --url https://your-domain.atlassian.n
 echo "   - AWS: aws configure (or use SSO)"
 echo ""
 echo "3.  Verify installation:"
-echo "   ${CLAUDE_PROFILES[0]} mcp list"
+echo "   ${CLAUDE_PROFILES[0]:-claude} mcp list"
 echo ""
 echo " Tip: To recreate .env files, delete them and run 'npm run setup' again"
 echo ""
