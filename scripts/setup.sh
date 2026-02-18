@@ -86,7 +86,11 @@ CLAUDE_PROFILES=()
 for cmd in claude cc; do
     if command_exists "$cmd"; then
         CLAUDE_PROFILES+=("$cmd")
-        echo " $cmd found ($($cmd --version 2>&1 | head -1))"
+        if [ "$cmd" = "cc" ]; then
+            echo " $cmd found ($(CLAUDE_CONFIG_DIR=~/.cc claude --version 2>&1 | head -1))"
+        else
+            echo " $cmd found ($($cmd --version 2>&1 | head -1))"
+        fi
     fi
 done
 
