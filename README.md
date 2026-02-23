@@ -2,21 +2,36 @@
 
 A comprehensive collection of Model Context Protocol (MCP) servers for Claude Code, Gemini, Copilot, providing integrations with MySQL, Jira, GitHub, CloudWatch, Azure AD, and more.
 
-Availability status:
-
-- Claude Code - yes
-- Gemini - wip
-- GitHub Copilot
-- Ollama (local)
-- DeepSeek (local)
-
-## Quick Start
+## Setup
 
 git clone https://github.com/teo-lin/multi-llm-mcps
 cd mcp-servers
 npm run setup
 
 Edit the `.env` files in each MCP directory with your credentials
+
+### Manually register a single mcp server
+```bash
+## ADD GitHub 0.2k tokens
+claude mcp add github --scope user -- npx --yes @teolin/mcp-github
+# REMOVE
+claude mcp remove github --scope user
+```
+
+### Or... Install official ones and see your tokens fly out the window. Context window.
+```bash
+
+## ADD GitHub 5.1k tokens
+claude mcp add github --scope user -- npx --yes @modelcontextprotocol/server-github
+## REMOVE
+claude mcp remove github --scope user 
+
+## ADD Playwright 3.6k tokens
+claude mcp add playwright --scope user -- npx --yes @playwright/mcp@latest
+## REMOVE
+claude mcp remove playwright --scope user 
+
+```
 
 ## Available MCP Servers
 
@@ -217,23 +232,6 @@ Each MCP server has its own README with detailed documentation:
 - **Atlassian CLI**: For Atlassian and CodeReview MCPs
 - **AWS CLI**: For CloudWatch MCP (credentials configured)
 
-## Architecture
-
-All MCPs are registered in **user config** (`~/.claude.json`), making them available globally across all your projects.
-
-```
-~/.claude.json (user config)
-├── mysql
-├── jira
-├── github
-├── code-review
-├── atlassian
-├── cloudwatch
-├── azuread
-├── kafdrop
-└── msk
-```
-
 ## Security
 
 - Never commit `.env` files to version control
@@ -241,25 +239,7 @@ All MCPs are registered in **user config** (`~/.claude.json`), making them avail
 - API tokens and credentials are stored locally only
 - Each MCP runs in isolated process
 
-## Contributing
-
-Contributions are welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
-## Support
-
-For issues or questions:
-
-- Check individual MCP READMEs
-- Review `.env.example` files for configuration help
-- Verify authentication: `gh auth status`, `acli auth status`
-- Check MCP health: `claude mcp list`
-
-#  Introduction to MCP Servers
+# Introduction to MCP Servers
 
 ## What in the Devil's name are those...?
 
@@ -279,27 +259,65 @@ Pros: Scoped, accepts params, can authenticate and integrate with external servi
 
 Cons: more complex, needs a repo to share with the team.
 
----
+## Ok, explain it to me like I'm not a 10-year old...
 
-## Manually register a single mcp server
-```bash
-## ADD GitHub 0.2k tokens
-claude mcp add github --scope user -- npx --yes @teolin/mcp-github
-# REMOVE
-claude mcp remove github --scope user
-```
+### WHAT
 
-## Or... Install official ones and see your tokens fly out the window. Context window.
-```bash
+| Aspect  | Knowledge Base          | Driver / Runtime        | Workflow                  | Tool (MCP Servers)         | AI Coding Agent          |
+| ------- | ----------------------- | ----------------------- | ------------------------- | -------------------------- | ------------------------ |
+| What    | Model (LLM)             | API + Query Tool        | Shortcuts: Skill/Command  | Background dormant process | UI/CLI: AI orchestrator  |
+| Why     | Store knowledge         | Access information      | Automate operations       | External service as tool   | Analyze, plan, do, test  |
+| How     | Tokenize & Predict next | Run models, serve API   | `/cmd` syntax calls MCPs  | Listen → Execute → Retry   | Select tools → iterate   |
+| Example | Qwen4, DeepSeek         | Ollama, LM Studio       | `/commit` git flow        | `mcp-github, mcp-mysql`    | Cloud/Local, CLI/IDE/UI  |
 
-## ADD GitHub 5.1k tokens
-claude mcp add github --scope user -- npx --yes @modelcontextprotocol/server-github
-## REMOVE
-claude mcp remove github --scope user 
+- **AI Agents by Category**
 
-## ADD Playwright 3.6k tokens
-claude mcp add playwright --scope user -- npx --yes @playwright/mcp@latest
-## REMOVE
-claude mcp remove playwright --scope user 
+| Interface      | Cloud (paid/proprietary)                 | Local                            |
+| -------------- | ---------------------------------------- | -------------------------------- |
+| CLI            | Claude Code, Gemini-CLI, Codex           | Goose, PicoClaw, OpenClaw        |
+| IDE / UI       | Cursor, Windsurf, Antigravity, Cline     | LM Studio, Comfy UI, Auto1111    |
+| IDE Extensions | Q, Rovo, MS Copilot, GH Copilot, CodeGPT | Continue                         |
+| Browser        | Bolt, Lovable, Vercel v0, Replit         | HuggingFace Spaces, Codespaces   |
 
-```
+### WHY
+
+Anthropic's baby, widely adopted. It's a **standardized protocol** that connects AI models and coding assistants to external tools and services in a **structured, cost-friendly way**.
+- Because you don't wanna:
+  - Copy-paste credentials and secrets into chat willy-nilly.
+  - Manually describe API responses a zillion times per day
+  - Explain your coding slave what and how to use every single time
+
+- You want:
+  - Secure, sandboxed access to tools
+  - Structured tool descriptions
+  - Automatic tool selection by AI based on task
+  - Scalable across multiple AI platforms / agents
+
+
+### HOW
+
+#### Core Pattern: Tools That Return Minimal, Structured Data
+
+An MCP Server wraps external services (GitHub, databases, APIs) as tools, returning Minimal, Structured Data
+Typical Structure:
+├── tools.js          # Define what tools do (name, description, input schema)
+├── handlers.js       # Implement tool logic (call API/service, parse output)
+├── index.js          # Wire it up (Server → ListTools → CallTools)
+└── .env              # Keep your passwords and tokens safe (use .gitignore as well)
+
+#### Core Pattern: Context Window Optimization
+
+| Principle                | Goal                        | How                                                                 |
+| ------------------------ | --------------------------- | ------------------------------------------------------------------- |
+| **Precise Descriptions** | AI understands purpose      | "Get PR details" not verbose explanation                            |
+| **Structured I/O**       | Prevent errors & min tokens | `{title, branch}` not raw API response with metadata/headers/status |
+| **Minimal Result Sets**  | Keep context lean           | `LIMIT 100` not all 10k rows                                        |
+| **Clear Error Messages** | Fast failure recovery       | `{error: "reason", suggestion: "fix"}`                              |
+
+**Real Result:** GitHub PR queries drop from 2000-10k tokens → 300-800 tokens (75%+ savings).
+
+### Resources
+
+- **MCP Specification:** https://modelcontextprotocol.io/
+- **Official MCP Servers:** https://github.com/modelcontextprotocol/servers
+- **NPM Packages:** https://www.npmjs.com/search?q=%40teolin
