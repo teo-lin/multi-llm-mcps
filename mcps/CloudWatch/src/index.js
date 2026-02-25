@@ -45,6 +45,11 @@ class CloudWatchLogsMCPServer {
 
     this.cloudWatchClient = new CloudWatchLogsClient(config)
 
+    // Parse allowed log groups from environment variable
+    this.allowedLogGroups = process.env.ALLOWED_LOG_GROUPS
+      ? process.env.ALLOWED_LOG_GROUPS.split(",").map((g) => g.trim())
+      : null
+
     this.setupHandlers()
   }
 
@@ -65,6 +70,21 @@ class CloudWatchLogsMCPServer {
           throw new Error(`Unknown tool: ${request.params.name}`)
       }
     })
+  }
+
+  validateLogGroups(logGroups) {
+    if (!this.allowedLogGroups) {
+      return // No restriction
+    }
+
+    const invalidGroups = logGroups.filter(
+      (lg) => !this.allowedLogGroups.includes(lg)
+    )
+    if (invalidGroups.length > 0) {
+      throw new Error(
+        `Restricted log groups. Not allowed: ${invalidGroups.join(", ")}. Allowed: ${this.allowedLogGroups.join(", ")}`
+      )
+    }
   }
 
   parseTimeString(timeStr) {
@@ -111,6 +131,8 @@ class CloudWatchLogsMCPServer {
     } = args
 
     try {
+      this.validateLogGroups(logGroups)
+
       const startTimeDate = this.parseTimeString(startTime)
       const endTimeDate = this.parseTimeString(endTime)
 
@@ -233,7 +255,14 @@ class CloudWatchLogsMCPServer {
         })
       )
 
-      const logGroups = response.logGroups || []
+      let logGroups = response.logGroups || []
+
+      // Filter to allowed log groups if restriction is set
+      if (this.allowedLogGroups) {
+        logGroups = logGroups.filter((lg) =>
+          this.allowedLogGroups.includes(lg.logGroupName)
+        )
+      }
 
       return {
         content: [
@@ -280,6 +309,8 @@ class CloudWatchLogsMCPServer {
 
   async handleGetRecentLogs(args) {
     const { logGroup, hours = 1, limit = 100, filterPattern } = args
+
+    this.validateLogGroups([logGroup])
 
     const query = filterPattern
       ? `fields @timestamp, @message | filter @message like /${filterPattern}/ | sort @timestamp desc | limit ${limit}`
