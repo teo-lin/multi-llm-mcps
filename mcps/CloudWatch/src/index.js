@@ -33,13 +33,13 @@ class CloudWatchLogsMCPServer {
         process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || "us-east-1",
     }
 
-    if (process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY) {
+    if (process.env.aws_access_key_id && process.env.aws_secret_access_key) {
       config.credentials = {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        accessKeyId: process.env.aws_access_key_id,
+        secretAccessKey: process.env.aws_secret_access_key,
       }
-      if (process.env.AWS_SESSION_TOKEN) {
-        config.credentials.sessionToken = process.env.AWS_SESSION_TOKEN
+      if (process.env.aws_session_token) {
+        config.credentials.sessionToken = process.env.aws_session_token
       }
     }
 

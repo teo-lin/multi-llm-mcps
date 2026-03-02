@@ -23,8 +23,8 @@ MCP server for querying AWS CloudWatch Logs with Log Insights.
 aws configure
 
 # Option 2: Environment variables
-export AWS_ACCESS_KEY_ID=your_key
-export AWS_SECRET_ACCESS_KEY=your_secret
+export aws_access_key_id=your_key
+export aws_secret_access_key=your_secret
 export AWS_REGION=us-east-1
 
 # Verify credentials

@@ -11,6 +11,8 @@ import {
 import { exec } from "child_process"
 import { promisify } from "util"
 import { tools } from "./tools.js"
+import { existsSync } from "fs"
+import { resolve, dirname } from "path"
 
 const execAsync = promisify(exec)
 
@@ -37,6 +39,17 @@ class GitHubServer {
     this.setupToolHandlers()
   }
 
+  findGitRoot(startPath = process.env.GITHUB_WORKING_DIR || process.cwd()) {
+    let currentPath = resolve(startPath)
+    while (currentPath !== dirname(currentPath)) {
+      if (existsSync(`${currentPath}/.git`)) {
+        return currentPath
+      }
+      currentPath = dirname(currentPath)
+    }
+    return null
+  }
+
   normalizePRIdentifier(prIdentifier) {
     const urlMatch = prIdentifier.match(
       /github\.com\/[^\/]+\/[^\/]+\/pull\/(\d+)/
@@ -59,9 +72,16 @@ class GitHubServer {
     }))
 
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
-      const { working_directory } = request.params.arguments
+      let { working_directory } = request.params.arguments
 
       try {
+        if (!working_directory) {
+          const gitRoot = this.findGitRoot()
+          if (gitRoot) {
+            working_directory = gitRoot
+          }
+        }
+
         if (working_directory) {
           process.chdir(working_directory)
         }

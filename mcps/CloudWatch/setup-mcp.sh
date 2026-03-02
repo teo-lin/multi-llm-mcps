@@ -50,7 +50,7 @@ echo ""
 echo -e "${YELLOW}[3/6]${NC} Configuring AWS credentials..."
 
 # Check if AWS credentials are configured
-if [ -f "$HOME/.aws/credentials" ] || [ -n "$AWS_ACCESS_KEY_ID" ]; then
+if [ -f "$HOME/.aws/credentials" ] || [ -n "$aws_access_key_id" ]; then
     echo -e "${GREEN} AWS credentials detected${NC}"
 else
     echo -e "${YELLOW} No AWS credentials found${NC}"
@@ -58,8 +58,8 @@ else
     echo -e "${BLUE}You can configure AWS credentials using:${NC}"
     echo "  1. Run: ${GREEN}aws configure${NC}"
     echo "  2. Or set environment variables:"
-    echo "     export AWS_ACCESS_KEY_ID=your_key"
-    echo "     export AWS_SECRET_ACCESS_KEY=your_secret"
+    echo "     export aws_access_key_id=your_key"
+    echo "     export aws_secret_access_key=your_secret"
     echo "     export AWS_REGION=us-east-1"
     echo ""
     read -p "Do you want to set them now via environment variables? (y/n): " SETUP_AWS
@@ -71,8 +71,8 @@ else
         read -p "AWS Region [us-east-1]: " AWS_REGION
         AWS_REGION=${AWS_REGION:-us-east-1}
 
-        export AWS_ACCESS_KEY_ID="$AWS_KEY"
-        export AWS_SECRET_ACCESS_KEY="$AWS_SECRET"
+        export aws_access_key_id="$AWS_KEY"
+        export aws_secret_access_key="$AWS_SECRET"
         export AWS_REGION="$AWS_REGION"
 
         echo -e "${GREEN} AWS credentials set for this session${NC}"

@@ -259,7 +259,7 @@ Pros: Scoped, accepts params, can authenticate and integrate with external servi
 
 Cons: more complex, needs a repo to share with the team.
 
-## Ok, explain it to me like I'm not a 10-year old...
+## Slow down...
 
 ### WHAT
 
