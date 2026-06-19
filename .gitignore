@@ -27,3 +27,4 @@ dist/
 build/
 *.tsbuildinfo
 README-TESTING.md
+/mcps/Onyx/STATUS.md

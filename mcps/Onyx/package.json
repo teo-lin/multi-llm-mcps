@@ -1,0 +1,35 @@
+{
+  "name": "@teolin/mcp-onyx",
+  "version": "1.0.0",
+  "author": "Teolin",
+  "license": "MIT",
+  "description": "Model Context Protocol server for a self-hosted Onyx knowledge base (search over indexed Jira/Confluence/GitHub/files)",
+  "keywords": [
+    "mcp",
+    "onyx",
+    "knowledge-base",
+    "search",
+    "rag"
+  ],
+  "type": "module",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node --env-file=.env src/index.js",
+    "test": "node --env-file=.env src/test.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "axios": "^1.7.0"
+  },
+  "bin": {
+    "onyx-mcp": "src/index.js"
+  },
+  "files": [
+    "src/**/*.js",
+    "README.md",
+    ".env.example"
+  ]
+}
