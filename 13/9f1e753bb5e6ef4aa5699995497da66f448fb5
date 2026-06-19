@@ -1,0 +1,35 @@
+.gitignore
+  s_7e64617ce1fdf5::t_1e5541a4945d51 30-31
+mcps/CloudWatch/src/index.js
+  s_7e64617ce1fdf5::t_d854ea484c1b6b 33-40
+  s_7e64617ce1fdf5::t_132b5592b3e4d3 91-102,106
+  s_7e64617ce1fdf5::t_0a82239815b140 72-90,103-105,108,110,112-134
+  s_7e64617ce1fdf5::t_44d4700660e628 107,109,111
+  s_7e64617ce1fdf5::t_40cf2565032e3d 239
+  s_7e64617ce1fdf5::t_695339d6d5781d 15
+  s_7e64617ce1fdf5::t_fd28cf97cedd98 218
+  s_7e64617ce1fdf5::t_f338b06b7d8f17 330
+  s_7e64617ce1fdf5::t_d0fbe2fe1eb78c 41-42,48,53-54,56-59,62
+  s_7e64617ce1fdf5::t_70ac120b90a5dc 16
+mcps/CloudWatch/.env.example
+  s_7e64617ce1fdf5::t_5bc05c032b7b0a 9-12,15
+mcps/MSK/test-ssm-tunnel.sh
+  s_7e64617ce1fdf5::t_8282553553f82d 13
+  s_7e64617ce1fdf5::t_97ea2f3abe55fb 24-26,29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "139f1e753bb5e6ef4aa5699995497da66f448fb5",
+  "prompts": {},
+  "sessions": {
+    "s_7e64617ce1fdf5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d9e882bd-eebf-4d97-826d-1aaf8e6efe6a",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
