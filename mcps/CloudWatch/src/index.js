@@ -12,6 +12,8 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js"
+import { execSync } from "node:child_process"
+import { existsSync } from "node:fs"
 import { tools } from "./tools.js"
 
 class CloudWatchLogsMCPServer {
@@ -28,22 +30,36 @@ class CloudWatchLogsMCPServer {
       }
     )
 
-    const config = {
+    // SSO profile used for lazy `aws sso login` on expiry. Set via AWS_PROFILE or
+    // SSO_PROFILE (e.g. in .env). If unset, the default credential chain / default
+    // profile is used and `aws sso login` runs without an explicit --profile.
+    this.profile = process.env.AWS_PROFILE || process.env.SSO_PROFILE || null
+    if (this.profile) {
+      // Make the default credential chain resolve from this profile (SSO included).
+      process.env.AWS_PROFILE = this.profile
+    }
+
+    this.clientConfig = {
       region:
         process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || "us-east-1",
     }
 
     if (process.env.aws_access_key_id && process.env.aws_secret_access_key) {
-      config.credentials = {
+      this.clientConfig.credentials = {
         accessKeyId: process.env.aws_access_key_id,
         secretAccessKey: process.env.aws_secret_access_key,
       }
       if (process.env.aws_session_token) {
-        config.credentials.sessionToken = process.env.aws_session_token
+        this.clientConfig.credentials.sessionToken =
+          process.env.aws_session_token
       }
+      // Static creds present — no lazy SSO login.
+      this.ssoLoginEnabled = false
+    } else {
+      this.ssoLoginEnabled = true
     }
 
-    this.cloudWatchClient = new CloudWatchLogsClient(config)
+    this.createClient()
 
     // Parse allowed log groups from environment variable
     this.allowedLogGroups = process.env.ALLOWED_LOG_GROUPS
@@ -51,6 +67,69 @@ class CloudWatchLogsMCPServer {
       : null
 
     this.setupHandlers()
+  }
+
+  createClient() {
+    // Fresh client so the credential provider re-reads the SSO token cache
+    // (e.g. after a lazy `aws sso login`).
+    this.cloudWatchClient = new CloudWatchLogsClient({ ...this.clientConfig })
+  }
+
+  isAuthError(error) {
+    const name = error?.name || ""
+    const message = error instanceof Error ? error.message : String(error || "")
+    return (
+      /Expired|CredentialsProviderError|UnrecognizedClient|AccessDenied|SSO/i.test(
+        name
+      ) ||
+      /expired|sso session|token.*(expired|invalid)|needs to be authorized|invalid_grant|could not load credentials|failed to refresh/i.test(
+        message
+      )
+    )
+  }
+
+  resolveAwsCli() {
+    if (process.env.AWS_CLI) return process.env.AWS_CLI
+    for (const p of [
+      "/opt/homebrew/bin/aws",
+      "/usr/local/bin/aws",
+      "/usr/bin/aws",
+    ]) {
+      if (existsSync(p)) return p
+    }
+    return "aws" // fall back to PATH
+  }
+
+  ssoLogin() {
+    // Opens the browser for device authorization. stdout MUST stay clean for the
+    // MCP stdio protocol, so route all child output to stderr only.
+    const cli = this.resolveAwsCli()
+    const profileArg = this.profile ? ` --profile ${this.profile}` : ""
+    console.error(
+      `[cloudwatch-mcp] credentials expired — running: ${cli} sso login${profileArg}`
+    )
+    execSync(`${cli} sso login${profileArg}`, {
+      stdio: ["ignore", "ignore", "inherit"],
+    })
+    this.createClient()
+  }
+
+  // Send a command, lazily refreshing SSO creds once on an auth error.
+  async send(command) {
+    try {
+      return await this.cloudWatchClient.send(command)
+    } catch (error) {
+      if (!this.ssoLoginEnabled || this._loggingIn || !this.isAuthError(error)) {
+        throw error
+      }
+      this._loggingIn = true
+      try {
+        this.ssoLogin()
+      } finally {
+        this._loggingIn = false
+      }
+      return await this.cloudWatchClient.send(command)
+    }
   }
 
   setupHandlers() {
@@ -136,7 +215,7 @@ class CloudWatchLogsMCPServer {
       const startTimeDate = this.parseTimeString(startTime)
       const endTimeDate = this.parseTimeString(endTime)
 
-      const startQueryResponse = await this.cloudWatchClient.send(
+      const startQueryResponse = await this.send(
         new StartQueryCommand({
           logGroupNames: logGroups,
           startTime: Math.floor(startTimeDate.getTime() / 1000),
@@ -157,7 +236,7 @@ class CloudWatchLogsMCPServer {
       while (queryStatus === "Running" && attempts < maxAttempts) {
         await new Promise((resolve) => setTimeout(resolve, 1000)) // Wait 1 second
 
-        const resultsResponse = await this.cloudWatchClient.send(
+        const resultsResponse = await this.send(
           new GetQueryResultsCommand({
             queryId: startQueryResponse.queryId,
           })
@@ -248,7 +327,7 @@ class CloudWatchLogsMCPServer {
     const { namePrefix, limit = 50 } = args
 
     try {
-      const response = await this.cloudWatchClient.send(
+      const response = await this.send(
         new DescribeLogGroupsCommand({
           logGroupNamePrefix: namePrefix,
           limit,

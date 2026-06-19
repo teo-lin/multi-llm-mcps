@@ -10,7 +10,7 @@
 # ./test-ssm-tunnel.sh
 #
 # Terminal 2:
-# cd /Users/teolin/_WORK/done\ /\ AI/mcps/MSK
+# cd <repo>/mcps/MSK
 # node test-kafka-localhost.js
 
 echo " Starting SSM port forwarding to MSK broker..."
@@ -22,7 +22,7 @@ echo ""
 
 aws ssm start-session \
   --profile your-profile \
-  --region eu-central-1 \
+  --region your-region \
   --target i-xxxxxxxxxxxxxxxxx \
   --document-name AWS-StartPortForwardingSessionToRemoteHost \
   --parameters '{
