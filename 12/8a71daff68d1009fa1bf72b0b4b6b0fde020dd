@@ -1,0 +1,43 @@
+mcps/Onyx/start-mcp.sh
+  s_ef4c5cba8a8c66::t_56e7e9f79a4baa 1-7
+mcps/Onyx/package.json
+  s_ef4c5cba8a8c66::t_aef9cc4f591ab4 1-35
+mcps/Onyx/src/index.js
+  s_ef4c5cba8a8c66::t_6b02d8b8140f3d 1-79
+mcps/Onyx/src/tools.js
+  s_ef4c5cba8a8c66::t_66b33d00315fa2 1-32
+mcps/Onyx/src/test.js
+  s_ef4c5cba8a8c66::t_6014abdbf2c25d 1-9
+package-lock.json
+  s_2be83c41a77cfc::t_1b326d8a55bca3 22,37,53,68,82,96,111,126,143,156-157,162,165,171-172,176-180,183,2113-2114
+mcps/Onyx/README.md
+  s_ef4c5cba8a8c66::t_aa82cb4e90eb42 1-56
+mcps/Onyx/.env.example
+  s_ef4c5cba8a8c66::t_0a21bcc3816f1c 1-6
+mcps/Onyx/src/onyx-client.js
+  s_ef4c5cba8a8c66::t_7242dda06bec96 1-115
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "128a71daff68d1009fa1bf72b0b4b6b0fde020dd",
+  "prompts": {},
+  "sessions": {
+    "s_2be83c41a77cfc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fe3a2f7f-2a6e-4709-ae53-7cf919c94e90",
+        "model": "unknown"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    },
+    "s_ef4c5cba8a8c66": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "113c5b78-9161-4a00-9832-40364fc033c8",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
