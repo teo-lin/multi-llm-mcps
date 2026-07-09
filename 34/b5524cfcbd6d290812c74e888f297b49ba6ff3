@@ -1,0 +1,50 @@
+mcps/Obsidian/src/tools.js
+  s_9933498e02b152::t_693382145ee42f 1-92
+mcps/Obsidian/package.json
+  s_9933498e02b152::t_f07decee7a2444 1-47
+mcps/Onyx/trigger-gh.mjs
+  s_fa786be2f47c55::t_2b0a793791d71d 1-8
+ONYX.md
+  s_fa786be2f47c55::t_b55ef4bd6bd3c6 251
+  s_dd5de172fd93c2::t_f5f9a32167eb93 256,258-268
+  s_dd5de172fd93c2::t_124555b92ae45c 273
+  s_fa786be2f47c55::t_4c2a6e3f668614 245
+  s_fa786be2f47c55::t_3a7e7939255117 272,274-288
+  s_dd5de172fd93c2::t_d0ce23e6baea81 250,252
+  s_fa786be2f47c55::t_b92c3011f9d23f 186-194
+  s_fa786be2f47c55::t_7a925759316773 13
+  s_dd5de172fd93c2::t_bfd17468b39303 1-12,14-147,149-154,168-185,195-244,246-249,253-255,257,269-271
+  s_fa786be2f47c55::t_d4f81aeaf4343d 148,155-167
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "34b5524cfcbd6d290812c74e888f297b49ba6ff3",
+  "prompts": {},
+  "sessions": {
+    "s_9933498e02b152": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "75be4b9c-938a-4531-80b9-8e37ee21d7f2",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    },
+    "s_dd5de172fd93c2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c2eaa5ac-5d1f-4d33-8f4e-b8049afae477",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    },
+    "s_fa786be2f47c55": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "611fff21-af50-42e2-8878-5ca7c484c0fa",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
