@@ -1,0 +1,33 @@
+mcps/Obsidian/src/test.js
+  s_9933498e02b152::t_b31f16b0d6b40a 1-110
+mcps/Obsidian/.npmignore
+  s_9933498e02b152::t_820aa8841fb046 1-13
+mcps/Obsidian/start-mcp.sh
+  s_9933498e02b152::t_86d9f59ec6e789 1-7
+mcps/Obsidian/.env.example
+  s_9933498e02b152::t_1be83c430d36e9 1-2
+mcps/Obsidian/setup-mcp.sh
+  s_9933498e02b152::t_6ec9908ecf1423 1-94
+mcps/Obsidian/src/index.js
+  s_9933498e02b152::t_484aa59eddbad0 1-193
+mcps/Obsidian/README.md
+  s_9933498e02b152::t_81cbe0d8f5842c 1-74
+package-lock.json
+  s_9933498e02b152::t_5b60de81e8cb75 156-169,2127-2130
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "5c49594c667fef2c8cf970a51784f235d5c98323",
+  "prompts": {},
+  "sessions": {
+    "s_9933498e02b152": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "75be4b9c-938a-4531-80b9-8e37ee21d7f2",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
