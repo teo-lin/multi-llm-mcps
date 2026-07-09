@@ -1,0 +1,47 @@
+{
+  "name": "@teolin/mcp-obsidian",
+  "version": "1.0.0",
+  "author": "Teolin",
+  "license": "MIT",
+  "description": "MCP server for a sandboxed Obsidian vault (LLM Wiki) with raw/ read-only enforcement",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "obsidian",
+    "vault",
+    "llm-wiki",
+    "knowledge-base",
+    "claude",
+    "claude-code",
+    "server"
+  ],
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "obsidian-mcp": "src/index.js"
+  },
+  "files": [
+    "src/**/*.js",
+    "README.md",
+    ".env.example"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node --env-file=.env src/index.js",
+    "test": "node src/test.js",
+    "prepublishOnly": "chmod +x src/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teo-lin/multi-llm-mcps.git",
+    "directory": "mcps/Obsidian"
+  }
+}
