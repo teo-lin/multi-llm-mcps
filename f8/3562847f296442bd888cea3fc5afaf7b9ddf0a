@@ -1,0 +1,36 @@
+mcps/Obsidian/src/index.js
+  s_6c0c38c76dfa07::t_942d9b6b3557e1 182
+  s_6c0c38c76dfa07::t_7882b79bd23485 58-67,69-71
+  s_6c0c38c76dfa07::t_7735c07b14f6a9 98,100-114
+  s_6c0c38c76dfa07::t_7b13da7189e3d9 122-123
+mcps/Onyx/src/onyx-client.js
+  s_6c0c38c76dfa07::t_58cf7d33558fdd 24-33
+  s_6c0c38c76dfa07::t_52e245133f36c1 88-90,92
+mcps/Obsidian/src/tools.js
+  s_6c0c38c76dfa07::t_c463e4b9eea2cc 72,78,88-90
+  s_9e6b65fa32a49e::t_9950ea6fce8b66 91
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "f83562847f296442bd888cea3fc5afaf7b9ddf0a",
+  "prompts": {},
+  "sessions": {
+    "s_6c0c38c76dfa07": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8262798e-64c3-4def-82a6-92a1e23d0d08",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    },
+    "s_9e6b65fa32a49e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2aeedaed-a3a4-42ef-9738-c3815703be0e",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
