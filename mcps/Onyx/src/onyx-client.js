@@ -21,6 +21,16 @@ export class OnyxClient {
       )
     }
 
+    // Credentials are POSTed in the login body. Over plain HTTP to a non-local
+    // host that means they cross the wire in clear text — refuse it.
+    const isHttp = /^http:\/\//i.test(this.baseUrl)
+    const isLocal = /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:|\/|$)/i.test(this.baseUrl)
+    if (isHttp && !isLocal) {
+      throw new Error(
+        `Onyx MCP refuses to send credentials over plain HTTP to a remote host (${this.baseUrl}). Use https:// in ONYX_BASE_URL.`
+      )
+    }
+
     this.cookie = null
     this.http = axios.create({
       baseURL: `${this.baseUrl}/api`,
@@ -75,8 +85,11 @@ export class OnyxClient {
       res = await send()
     }
     if (res.status < 200 || res.status >= 300) {
-      const detail =
+      // Cap the surfaced body: it flows back into the LLM transcript/logs, so
+      // avoid dumping large or sensitive internal API payloads verbatim.
+      const raw =
         typeof res.data === "object" ? JSON.stringify(res.data) : String(res.data)
+      const detail = raw.length > 500 ? raw.slice(0, 500) + "… (truncated)" : raw
       throw new Error(`Onyx API ${method} ${path} -> HTTP ${res.status}: ${detail}`)
     }
     return res.data

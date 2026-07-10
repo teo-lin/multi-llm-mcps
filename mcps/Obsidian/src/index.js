@@ -55,8 +55,20 @@ class ObsidianMCPServer {
     }
   }
 
+  // path.resolve does not follow symlinks, so a symlink inside the vault could
+  // still point outside it. After resolving the real path, re-check containment.
+  async realContained(abs) {
+    const real = await fs.realpath(abs)
+    if (real !== this.vaultPath && !real.startsWith(this.vaultPath + path.sep)) {
+      throw new Error("Path escapes the vault root (symlink)")
+    }
+    return real
+  }
+
   async readFile(rel) {
-    return fs.readFile(this.resolvePath(rel), "utf-8")
+    const abs = this.resolvePath(rel)
+    await this.realContained(abs)
+    return fs.readFile(abs, "utf-8")
   }
 
   async writeFile(rel, content) {
@@ -83,9 +95,23 @@ class ObsidianMCPServer {
       .sort()
   }
 
-  async search(query, rel = ".", maxResults = 200) {
+  async search(query, rel = ".", maxResults = 200, useRegex = false) {
     const root = this.resolvePath(rel)
-    const re = new RegExp(query, "i")
+    // Default to a literal substring match. A caller-supplied regex is run
+    // per-line across the whole vault, so an untrusted pattern is a ReDoS
+    // (catastrophic-backtracking) vector — require explicit opt-in and cap length.
+    if (query.length > 1000) throw new Error("`query` too long (max 1000 chars)")
+    let re
+    if (useRegex) {
+      try {
+        re = new RegExp(query, "i")
+      } catch (e) {
+        throw new Error(`Invalid regex: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    } else {
+      const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+      re = new RegExp(escaped, "i")
+    }
     const results = []
 
     const walk = async (dir) => {
@@ -93,6 +119,8 @@ class ObsidianMCPServer {
       const entries = await fs.readdir(dir, { withFileTypes: true })
       for (const e of entries) {
         if (results.length >= maxResults) return
+        // Never traverse symlinks — they can point outside the vault root.
+        if (e.isSymbolicLink()) continue
         if (e.isDirectory()) {
           if (SKIP_DIRS.has(e.name)) continue
           await walk(path.join(dir, e.name))
@@ -151,7 +179,7 @@ class ObsidianMCPServer {
 
           case "search": {
             if (!args?.query) throw new Error("`search` requires `query`")
-            const hits = await this.search(args.query, args.path ?? ".", args.max_results ?? 200)
+            const hits = await this.search(args.query, args.path ?? ".", args.max_results ?? 200, args.regex === true)
             payload = hits.length ? hits.join("\n") : "(no matches)"
             break
           }

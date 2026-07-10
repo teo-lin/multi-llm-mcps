@@ -69,13 +69,13 @@ export const tools = [
   {
     name: "search",
     description:
-      "Recursively search vault text files for a regex/substring. Skips node_modules, .git, .obsidian. Returns file:line matches.",
+      "Recursively search vault text files. Matches a literal substring by default; set regex:true for a regular expression. Skips node_modules, .git, .obsidian and symlinks. Returns file:line matches.",
     inputSchema: {
       type: "object",
       properties: {
         query: {
           type: "string",
-          description: "Regex pattern (or plain substring) to search for",
+          description: "Substring to search for (or a regex when regex:true). Max 1000 chars.",
         },
         path: {
           type: "string",
@@ -84,6 +84,10 @@ export const tools = [
         max_results: {
           type: "number",
           description: "Optional cap on matches returned (default 200)",
+        },
+        regex: {
+          type: "boolean",
+          description: "Treat query as a regular expression instead of a literal substring (default false).",
         },
       },
       required: ["query"],
