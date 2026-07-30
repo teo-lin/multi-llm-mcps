@@ -1,0 +1,41 @@
+scripts/relink.sh
+  s_051bf95bafd43a::t_8e8c088861b54c 1-8,12-20,24-35
+  s_051bf95bafd43a::t_053155e7ea0c39 9-11,21-23
+package.json
+  s_051bf95bafd43a::t_8c3bb32c96c708 14
+mcps/Onyx/README.md
+  s_051bf95bafd43a::t_3dc36075848df1 50
+scripts/unregister-all.sh
+  s_051bf95bafd43a::t_5f162b81161f2a 3
+scripts/register-all.sh
+  s_051bf95bafd43a::t_eb9081fd35423f 3-5,7-8,10-11,21-24
+README.md
+  s_051bf95bafd43a::t_b9ca0943528212 211-213,216-223
+  s_8f2da7e38c8ecc::t_94259281e362c1 224
+.serena/project.yml
+  s_051bf95bafd43a::t_b87ee78a2bcdbc 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "edda23386956cc159c57085d60461912f69d0d7d",
+  "prompts": {},
+  "sessions": {
+    "s_051bf95bafd43a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "04db1d94-077a-4dd4-a5d9-70addc7d5e92",
+        "model": "claude-opus-5"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    },
+    "s_8f2da7e38c8ecc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "102fe113-c9ba-43eb-b844-0c52c742f455",
+        "model": "claude-opus-5"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
