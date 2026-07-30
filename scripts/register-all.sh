@@ -1,9 +1,14 @@
 #!/bin/bash
 
-# Get the absolute path to the project root and MCP servers directory
+# Register through a stable symlink (~/.mcp) rather than this repo's real path, so
+# renaming or moving the repo does not break the registrations — only relink.sh needs
+# to be re-run. See scripts/relink.sh.
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-MCP_DIR="$ROOT_DIR/mcps"
+"$ROOT_DIR/scripts/relink.sh" || exit 1
+MCP_DIR="${MCP_LINK:-$HOME/.mcp}/mcps"
 
+# Registered name : directory under mcps/ (names are not derivable from the directory
+# name — cloudwatch/azuread/sonarcloud are flattened, code-review is kebab-cased).
 SERVERS=(
   "mysql:MySQL"
   "jira:Jira"
@@ -13,6 +18,10 @@ SERVERS=(
   "cloudwatch:CloudWatch"
   "azuread:AzureAD"
   "sonarcloud:SonarCloud"
+  "onyx:Onyx"
+  "obsidian:Obsidian"
+  "kafdrop:Kafdrop"
+  "msk:MSK"
 )
 
 # Detect available Claude profiles

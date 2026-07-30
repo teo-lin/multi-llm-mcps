@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVERS=(mysql jira github code-review atlassian cloudwatch azuread sonarcloud)
+SERVERS=(mysql jira github code-review atlassian cloudwatch azuread sonarcloud onyx obsidian kafdrop msk)
 
 # Detect available Claude profiles
 PROFILES=()

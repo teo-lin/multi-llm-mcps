@@ -11,6 +11,7 @@
     "setup": "bash scripts/setup.sh",
     "register": "bash scripts/register-all.sh",
     "unregister": "bash scripts/unregister-all.sh",
+    "relink": "bash scripts/relink.sh",
     "test": "bash scripts/test-all.sh"
   },
   "workspaces": [

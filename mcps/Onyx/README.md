@@ -47,7 +47,7 @@ Add to the `mcpServers` block of `~/.cc/.claude.json` (or `~/.claude.json`):
 ```json
 "onyx": {
   "type": "stdio",
-  "command": "/Users/teolin/_WORK/done 👍/✴️ AI/mcps/Onyx/start-mcp.sh",
+  "command": "/Users/teolin/.mcp/mcps/Onyx/start-mcp.sh",
   "args": [],
   "env": {}
 }

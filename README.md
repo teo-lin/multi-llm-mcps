@@ -208,7 +208,19 @@ npm run register
 
 # Unregister all servers
 npm run unregister
+
+# Re-point the stable symlink after renaming or moving this repo
+./scripts/relink.sh
 ```
+
+### Path independence
+
+Claude Code stores an absolute `command` path per stdio server, so registrations would
+break every time this folder is renamed or moved. To avoid that, servers are registered
+under a fixed path — `~/.mcp/mcps/<Server>/start-mcp.sh` — where `~/.mcp` is a symlink to
+this repo. After a rename or move, run `./scripts/relink.sh` once; no re-registration and
+no config edits needed. `register-all.sh` calls it automatically. Override the link
+location with `MCP_LINK=/some/path`.
 
 ## Documentation
 
