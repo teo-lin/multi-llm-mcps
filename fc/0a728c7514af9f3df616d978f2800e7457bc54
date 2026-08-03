@@ -1,0 +1,24 @@
+mcps/Browser/chrome-local-mcp/LICENSE
+  h_08ff9149c6bb35 1-21
+mcps/Browser/chrome-local-mcp/README.md
+  h_08ff9149c6bb35 1-72
+mcps/Browser/chrome-local-mcp/browser-manager.js
+  h_08ff9149c6bb35 1-385
+mcps/Browser/chrome-local-mcp/mcp-server.js
+  h_08ff9149c6bb35 1-511
+mcps/Browser/chrome-local-mcp/package.json
+  h_08ff9149c6bb35 1-47
+mcps/Browser/chrome-local-mcp/server.js
+  h_08ff9149c6bb35 1-196
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "fc0a728c7514af9f3df616d978f2800e7457bc54",
+  "prompts": {},
+  "humans": {
+    "h_08ff9149c6bb35": {
+      "author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
