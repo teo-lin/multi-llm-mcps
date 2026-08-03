@@ -6,7 +6,7 @@ const { execFile, exec } = require('child_process');
 
 // --- Configuration ---
 const CONFIG = {
-  USER_DATA_DIR: path.join(os.homedir(), '.chrome-local-mcp-profile'),
+  USER_DATA_DIR: path.join(os.homedir(), '.browser-mcp-profile'),
   WINDOW_SIZE: '1440,900',
   DEFAULT_TYPING_DELAY: 50,
   NAVIGATION_TIMEOUT: 30000,
@@ -123,9 +123,35 @@ class BrowserManager {
   async listPages() {
     const list = [];
     for (const [id, page] of Object.entries(this.pages)) {
-      list.push({ pageId: Number(id), url: page.url(), title: await page.title() });
+      if (page.isClosed()) {
+        delete this.pages[id];
+        continue;
+      }
+      try {
+        list.push({ pageId: Number(id), url: page.url(), title: await page.title() });
+      } catch (e) {
+        delete this.pages[id];
+      }
     }
     return list;
+  }
+
+  // Adopt tabs opened outside this session (manually, or by window.open) and
+  // drop the ones that have since been closed. Puppeteer hands back the same
+  // Page instance for a given target, so identity is enough to dedupe.
+  async _syncPages() {
+    if (!this.browser) return;
+    for (const [id, page] of Object.entries(this.pages)) {
+      if (page.isClosed()) delete this.pages[id];
+    }
+    const tracked = new Set(Object.values(this.pages));
+    const live = (await this.browser.pages())
+      .filter(p => !p.isClosed())
+      .filter(p => p.url().startsWith('http://') || p.url().startsWith('https://'));
+    for (const page of live) {
+      if (tracked.has(page)) continue;
+      this.pages[++this.pageCounter] = page;
+    }
   }
 
   _discoverWSEndpoint() {
@@ -153,18 +179,13 @@ class BrowserManager {
   }
 
   async discoverAndConnect() {
-    if (this.browser) {
-      return this.listPages();
+    if (!this.browser) {
+      const ws = await this._discoverWSEndpoint();
+      this.browser = await puppeteer.connect({ browserWSEndpoint: ws });
+      this.pages = {};
+      this.pageCounter = 0;
     }
-    const ws = await this._discoverWSEndpoint();
-    this.browser = await puppeteer.connect({ browserWSEndpoint: ws });
-    this.pages = {};
-    this.pageCounter = 0;
-    const pages = (await this.browser.pages()).filter(p => p.url().startsWith('http://') || p.url().startsWith('https://'));
-    for (const page of pages) {
-      const id = ++this.pageCounter;
-      this.pages[id] = page;
-    }
+    await this._syncPages();
     return this.listPages();
   }
 

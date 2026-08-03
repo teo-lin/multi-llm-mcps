@@ -13,6 +13,18 @@ const server = new McpServer({
   version: '1.0.0',
 });
 
+// Wrap every tool so errors return short isError messages instead of full tool-list dumps
+const originalTool = server.tool.bind(server);
+server.tool = function (name, description, schema, handler) {
+  return originalTool(name, description, schema, async (...args) => {
+    try {
+      return await handler(...args);
+    } catch (err) {
+      return { content: [{ type: 'text', text: `Error: ${err.message}` }] };
+    }
+  });
+};
+
 // --- Browser lifecycle ---
 
 server.tool('launch', 'Launch Chrome browser', {
@@ -222,9 +234,13 @@ server.tool('eval', 'Execute JavaScript on the page', {
   pageId: z.number().describe('Page ID'),
   script: z.string().describe('JavaScript code to execute'),
 }, async ({ pageId, script }) => {
-  const page = mgr.getPage(pageId);
-  const result = await page.evaluate(script);
-  return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+  try {
+    const page = mgr.getPage(pageId);
+    const result = await page.evaluate(script);
+    return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+  } catch (err) {
+    return { content: [{ type: 'text', text: `Eval error: ${err.message}` }] };
+  }
 });
 
 server.tool('get_links', 'Get all links on the page', {
