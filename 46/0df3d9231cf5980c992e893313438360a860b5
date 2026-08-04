@@ -1,0 +1,23 @@
+mcps/Browser/browser-manager.js
+  s_d889cdf84061ef::t_dc1b34a76e3f5d 154-162
+  s_d889cdf84061ef::t_5e965047b521be 167-169,171-196,201-223
+  s_d889cdf84061ef::t_178dc08b44cfa8 228-231
+  s_d889cdf84061ef::t_4ed15db2a1b690 2
+  s_d889cdf84061ef::t_9493de134d1c29 224
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "460df3d9231cf5980c992e893313438360a860b5",
+  "prompts": {},
+  "sessions": {
+    "s_d889cdf84061ef": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f7b4a3b1-8c8f-43f8-913f-9271a69a74c7",
+        "model": "claude-opus-5"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
