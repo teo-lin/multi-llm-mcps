@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const http = require('http');
@@ -150,38 +151,84 @@ class BrowserManager {
       .filter(p => p.url().startsWith('http://') || p.url().startsWith('https://'));
     for (const page of live) {
       if (tracked.has(page)) continue;
+      // Drop any leftover emulation override so an adopted tab keeps rendering
+      // at window size rather than a stale 800x600 from an earlier session.
+      try {
+        const client = await page.createCDPSession();
+        await client.send('Emulation.clearDeviceMetricsOverride');
+        await client.detach();
+      } catch (e) {
+        // best effort: an unresponsive target must not block adoption
+      }
       this.pages[++this.pageCounter] = page;
     }
   }
 
-  _discoverWSEndpoint() {
+  // Ask one candidate port for its browser websocket URL. Rejects on a dead or
+  // shutting-down Chrome so the caller can move on to the next candidate.
+  _fetchWSEndpoint(port) {
     return new Promise((resolve, reject) => {
-      const cmd = 'lsof -iTCP -nP -sTCP:LISTEN | grep "^Google" | head -1';
-      exec(cmd, (err, stdout) => {
-        if (err || !stdout) return reject(new Error('No running Chrome found'));
-        const match = stdout.match(/127\.0\.0\.1:(\d+)/);
-        if (!match) return reject(new Error('No Chrome debug port found'));
-        const port = match[1];
-        http.get(`http://127.0.0.1:${port}/json/version`, (res) => {
-          let data = '';
-          res.on('data', chunk => data += chunk);
-          res.on('end', () => {
-            try {
-              const j = JSON.parse(data);
-              resolve(j.webSocketDebuggerUrl);
-            } catch (e) {
-              reject(new Error('Could not parse Chrome version JSON'));
-            }
-          });
-        }).on('error', reject);
+      const req = http.get(`http://127.0.0.1:${port}/json/version`, { timeout: 2000 }, (res) => {
+        let data = '';
+        res.on('data', chunk => data += chunk);
+        res.on('end', () => {
+          try {
+            const j = JSON.parse(data);
+            if (!j.webSocketDebuggerUrl) return reject(new Error(`No debugger URL on port ${port}`));
+            resolve(j.webSocketDebuggerUrl);
+          } catch (e) {
+            reject(new Error(`Could not parse Chrome version JSON from port ${port}`));
+          }
+        });
+      });
+      req.on('timeout', () => req.destroy(new Error(`Chrome on port ${port} did not respond`)));
+      req.on('error', reject);
+    });
+  }
+
+  // Any Chrome currently listening. Used only as a fallback, and it can include
+  // instances that belong to somebody else or are on their way out.
+  _listChromePorts() {
+    return new Promise((resolve) => {
+      exec('lsof -iTCP -nP -sTCP:LISTEN | grep "^Google"', (err, stdout) => {
+        if (err || !stdout) return resolve([]);
+        const ports = [...stdout.matchAll(/127\.0\.0\.1:(\d+)/g)].map(m => m[1]);
+        resolve([...new Set(ports)]);
       });
     });
+  }
+
+  async _discoverWSEndpoint() {
+    const candidates = [];
+    // Chrome writes its debug port into the profile, so this points at our own
+    // instance rather than whichever Chrome happens to be listed first.
+    try {
+      const portFile = path.join(CONFIG.USER_DATA_DIR, 'DevToolsActivePort');
+      const port = fs.readFileSync(portFile, 'utf8').trim().split('\n')[0];
+      if (port) candidates.push(port);
+    } catch (e) {
+      // no profile yet, or no Chrome has ever run against it
+    }
+    for (const port of await this._listChromePorts()) {
+      if (!candidates.includes(port)) candidates.push(port);
+    }
+    for (const port of candidates) {
+      try {
+        return await this._fetchWSEndpoint(port);
+      } catch (e) {
+        // stale port file or a dying instance: try the next candidate
+      }
+    }
+    throw new Error('No running Chrome with an open debug port found');
   }
 
   async discoverAndConnect() {
     if (!this.browser) {
       const ws = await this._discoverWSEndpoint();
-      this.browser = await puppeteer.connect({ browserWSEndpoint: ws });
+      // defaultViewport: null -> keep whatever size the window already has.
+      // Without it puppeteer forces 800x600 onto every page it attaches to,
+      // including tabs the user opened by hand.
+      this.browser = await puppeteer.connect({ browserWSEndpoint: ws, defaultViewport: null });
       this.pages = {};
       this.pageCounter = 0;
     }
