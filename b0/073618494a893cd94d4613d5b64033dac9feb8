@@ -1,0 +1,21 @@
+.gitignore
+  s_db041985581e20::t_1dbe3fc3f55364 31-32
+mcps/Obsidian/package-lock.json
+  s_db041985581e20::t_32c661888c0cf1 1-1163
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "b0073618494a893cd94d4613d5b64033dac9feb8",
+  "prompts": {},
+  "sessions": {
+    "s_db041985581e20": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7c403290-9585-4631-b617-43679afad903",
+        "model": "claude-opus-5"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
