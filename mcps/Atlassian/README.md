@@ -54,137 +54,74 @@ acli jira auth login --site your-domain.atlassian.net
 # The MCP automatically tries OAuth first, then falls back to Basic Auth
 ```
 
-## Setup and Usage
+## Setup
 
-Three ways to run this server. Pick one — they all end with the same MCP registered in your agent.
+Four ways to run this server. Pick one:
 
-| Method         | What it does                              | Use it when                            |
-| -------------- | ----------------------------------------- | -------------------------------------- |
-| **npx**        | Downloads and runs on demand, nothing kept | Trying it out, or always want latest    |
-| **npm install**| Installs once, runs from disk              | Daily use — fastest start, works offline |
-| **clone repo** | Runs your own source copy                  | You want to change the server code       |
+| Setup            | What it does                                   | Use it when                                | How to                                            |
+| ---------------- | ---------------------------------------------- | ------------------------------------------ | ------------------------------------------------- |
+| _none (npx)_     | Downloads and runs on demand, nothing kept     | Trying it out, or always want latest       |                                                   |
+| _global (npm)_   | Installs once, runs from disk, offline         | Fastest start, works offline, all projects | `npm install --global @teolin/mcp-atlassian`                     |
+| _local (npm)_    | Install per project / repository, runs offline | Fast, offline, Project/team specific       | `npm install @teolin/mcp-atlassian`                              |
+| _custom (clone)_ | Runs your own source copy                      | You want to change the server code         | `git clone https://github.com/teo-lin/multi-llm-mcps.git && cd multi-llm-mcps && npm run setup` |
 
-### npx
+### Usage
 
-No install. npx fetches the package on first run and caches it, so the first start is slower.
+Once installed, the server must be registered with your preferred agent(s), so the agent(s) can use it. Pick the relevant one(s) for you.
 
 ```bash
+# no setup (npx):
 claude mcp add atlassian --scope user -- npx --yes @teolin/mcp-atlassian
 gemini mcp add atlassian npx --yes @teolin/mcp-atlassian
+codex  mcp add atlassian -- npx --yes @teolin/mcp-atlassian
+devin  mcp add atlassian --scope user -- npx --yes @teolin/mcp-atlassian
+
+# global setup (npm --global): same commands, with the binary instead of npx
+claude mcp add atlassian --scope user -- atlassian-mcp
+gemini mcp add atlassian atlassian-mcp
+codex  mcp add atlassian -- atlassian-mcp
+devin  mcp add atlassian --scope user -- atlassian-mcp
+
+# local setup (npm, one project): point at the installed file
+claude mcp add atlassian --scope project -- node ./node_modules/@teolin/mcp-atlassian/src/index.js
+
+# custom (clone): register every server in this repo, from the repo root
+bash scripts/register-all.sh
+# or register just this one, from mcps/Atlassian:
+claude mcp add atlassian --scope user -- "$PWD/start-mcp.sh"
+gemini mcp add atlassian --scope user "$PWD/start-mcp.sh"
+codex  mcp add atlassian -- "$PWD/start-mcp.sh"
+devin  mcp add atlassian --scope user -- "$PWD/start-mcp.sh"
 ```
 
-This server reads its config from environment variables. `npx` and global installs do not see
-this folder's `.env`, so pass them on the command line:
+`npx` and global installs do not read this folder's `.env` — pass config on the command line:
 
 ```bash
 claude mcp add atlassian --scope user --env JIRA_BASE_URL=https://your-domain.atlassian.net -- npx --yes @teolin/mcp-atlassian
+gemini mcp add atlassian --scope user -e JIRA_BASE_URL=https://your-domain.atlassian.net npx --yes @teolin/mcp-atlassian
+codex  mcp add atlassian --env JIRA_BASE_URL=https://your-domain.atlassian.net -- npx --yes @teolin/mcp-atlassian
+devin  mcp add atlassian --scope user -e JIRA_BASE_URL=https://your-domain.atlassian.net -- npx --yes @teolin/mcp-atlassian
 ```
 
-### npm install
-
-Installed once, so startup is instant and works offline. You update it yourself with `npm update`.
-
-```bash
-# Global — available in every project (recommended)
-npm install --global @teolin/mcp-atlassian
-claude mcp add atlassian --scope user -- atlassian-mcp
-gemini mcp add atlassian atlassian-mcp
-
-# Local — pinned to one project, shared with your team through package.json
-npm install @teolin/mcp-atlassian
-claude mcp add atlassian --scope project -- node ./node_modules/@teolin/mcp-atlassian/src/index.js
-```
-
-### clone repo
-
-Runs the source directly, so your edits take effect at the next restart. Needed for unpublished changes.
-
-```bash
-git clone https://github.com/teo-lin/multi-llm-mcps.git
-cd multi-llm-mcps/mcps/Atlassian
-npm install
-cp .env.example .env   # then fill it in — start-mcp.sh loads it for you
-claude mcp add atlassian --scope user -- "$PWD/start-mcp.sh"
-```
-
-### Other agents
-
-Same three methods apply — only the registration command changes. Each example below uses npx; for
-**npm install** swap `npx --yes @teolin/mcp-atlassian` for `atlassian-mcp`, and for **clone repo** swap it for the absolute
-path to `start-mcp.sh`.
-
-**GitHub Copilot CLI** — `copilot mcp add`, or `/mcp add` inside a session, or edit `~/.copilot/mcp-config.json`:
-
-```json
-{
-  "mcpServers": {
-    "atlassian": {
-      "type": "local",
-      "command": "npx",
-      "args": ["--yes", "@teolin/mcp-atlassian"],
-      "env": { "JIRA_BASE_URL": "https://your-domain.atlassian.net" },
-      "tools": ["*"]
-    }
-  }
-}
-```
-
-**OpenAI Codex CLI** — one command, or edit `~/.codex/config.toml`:
-
-```bash
-codex mcp add atlassian --env JIRA_BASE_URL=https://your-domain.atlassian.net -- npx --yes @teolin/mcp-atlassian
-```
-
-```toml
-[mcp_servers.atlassian]
-command = "npx"
-args = ["--yes", "@teolin/mcp-atlassian"]
-
-[mcp_servers.atlassian.env]
-JIRA_BASE_URL = "https://your-domain.atlassian.net"
-```
-
-**Devin** — one command, or edit `.devin/mcp_config.json` (put secrets in the gitignored `.devin/mcp_config.local.json`):
-
-```bash
-devin mcp add atlassian -- npx --yes @teolin/mcp-atlassian
-```
-
-```json
-{
-  "mcpServers": {
-    "atlassian": {
-      "command": "npx",
-      "args": ["--yes", "@teolin/mcp-atlassian"],
-      "env": { "JIRA_BASE_URL": "https://your-domain.atlassian.net" }
-    }
-  }
-}
-```
-
-**Goose** — `goose configure` → *Add Extension* → *Command-line Extension*, or edit `~/.config/goose/config.yaml`:
-
-```yaml
-extensions:
-  atlassian:
-    type: stdio
-    name: atlassian
-    enabled: true
-    cmd: npx
-    args: ["--yes", "@teolin/mcp-atlassian"]
-    envs: { JIRA_BASE_URL: "https://your-domain.atlassian.net" }
-    timeout: 300
-```
+The clone setup needs none of this: `start-mcp.sh` loads `.env` for you.
 
 ### Verify and remove
 
 ```bash
 claude mcp list
 gemini mcp list
+codex  mcp list
+devin  mcp list
 
 claude mcp remove atlassian --scope user
-gemini mcp remove atlassian
+gemini mcp remove atlassian --scope user
+codex  mcp remove atlassian
+devin  mcp remove atlassian --scope user
 ```
+
+`claude mcp get atlassian`, `codex mcp get atlassian` and `devin mcp get atlassian` show one server in
+detail. `devin` removes from `local` scope unless you pass `--scope`, so remove from the same scope
+you added to.
 
 ---
 

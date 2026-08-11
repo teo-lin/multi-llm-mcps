@@ -25,137 +25,74 @@ cp .env.example .env
 #   MYSQL_DATABASE=mydb
 ```
 
-## Setup and Usage
+## Setup
 
-Three ways to run this server. Pick one — they all end with the same MCP registered in your agent.
+Four ways to run this server. Pick one:
 
-| Method         | What it does                              | Use it when                            |
-| -------------- | ----------------------------------------- | -------------------------------------- |
-| **npx**        | Downloads and runs on demand, nothing kept | Trying it out, or always want latest    |
-| **npm install**| Installs once, runs from disk              | Daily use — fastest start, works offline |
-| **clone repo** | Runs your own source copy                  | You want to change the server code       |
+| Setup            | What it does                                   | Use it when                                | How to                                            |
+| ---------------- | ---------------------------------------------- | ------------------------------------------ | ------------------------------------------------- |
+| _none (npx)_     | Downloads and runs on demand, nothing kept     | Trying it out, or always want latest       |                                                   |
+| _global (npm)_   | Installs once, runs from disk, offline         | Fastest start, works offline, all projects | `npm install --global @teolin/mcp-local-mysql`                     |
+| _local (npm)_    | Install per project / repository, runs offline | Fast, offline, Project/team specific       | `npm install @teolin/mcp-local-mysql`                              |
+| _custom (clone)_ | Runs your own source copy                      | You want to change the server code         | `git clone https://github.com/teo-lin/multi-llm-mcps.git && cd multi-llm-mcps && npm run setup` |
 
-### npx
+### Usage
 
-No install. npx fetches the package on first run and caches it, so the first start is slower.
+Once installed, the server must be registered with your preferred agent(s), so the agent(s) can use it. Pick the relevant one(s) for you.
 
 ```bash
+# no setup (npx):
 claude mcp add mysql --scope user -- npx --yes @teolin/mcp-local-mysql
 gemini mcp add mysql npx --yes @teolin/mcp-local-mysql
+codex  mcp add mysql -- npx --yes @teolin/mcp-local-mysql
+devin  mcp add mysql --scope user -- npx --yes @teolin/mcp-local-mysql
+
+# global setup (npm --global): same commands, with the binary instead of npx
+claude mcp add mysql --scope user -- mysql-mcp
+gemini mcp add mysql mysql-mcp
+codex  mcp add mysql -- mysql-mcp
+devin  mcp add mysql --scope user -- mysql-mcp
+
+# local setup (npm, one project): point at the installed file
+claude mcp add mysql --scope project -- node ./node_modules/@teolin/mcp-local-mysql/src/index.js
+
+# custom (clone): register every server in this repo, from the repo root
+bash scripts/register-all.sh
+# or register just this one, from mcps/MySQL:
+claude mcp add mysql --scope user -- "$PWD/start-mcp.sh"
+gemini mcp add mysql --scope user "$PWD/start-mcp.sh"
+codex  mcp add mysql -- "$PWD/start-mcp.sh"
+devin  mcp add mysql --scope user -- "$PWD/start-mcp.sh"
 ```
 
-This server reads its config from environment variables. `npx` and global installs do not see
-this folder's `.env`, so pass them on the command line:
+`npx` and global installs do not read this folder's `.env` — pass config on the command line:
 
 ```bash
 claude mcp add mysql --scope user --env MYSQL_HOST=127.0.0.1 -- npx --yes @teolin/mcp-local-mysql
+gemini mcp add mysql --scope user -e MYSQL_HOST=127.0.0.1 npx --yes @teolin/mcp-local-mysql
+codex  mcp add mysql --env MYSQL_HOST=127.0.0.1 -- npx --yes @teolin/mcp-local-mysql
+devin  mcp add mysql --scope user -e MYSQL_HOST=127.0.0.1 -- npx --yes @teolin/mcp-local-mysql
 ```
 
-### npm install
-
-Installed once, so startup is instant and works offline. You update it yourself with `npm update`.
-
-```bash
-# Global — available in every project (recommended)
-npm install --global @teolin/mcp-local-mysql
-claude mcp add mysql --scope user -- mysql-mcp
-gemini mcp add mysql mysql-mcp
-
-# Local — pinned to one project, shared with your team through package.json
-npm install @teolin/mcp-local-mysql
-claude mcp add mysql --scope project -- node ./node_modules/@teolin/mcp-local-mysql/src/index.js
-```
-
-### clone repo
-
-Runs the source directly, so your edits take effect at the next restart. Needed for unpublished changes.
-
-```bash
-git clone https://github.com/teo-lin/multi-llm-mcps.git
-cd multi-llm-mcps/mcps/MySQL
-npm install
-cp .env.example .env   # then fill it in — start-mcp.sh loads it for you
-claude mcp add mysql --scope user -- "$PWD/start-mcp.sh"
-```
-
-### Other agents
-
-Same three methods apply — only the registration command changes. Each example below uses npx; for
-**npm install** swap `npx --yes @teolin/mcp-local-mysql` for `mysql-mcp`, and for **clone repo** swap it for the absolute
-path to `start-mcp.sh`.
-
-**GitHub Copilot CLI** — `copilot mcp add`, or `/mcp add` inside a session, or edit `~/.copilot/mcp-config.json`:
-
-```json
-{
-  "mcpServers": {
-    "mysql": {
-      "type": "local",
-      "command": "npx",
-      "args": ["--yes", "@teolin/mcp-local-mysql"],
-      "env": { "MYSQL_HOST": "127.0.0.1" },
-      "tools": ["*"]
-    }
-  }
-}
-```
-
-**OpenAI Codex CLI** — one command, or edit `~/.codex/config.toml`:
-
-```bash
-codex mcp add mysql --env MYSQL_HOST=127.0.0.1 -- npx --yes @teolin/mcp-local-mysql
-```
-
-```toml
-[mcp_servers.mysql]
-command = "npx"
-args = ["--yes", "@teolin/mcp-local-mysql"]
-
-[mcp_servers.mysql.env]
-MYSQL_HOST = "127.0.0.1"
-```
-
-**Devin** — one command, or edit `.devin/mcp_config.json` (put secrets in the gitignored `.devin/mcp_config.local.json`):
-
-```bash
-devin mcp add mysql -- npx --yes @teolin/mcp-local-mysql
-```
-
-```json
-{
-  "mcpServers": {
-    "mysql": {
-      "command": "npx",
-      "args": ["--yes", "@teolin/mcp-local-mysql"],
-      "env": { "MYSQL_HOST": "127.0.0.1" }
-    }
-  }
-}
-```
-
-**Goose** — `goose configure` → *Add Extension* → *Command-line Extension*, or edit `~/.config/goose/config.yaml`:
-
-```yaml
-extensions:
-  mysql:
-    type: stdio
-    name: mysql
-    enabled: true
-    cmd: npx
-    args: ["--yes", "@teolin/mcp-local-mysql"]
-    envs: { MYSQL_HOST: "127.0.0.1" }
-    timeout: 300
-```
+The clone setup needs none of this: `start-mcp.sh` loads `.env` for you.
 
 ### Verify and remove
 
 ```bash
 claude mcp list
 gemini mcp list
+codex  mcp list
+devin  mcp list
 
 claude mcp remove mysql --scope user
-gemini mcp remove mysql
+gemini mcp remove mysql --scope user
+codex  mcp remove mysql
+devin  mcp remove mysql --scope user
 ```
+
+`claude mcp get mysql`, `codex mcp get mysql` and `devin mcp get mysql` show one server in
+detail. `devin` removes from `local` scope unless you pass `--scope`, so remove from the same scope
+you added to.
 
 ---
 
