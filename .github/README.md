@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- NPM Automation token configured as `NPM_ACCESS_TOKEN` in GitHub repository secrets
+- NPM Automation token configured as `NPMJS_TOKEN` in GitHub repository secrets
 - Packages must have their version bumped before publishing
 
 ## Workflow Structure (DRY)

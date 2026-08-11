@@ -1,6 +1,6 @@
 {
   "name": "@teolin/mcp-jira",
-  "version": "3.3.6",
+  "version": "3.3.7",
   "author": "Teolin",
   "license": "MIT",
   "description": "Model Context Protocol server for Doctari Jira integration",
