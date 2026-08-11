@@ -1,0 +1,19 @@
+.github/workflows/publish-mcp.yml
+  s_1c84a967b31e68::t_178e1d342a31be 27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "937b5ecbc01de309b9b62b38c2d701ec93ab3164",
+  "prompts": {},
+  "sessions": {
+    "s_1c84a967b31e68": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "30f61955-1ddd-4b56-91a7-db87e8afa36a",
+        "model": "claude-opus-5"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
