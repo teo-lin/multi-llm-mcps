@@ -22,7 +22,7 @@ import {
 
 /**
  * ProtobufDecoder - Handles decoding of protobuf messages using the custom library
- * Matches backend pattern from /Users/teolin/_WORK/done / BE/src/_integrations/Protobuf/Protobuf.service.ts
+ * Matches backend pattern from /Users/teolin/_/_/io.planer.service.absences/src/_integrations/Protobuf/Protobuf.service.ts
  */
 export class ProtobufDecoder {
   constructor() {

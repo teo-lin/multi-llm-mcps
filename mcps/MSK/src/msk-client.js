@@ -8,7 +8,7 @@ import {
 /**
  * MSKClient - Wrapper for AWS MSK API operations
  * Handles cluster discovery and broker endpoint retrieval
- * Matches CloudWatch MCP pattern from /Users/teolin/_WORK/done / AI/mcps/CloudWatch/src/index.js
+ * Matches CloudWatch MCP pattern from /Users/teolin/_/mcps/mcps/CloudWatch/src/index.js
  */
 export class MSKClient {
   constructor() {
