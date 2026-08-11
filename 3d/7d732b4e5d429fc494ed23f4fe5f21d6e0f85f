@@ -1,0 +1,51 @@
+.github/workflows/publish-sonarcloud-mcp.yml
+  s_1c84a967b31e68::t_a1cc37c551c2fb 1-12
+.github/workflows/publish-onyx-mcp.yml
+  s_1c84a967b31e68::t_2d5509ce0f6a03 1-12
+.github/workflows/publish-kafdrop-mcp.yml
+  s_1c84a967b31e68::t_5aab73ff7cecd5 1-2,8-13
+.github/workflows/publish-all-mcps.yml
+  s_1c84a967b31e68::t_4cf6cd10ad969b 7-13
+  s_1c84a967b31e68::t_775718ab93e0bd 63,67-82
+  s_1c84a967b31e68::t_f9d93da2e1f391 56,60-61
+.github/workflows/publish-browser-mcp.yml
+  s_1c84a967b31e68::t_96295ec8ff6b88 1-12
+mcps/Browser/package.json
+  s_1c84a967b31e68::t_87e4574a61720f 12
+  s_1c84a967b31e68::t_4cd60a112c64f1 2,7
+.github/workflows/publish-obsidian-mcp.yml
+  s_1c84a967b31e68::t_11063e0c82b5a0 1-12
+.github/workflows/publish-msk-mcp.yml
+  s_1c84a967b31e68::t_72875526d9e72c 3-7
+  s_1c84a967b31e68::t_2f9205252db349 1-2,8-13
+mcps/Browser/package-lock.json
+  s_1c84a967b31e68::t_d3b17de2e100ab 1-1860
+mcps/MSK/package-lock.json
+  s_1c84a967b31e68::t_e50232f331b748 1-1549
+mcps/Onyx/package-lock.json
+  s_1c84a967b31e68::t_8e999537b954a0 1-1327
+mcps/SonarCloud/package-lock.json
+  s_1c84a967b31e68::t_fe32c709ebac58 1-1327
+mcps/Browser/README.md
+  s_1c84a967b31e68::t_66aefb6c4cee1f 7-13
+mcps/Kafdrop/package.json
+  s_1c84a967b31e68::t_87019daa948b52 4
+mcps/MSK/package.json
+  s_1c84a967b31e68::t_84caf2c5de61ce 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "3d7d732b4e5d429fc494ed23f4fe5f21d6e0f85f",
+  "prompts": {},
+  "sessions": {
+    "s_1c84a967b31e68": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "30f61955-1ddd-4b56-91a7-db87e8afa36a",
+        "model": "claude-opus-5"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
