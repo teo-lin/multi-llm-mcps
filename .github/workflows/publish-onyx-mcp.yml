@@ -1,0 +1,12 @@
+name: Publish @teolin/mcp-onyx
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/Onyx
+      package_name: "@teolin/mcp-onyx"

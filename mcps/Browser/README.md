@@ -4,7 +4,13 @@ Local browser automation for any MCP client. Control a real Chrome instance with
 
 ## Install
 
-Clone the repo and install dependencies:
+From npm, no clone needed:
+
+```bash
+claude mcp add --scope user browser -- npx -y @teolin/mcp-browser
+```
+
+Or from source. Clone the repo and install dependencies:
 
 ```bash
 git clone https://github.com/teo-lin/multi-llm-mcps.git

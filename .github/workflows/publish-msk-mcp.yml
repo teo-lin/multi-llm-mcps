@@ -1,0 +1,13 @@
+# DISABLED: MSK MCP is not working. Remove "private": true in mcps/MSK/package.json to re-enable.
+name: "[DISABLED] Publish @teolin/mcp-msk"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  disabled:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "MSK MCP publishing is disabled — the server does not work yet."
+          exit 1

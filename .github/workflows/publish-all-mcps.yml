@@ -4,6 +4,13 @@ on:
   workflow_dispatch:
 
 jobs:
+  publish-browser:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/Browser
+      package_name: "@teolin/mcp-browser"
+
   publish-github:
     uses: ./.github/workflows/publish-mcp.yml
     secrets: inherit
@@ -46,16 +53,30 @@ jobs:
       package_path: mcps/Jira
       package_name: jira-mcp-server
 
-  publish-kafdrop:
-    uses: ./.github/workflows/publish-mcp.yml
-    secrets: inherit
-    with:
-      package_path: mcps/Kafdrop
-      package_name: kafdrop-mcp-server
-
   publish-mysql:
     uses: ./.github/workflows/publish-mcp.yml
     secrets: inherit
     with:
       package_path: mcps/MySQL
       package_name: local-mysql-mcp-server
+
+  publish-obsidian:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/Obsidian
+      package_name: "@teolin/mcp-obsidian"
+
+  publish-onyx:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/Onyx
+      package_name: "@teolin/mcp-onyx"
+
+  publish-sonarcloud:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/SonarCloud
+      package_name: "@teolin/mcp-sonarcloud"

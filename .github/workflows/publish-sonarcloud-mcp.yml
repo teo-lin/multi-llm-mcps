@@ -1,0 +1,12 @@
+name: Publish @teolin/mcp-sonarcloud
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    uses: ./.github/workflows/publish-mcp.yml
+    secrets: inherit
+    with:
+      package_path: mcps/SonarCloud
+      package_name: "@teolin/mcp-sonarcloud"

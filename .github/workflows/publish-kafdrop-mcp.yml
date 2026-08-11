@@ -1,12 +1,13 @@
-name: Publish @teolin/mcp-kafdrop
+# DISABLED: Kafdrop MCP is not working. Remove "private": true in mcps/Kafdrop/package.json to re-enable.
+name: "[DISABLED] Publish @teolin/mcp-kafdrop"
 
 on:
   workflow_dispatch:
 
 jobs:
-  publish:
-    uses: ./.github/workflows/publish-mcp.yml
-    secrets: inherit
-    with:
-      package_path: mcps/Kafdrop
-      package_name: "@teolin/mcp-kafdrop"
+  disabled:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Kafdrop MCP publishing is disabled — the server does not work yet."
+          exit 1
