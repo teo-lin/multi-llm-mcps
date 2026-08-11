@@ -24,10 +24,7 @@ jobs:
           node-version: '25.2.1'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Install dependencies
-        working-directory: ${{ inputs.package_path }}
-        run: npm ci
-
+      # No npm ci: root package.json declares workspaces, so npm resolves the stale root lock, not the package one.
       - name: Publish ${{ inputs.package_name }}
         working-directory: ${{ inputs.package_path }}
         run: npm publish --access public
