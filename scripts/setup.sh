@@ -181,6 +181,7 @@ echo ""
 # Get the absolute path to the project root and MCP servers directory
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MCP_DIR="$ROOT_DIR/mcps"
+source "$ROOT_DIR/scripts/servers.sh"
 cd "$ROOT_DIR"
 
 echo " MCP Directory: $MCP_DIR"
@@ -195,32 +196,11 @@ echo ""
 echo " Installing MCP server dependencies..."
 echo ""
 
-echo "1/9 Installing MySQL dependencies..."
-cd "$MCP_DIR/MySQL" && npm install
-
-echo "2/9 Installing Jira dependencies..."
-cd "$MCP_DIR/Jira" && npm install
-
-echo "3/9 Installing GitHub dependencies..."
-cd "$MCP_DIR/GitHub" && npm install
-
-echo "4/9 Installing CodeReview dependencies..."
-cd "$MCP_DIR/CodeReview" && npm install
-
-echo "5/9 Installing Atlassian dependencies..."
-cd "$MCP_DIR/Atlassian" && npm install
-
-echo "6/9 Installing CloudWatch dependencies..."
-cd "$MCP_DIR/CloudWatch" && npm install
-
-echo "7/9 Installing AzureAD dependencies..."
-cd "$MCP_DIR/AzureAD" && npm install
-
-echo "8/9 Installing Kafdrop dependencies..."
-cd "$MCP_DIR/Kafdrop" && npm install
-
-echo "9/9 Installing SonarCloud dependencies..."
-cd "$MCP_DIR/SonarCloud" && npm install
+MCP_DIRS=($(mcp_dirs))
+for i in "${!MCP_DIRS[@]}"; do
+  echo "$((i+1))/${#MCP_DIRS[@]} Installing ${MCP_DIRS[$i]} dependencies..."
+  cd "$MCP_DIR/${MCP_DIRS[$i]}" && npm install
+done
 
 echo ""
 echo " Setting up .env files..."
@@ -243,15 +223,9 @@ setup_env() {
 }
 
 # Setup .env for each MCP server
-setup_env "MySQL" "MySQL"
-setup_env "Jira" "Jira"
-setup_env "GitHub" "GitHub"
-setup_env "CodeReview" "CodeReview"
-setup_env "Atlassian" "Atlassian"
-setup_env "CloudWatch" "CloudWatch"
-setup_env "AzureAD" "AzureAD"
-setup_env "Kafdrop" "Kafdrop"
-setup_env "SonarCloud" "SonarCloud"
+for dir in "${MCP_DIRS[@]}"; do
+  setup_env "$dir" "$dir"
+done
 
 echo ""
 
@@ -281,8 +255,9 @@ echo "   - CloudWatch/.env (AWS credentials)"
 echo "   - CodeReview/.env (GitHub repo + Jira URL)"
 echo "   - Atlassian/.env (Jira credentials)"
 echo "   - AzureAD/.env (Azure AD client ID)"
-echo "   - Kafdrop/.env (Kafdrop URL)"
 echo "   - SonarCloud/.env (SonarCloud token)"
+echo "   - Obsidian/.env (VAULT_PATH — the server exits without it)"
+echo "   - Onyx/.env (Onyx URL + API key)"
 echo ""
 echo "2.  Authenticate CLIs (if not already done):"
 echo "   - GitHub: gh auth login"

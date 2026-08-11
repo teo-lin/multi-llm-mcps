@@ -24,8 +24,25 @@ jobs:
           node-version: '25.2.1'
           registry-url: 'https://registry.npmjs.org'
 
+      # Authenticated view: a brand-new name is invisible to anonymous reads for minutes after publish.
+      - name: Check whether ${{ inputs.package_name }} is already published
+        id: check
+        working-directory: ${{ inputs.package_path }}
+        run: |
+          name=$(node --print "require('./package.json').name")
+          version=$(node --print "require('./package.json').version")
+          if npm view "$name@$version" version > /dev/null 2>&1; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::$name@$version is already published — skipping"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
+
       # No npm ci: root package.json declares workspaces, so npm resolves the stale root lock, not the package one.
       - name: Publish ${{ inputs.package_name }}
+        if: steps.check.outputs.published == 'false'
         working-directory: ${{ inputs.package_path }}
         run: npm publish --access public
         env:

@@ -4,25 +4,11 @@
 # renaming or moving the repo does not break the registrations — only relink.sh needs
 # to be re-run. See scripts/relink.sh.
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$ROOT_DIR/scripts/servers.sh"
 "$ROOT_DIR/scripts/relink.sh" || exit 1
 MCP_DIR="${MCP_LINK:-$HOME/.mcp}/mcps"
 
-# Registered name : directory under mcps/ (names are not derivable from the directory
-# name — cloudwatch/azuread/sonarcloud are flattened, code-review is kebab-cased).
-SERVERS=(
-  "mysql:MySQL"
-  "jira:Jira"
-  "github:GitHub"
-  "code-review:CodeReview"
-  "atlassian:Atlassian"
-  "cloudwatch:CloudWatch"
-  "azuread:AzureAD"
-  "sonarcloud:SonarCloud"
-  "onyx:Onyx"
-  "obsidian:Obsidian"
-  "kafdrop:Kafdrop"
-  "msk:MSK"
-)
+SERVERS=("${MCP_SERVERS[@]}")
 
 # Detect available Claude profiles
 PROFILES=()
@@ -45,7 +31,7 @@ echo ""
 for profile in "${PROFILES[@]}"; do
   echo "  Profile: $profile"
   for i in "${!SERVERS[@]}"; do
-    IFS=: read -r name dir <<< "${SERVERS[$i]}"
+    IFS=: read -r name dir _pkg <<< "${SERVERS[$i]}"
     echo "  $((i+1))/${#SERVERS[@]} Registering $name..."
     if [ "$profile" = "cc" ]; then
       CLAUDE_CONFIG_DIR=~/.cc claude mcp add "$name" "$MCP_DIR/$dir/start-mcp.sh" --scope user 2>/dev/null || echo "    (failed)"

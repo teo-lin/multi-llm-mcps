@@ -1,4 +1,4 @@
-name: Publish All MCPs
+name: "_Publish All MCPs"
 
 on:
   workflow_dispatch:

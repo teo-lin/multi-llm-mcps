@@ -1,6 +1,6 @@
 {
   "name": "@teolin/mcp-local-mysql",
-  "version": "3.3.7",
+  "version": "3.3.8",
   "author": "Teolin",
   "license": "MIT",
   "description": "MCP server for local MySQL database operations",

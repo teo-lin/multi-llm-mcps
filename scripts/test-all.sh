@@ -5,20 +5,11 @@
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 MCPS_DIR="$SCRIPT_DIR/../mcps"
+source "$SCRIPT_DIR/servers.sh"
 
 cd "$MCPS_DIR"
 
-PACKAGES=(
-  "MySQL"
-  "Atlassian"
-  "AzureAD"
-  "CloudWatch"
-  "CodeReview"
-  "GitHub"
-  "Jira"
-  "Kafdrop"
-  "SonarCloud"
-)
+PACKAGES=($(mcp_dirs))
 
 passed=0
 failed=0

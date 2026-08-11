@@ -5,21 +5,13 @@
 # Usage: ./test-npx-interactive.sh [package-name]
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/servers.sh"
 
 # If package name provided, test just that one
 if [ -n "$1" ]; then
   PACKAGES=("$1")
 else
-  PACKAGES=(
-    "@teolin/mcp-local-mysql"
-    "@teolin/mcp-atlassian"
-    "@teolin/mcp-azure-ad"
-    "@teolin/mcp-cloudwatch-logs"
-    "@teolin/code-review-agent"
-    "@teolin/mcp-github"
-    "@teolin/mcp-jira"
-    "@teolin/mcp-kafdrop"
-  )
+  PACKAGES=($(mcp_packages))
 fi
 
 echo " Interactive MCP Package Testing via npx"

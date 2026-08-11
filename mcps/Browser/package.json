@@ -1,6 +1,6 @@
 {
   "name": "@teolin/mcp-browser",
-  "version": "3.3.7",
+  "version": "3.3.8",
   "description": "A local Chrome browser automation MCP server powered by Puppeteer for any agent",
   "main": "mcp-server.js",
   "bin": {

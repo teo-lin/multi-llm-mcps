@@ -7,18 +7,9 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/servers.sh"
 
-PACKAGES=(
-  "@teolin/mcp-local-mysql"
-  "@teolin/mcp-atlassian"
-  "@teolin/mcp-azure-ad"
-  "@teolin/mcp-cloudwatch-logs"
-  "@teolin/code-review-agent"
-  "@teolin/mcp-github"
-  "@teolin/mcp-jira"
-  "@teolin/mcp-kafdrop"
-  "@teolin/mcp-sonarcloud"
-)
+PACKAGES=($(mcp_packages))
 
 passed=0
 failed=0

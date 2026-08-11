@@ -1,6 +1,13 @@
 #!/bin/bash
 
-SERVERS=(mysql jira github code-review atlassian cloudwatch azuread sonarcloud onyx obsidian kafdrop msk)
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$ROOT_DIR/scripts/servers.sh"
+
+# Disabled servers included too, so old registrations do not linger.
+SERVERS=($(mcp_names))
+for entry in "${MCP_DISABLED[@]}"; do
+  SERVERS+=("${entry%%:*}")
+done
 
 # Detect available Claude profiles
 PROFILES=()

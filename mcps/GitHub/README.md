@@ -37,33 +37,123 @@ sudo apt install gh
 gh auth login
 ```
 
-## Setup
+## Setup and Usage
 
-| Method         | Pros                          | Cons                             | When           |
-| -------------- | ----------------------------- | -------------------------------- | -------------- |
-| **npx**        | No install, latest version    | Slower, needs internet           | Quick demos    |
-| **Global npm** | Instant, offline              | Takes disk space, manual updates | Default choice |
-| **Local npm**  | Version controlled, team sync | Extra disk per project           | Shared teams   |
+Three ways to run this server. Pick one — they all end with the same MCP registered in your agent.
+
+| Method         | What it does                              | Use it when                            |
+| -------------- | ----------------------------------------- | -------------------------------------- |
+| **npx**        | Downloads and runs on demand, nothing kept | Trying it out, or always want latest    |
+| **npm install**| Installs once, runs from disk              | Daily use — fastest start, works offline |
+| **clone repo** | Runs your own source copy                  | You want to change the server code       |
+
+### npx
+
+No install. npx fetches the package on first run and caches it, so the first start is slower.
 
 ```bash
-# Option 1: npx (fastest)
 claude mcp add github --scope user -- npx --yes @teolin/mcp-github
 gemini mcp add github npx --yes @teolin/mcp-github
+```
 
-# Option 2: Global install (recommended)
+### npm install
+
+Installed once, so startup is instant and works offline. You update it yourself with `npm update`.
+
+```bash
+# Global — available in every project (recommended)
 npm install --global @teolin/mcp-github
 claude mcp add github --scope user -- mcp-github
 gemini mcp add github mcp-github
 
-# Option 3: Local project
+# Local — pinned to one project, shared with your team through package.json
 npm install @teolin/mcp-github
 claude mcp add github --scope project -- node ./node_modules/@teolin/mcp-github/src/index.js
+```
 
-# Verify
+### clone repo
+
+Runs the source directly, so your edits take effect at the next restart. Needed for unpublished changes.
+
+```bash
+git clone https://github.com/teo-lin/multi-llm-mcps.git
+cd multi-llm-mcps/mcps/GitHub
+npm install
+claude mcp add github --scope user -- "$PWD/start-mcp.sh"
+```
+
+### Other agents
+
+Same three methods apply — only the registration command changes. Each example below uses npx; for
+**npm install** swap `npx --yes @teolin/mcp-github` for `mcp-github`, and for **clone repo** swap it for the absolute
+path to `start-mcp.sh`.
+
+**GitHub Copilot CLI** — `copilot mcp add`, or `/mcp add` inside a session, or edit `~/.copilot/mcp-config.json`:
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "type": "local",
+      "command": "npx",
+      "args": ["--yes", "@teolin/mcp-github"],
+      "env": {},
+      "tools": ["*"]
+    }
+  }
+}
+```
+
+**OpenAI Codex CLI** — one command, or edit `~/.codex/config.toml`:
+
+```bash
+codex mcp add github -- npx --yes @teolin/mcp-github
+```
+
+```toml
+[mcp_servers.github]
+command = "npx"
+args = ["--yes", "@teolin/mcp-github"]
+```
+
+**Devin** — one command, or edit `.devin/mcp_config.json` (put secrets in the gitignored `.devin/mcp_config.local.json`):
+
+```bash
+devin mcp add github -- npx --yes @teolin/mcp-github
+```
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["--yes", "@teolin/mcp-github"],
+      "env": {}
+    }
+  }
+}
+```
+
+**Goose** — `goose configure` → *Add Extension* → *Command-line Extension*, or edit `~/.config/goose/config.yaml`:
+
+```yaml
+extensions:
+  github:
+    type: stdio
+    name: github
+    enabled: true
+    cmd: npx
+    args: ["--yes", "@teolin/mcp-github"]
+    envs: {}
+    timeout: 300
+```
+
+### Verify and remove
+
+```bash
 claude mcp list
 gemini mcp list
 
-# Remove
 claude mcp remove github --scope user
 gemini mcp remove github
 ```
