@@ -12,11 +12,9 @@ SERVERS=("${MCP_SERVERS[@]}")
 
 # Detect available Claude profiles
 PROFILES=()
-for cmd in claude cc; do
-  if command -v "$cmd" &>/dev/null; then
-    PROFILES+=("$cmd")
-  fi
-done
+if command -v claude &>/dev/null; then
+  PROFILES+=("claude")
+fi
 
 if [ ${#PROFILES[@]} -eq 0 ]; then
   echo "  No Claude CLI found (tried: claude, cc). Please install Claude Code first."
@@ -33,11 +31,7 @@ for profile in "${PROFILES[@]}"; do
   for i in "${!SERVERS[@]}"; do
     IFS=: read -r name dir _pkg <<< "${SERVERS[$i]}"
     echo "  $((i+1))/${#SERVERS[@]} Registering $name..."
-    if [ "$profile" = "cc" ]; then
-      CLAUDE_CONFIG_DIR=~/.cc claude mcp add "$name" "$MCP_DIR/$dir/start-mcp.sh" --scope user 2>/dev/null || echo "    (failed)"
-    else
-      claude mcp add "$name" "$MCP_DIR/$dir/start-mcp.sh" --scope user 2>/dev/null || echo "    (failed)"
-    fi
+    claude mcp add "$name" "$MCP_DIR/$dir/start-mcp.sh" --scope user 2>/dev/null || echo "    (failed)"
   done
   echo ""
 done

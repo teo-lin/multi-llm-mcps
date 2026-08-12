@@ -79,23 +79,17 @@ fi
 echo ""
 
 # =============================================================================
-# 4. Check Claude CLI profiles (claude, cc)
+# 4. Check Claude CLI
 # =============================================================================
-echo " Checking Claude CLI profiles..."
+echo " Checking Claude CLI..."
 CLAUDE_PROFILES=()
-for cmd in claude cc; do
-    if command_exists "$cmd"; then
-        CLAUDE_PROFILES+=("$cmd")
-        if [ "$cmd" = "cc" ]; then
-            echo " $cmd found ($(CLAUDE_CONFIG_DIR=~/.cc claude --version 2>&1 | head -1))"
-        else
-            echo " $cmd found ($($cmd --version 2>&1 | head -1))"
-        fi
-    fi
-done
+if command_exists claude; then
+    CLAUDE_PROFILES+=("claude")
+    echo " claude found ($(claude --version 2>&1 | head -1))"
+fi
 
 if [ ${#CLAUDE_PROFILES[@]} -eq 0 ]; then
-    echo "  No Claude CLI found (tried: claude, cc). Installing..."
+    echo "  No Claude CLI found. Installing..."
     if [ "$PLATFORM" = "Mac" ]; then
         brew install anthropics/claude/claude
         CLAUDE_PROFILES=(claude)

@@ -11,11 +11,9 @@ done
 
 # Detect available Claude profiles
 PROFILES=()
-for cmd in claude cc; do
-  if command -v "$cmd" &>/dev/null; then
-    PROFILES+=("$cmd")
-  fi
-done
+if command -v claude &>/dev/null; then
+  PROFILES+=("claude")
+fi
 
 if [ ${#PROFILES[@]} -eq 0 ]; then
   echo "  No Claude CLI found (tried: claude, cc). Nothing to unregister."
@@ -30,11 +28,7 @@ for profile in "${PROFILES[@]}"; do
   echo "  Profile: $profile"
   for i in "${!SERVERS[@]}"; do
     echo "  $((i+1))/${#SERVERS[@]} Unregistering ${SERVERS[$i]}..."
-    if [ "$profile" = "cc" ]; then
-      CLAUDE_CONFIG_DIR=~/.cc claude mcp remove "${SERVERS[$i]}" --scope user 2>/dev/null || echo "    (not registered)"
-    else
-      claude mcp remove "${SERVERS[$i]}" --scope user 2>/dev/null || echo "    (not registered)"
-    fi
+    claude mcp remove "${SERVERS[$i]}" --scope user 2>/dev/null || echo "    (not registered)"
   done
   echo ""
 done
