@@ -1,0 +1,25 @@
+scripts/setup.sh
+  s_b7c9a4bc0e55ed::t_319ef760e73091 82,84,86-89,92
+scripts/unregister-all.sh
+  s_b7c9a4bc0e55ed::t_7bb2f1def06fd9 14-16
+  s_b7c9a4bc0e55ed::t_956378e535a594 31
+scripts/register-all.sh
+  s_b7c9a4bc0e55ed::t_05b261d2221571 15-17
+  s_b7c9a4bc0e55ed::t_b2a3d17d355137 34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "c0994dda5fdf73bdd0da971d689f031f685e06de",
+  "prompts": {},
+  "sessions": {
+    "s_b7c9a4bc0e55ed": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5daaa7e5-4ef9-4611-b78a-a7314c6d2ddf",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
