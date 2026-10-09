@@ -1,6 +1,7 @@
 export const tools = [
   {
     name: "github_pr_info",
+    annotations: { readOnlyHint: true },
     description:
       "Get GitHub PR information including title, body, branch name and diff",
     inputSchema: {
@@ -21,6 +22,7 @@ export const tools = [
   },
   {
     name: "github_pr_diff",
+    annotations: { readOnlyHint: true },
     description: "Get GitHub PR diff only",
     inputSchema: {
       type: "object",
@@ -40,6 +42,7 @@ export const tools = [
   },
   {
     name: "github_auth_status",
+    annotations: { readOnlyHint: true },
     description: "Check GitHub CLI authentication status",
     inputSchema: {
       type: "object",

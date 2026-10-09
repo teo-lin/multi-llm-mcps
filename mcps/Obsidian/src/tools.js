@@ -1,6 +1,7 @@
 export const tools = [
   {
     name: "read_file",
+    annotations: { readOnlyHint: true },
     description:
       "Read a UTF-8 text file from the vault. Path is relative to the vault root (e.g. 'wiki/index.md', 'raw/articles/foo.md').",
     inputSchema: {
@@ -16,6 +17,7 @@ export const tools = [
   },
   {
     name: "write_file",
+    annotations: { readOnlyHint: false },
     description:
       "Create or overwrite a UTF-8 text file in the vault. Denied for anything under raw/ (immutable sources). Creates parent directories as needed.",
     inputSchema: {
@@ -35,6 +37,7 @@ export const tools = [
   },
   {
     name: "append_file",
+    annotations: { readOnlyHint: false },
     description:
       "Append text to a file in the vault (e.g. wiki/log.md). Creates the file if missing. Denied for anything under raw/.",
     inputSchema: {
@@ -54,6 +57,7 @@ export const tools = [
   },
   {
     name: "list_dir",
+    annotations: { readOnlyHint: true },
     description:
       "List entries of a directory in the vault. Returns names with a trailing '/' for directories. Omit path to list the vault root.",
     inputSchema: {
@@ -68,6 +72,7 @@ export const tools = [
   },
   {
     name: "search",
+    annotations: { readOnlyHint: true },
     description:
       "Recursively search vault text files. Matches a literal substring by default; set regex:true for a regular expression. Skips node_modules, .git, .obsidian and symlinks. Returns file:line matches.",
     inputSchema: {

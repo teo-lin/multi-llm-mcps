@@ -1,6 +1,7 @@
 export const tools = [
   {
     name: "query",
+    annotations: { readOnlyHint: false },
     description:
       "Execute a SQL query on the MySQL database. Supports parameterized queries for safety. Use ? as placeholders and provide params array.",
     inputSchema: {
@@ -29,6 +30,7 @@ export const tools = [
   },
   {
     name: "list_databases",
+    annotations: { readOnlyHint: true },
     description: "List all databases in the MySQL instance",
     inputSchema: {
       type: "object",
@@ -37,6 +39,7 @@ export const tools = [
   },
   {
     name: "list_tables",
+    annotations: { readOnlyHint: true },
     description: "List all tables in a specific database",
     inputSchema: {
       type: "object",
@@ -51,6 +54,7 @@ export const tools = [
   },
   {
     name: "describe_table",
+    annotations: { readOnlyHint: true },
     description: "Show the structure of a table",
     inputSchema: {
       type: "object",

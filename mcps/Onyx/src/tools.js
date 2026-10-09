@@ -1,6 +1,7 @@
 export const tools = [
   {
     name: "search_onyx",
+    annotations: { readOnlyHint: true },
     description:
       "Keyword search across the Onyx knowledge base (indexed Jira, Confluence, GitHub, web pages and uploaded files). " +
       "Returns the most relevant documents with a matching snippet and a link. " +

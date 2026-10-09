@@ -1,6 +1,7 @@
 export const tools = [
   {
     name: "get_ticket_details",
+    annotations: { readOnlyHint: true },
     description: "Get detailed information about a specific Jira ticket",
     inputSchema: {
       type: "object",
@@ -15,6 +16,7 @@ export const tools = [
   },
   {
     name: "search_tickets_jql",
+    annotations: { readOnlyHint: true },
     description: "Search for Jira tickets using JQL (Jira Query Language)",
     inputSchema: {
       type: "object",
@@ -34,6 +36,7 @@ export const tools = [
   },
   {
     name: "get_board_issues",
+    annotations: { readOnlyHint: true },
     description:
       "Get issues from a specific Jira board, optionally filtered by sprint",
     inputSchema: {
@@ -53,6 +56,7 @@ export const tools = [
   },
   {
     name: "get_ptls_board_bugs",
+    annotations: { readOnlyHint: true },
     description: "Get bugs from the PTLS board, optionally filtered by team",
     inputSchema: {
       type: "object",
@@ -66,6 +70,7 @@ export const tools = [
   },
   {
     name: "get_absences_bugs",
+    annotations: { readOnlyHint: true },
     description: "Get bugs assigned to the Absences team from PTLS board",
     inputSchema: {
       type: "object",
@@ -74,6 +79,7 @@ export const tools = [
   },
   {
     name: "get_team_names",
+    annotations: { readOnlyHint: true },
     description: "Get list of available team names for validation",
     inputSchema: {
       type: "object",
@@ -82,6 +88,7 @@ export const tools = [
   },
   {
     name: "create_ticket",
+    annotations: { readOnlyHint: false },
     description: "Create a new Jira ticket",
     inputSchema: {
       type: "object",
@@ -121,6 +128,7 @@ export const tools = [
   },
   {
     name: "add_to_sprint",
+    annotations: { readOnlyHint: false },
     description: "Add one or more tickets to a sprint",
     inputSchema: {
       type: "object",
@@ -140,6 +148,7 @@ export const tools = [
   },
   {
     name: "get_active_sprint",
+    annotations: { readOnlyHint: true },
     description: "Get the active sprint for a board",
     inputSchema: {
       type: "object",

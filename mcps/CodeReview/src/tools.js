@@ -1,6 +1,7 @@
 export const tools = [
   {
     name: "codereview",
+    annotations: { readOnlyHint: true },
     description:
       "Automated code review for GitHub PRs with Jira integration (orchestrates GitHub and Atlassian MCPs)",
     inputSchema: {

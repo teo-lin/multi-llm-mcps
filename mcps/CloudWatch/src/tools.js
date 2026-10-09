@@ -1,6 +1,7 @@
 export const tools = [
   {
     name: "query_logs",
+    annotations: { readOnlyHint: true },
     description: "Execute a CloudWatch Logs Insights query",
     inputSchema: {
       type: "object",
@@ -35,6 +36,7 @@ export const tools = [
   },
   {
     name: "list_log_groups",
+    annotations: { readOnlyHint: true },
     description: "List available CloudWatch log groups",
     inputSchema: {
       type: "object",
@@ -53,6 +55,7 @@ export const tools = [
   },
   {
     name: "get_recent_logs",
+    annotations: { readOnlyHint: true },
     description: "Get recent log entries from a specific log group",
     inputSchema: {
       type: "object",

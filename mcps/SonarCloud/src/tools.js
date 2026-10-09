@@ -1,6 +1,7 @@
 export const tools = [
   {
     name: "get_project_status",
+    annotations: { readOnlyHint: true },
     description: "Get the quality gate status for the project",
     inputSchema: {
       type: "object",
@@ -9,6 +10,7 @@ export const tools = [
   },
   {
     name: "get_issues",
+    annotations: { readOnlyHint: true },
     description:
       "Get issues (bugs, vulnerabilities, code smells) from the project",
     inputSchema: {
@@ -46,6 +48,7 @@ export const tools = [
   },
   {
     name: "get_issue_details",
+    annotations: { readOnlyHint: true },
     description: "Get detailed information about a specific issue",
     inputSchema: {
       type: "object",
@@ -60,6 +63,7 @@ export const tools = [
   },
   {
     name: "get_measures",
+    annotations: { readOnlyHint: true },
     description:
       "Get project metrics (bugs count, vulnerabilities, code smells, coverage, etc.)",
     inputSchema: {
@@ -75,6 +79,7 @@ export const tools = [
   },
   {
     name: "get_security_hotspots",
+    annotations: { readOnlyHint: true },
     description: "Get security hotspots from the project",
     inputSchema: {
       type: "object",
@@ -100,6 +105,7 @@ export const tools = [
   },
   {
     name: "get_hotspot_details",
+    annotations: { readOnlyHint: true },
     description: "Get detailed information about a specific security hotspot",
     inputSchema: {
       type: "object",
@@ -114,6 +120,7 @@ export const tools = [
   },
   {
     name: "get_files",
+    annotations: { readOnlyHint: true },
     description: "Get list of files in the project",
     inputSchema: {
       type: "object",
@@ -136,6 +143,7 @@ export const tools = [
   },
   {
     name: "get_source_code",
+    annotations: { readOnlyHint: true },
     description: "Get source code of a file",
     inputSchema: {
       type: "object",
@@ -158,6 +166,7 @@ export const tools = [
   },
   {
     name: "get_rules",
+    annotations: { readOnlyHint: true },
     description: "Get SonarQube/SonarCloud rules",
     inputSchema: {
       type: "object",
@@ -189,6 +198,7 @@ export const tools = [
   },
   {
     name: "get_rule_details",
+    annotations: { readOnlyHint: true },
     description:
       "Get detailed information about a specific rule including description and remediation",
     inputSchema: {
@@ -204,6 +214,7 @@ export const tools = [
   },
   {
     name: "get_analyses_history",
+    annotations: { readOnlyHint: true },
     description: "Get project analysis history",
     inputSchema: {
       type: "object",
@@ -221,6 +232,7 @@ export const tools = [
   },
   {
     name: "get_issues_summary",
+    annotations: { readOnlyHint: true },
     description:
       "Get a comprehensive summary of all issues in the project grouped by type and severity",
     inputSchema: {

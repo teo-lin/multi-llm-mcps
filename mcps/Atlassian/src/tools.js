@@ -1,6 +1,7 @@
 export const tools = [
   {
     name: "jira_ticket_info",
+    annotations: { readOnlyHint: true },
     description: "Get Jira ticket information",
     inputSchema: {
       type: "object",
@@ -20,6 +21,7 @@ export const tools = [
   },
   {
     name: "jira_extract_ticket_from_text",
+    annotations: { readOnlyHint: true },
     description:
       "Extract Jira ticket key from text (PR title, branch name, etc.)",
     inputSchema: {
@@ -35,6 +37,7 @@ export const tools = [
   },
   {
     name: "jira_open_ticket",
+    annotations: { readOnlyHint: false },
     description: "Open Jira ticket in browser",
     inputSchema: {
       type: "object",
@@ -49,6 +52,7 @@ export const tools = [
   },
   {
     name: "jira_auth_status",
+    annotations: { readOnlyHint: true },
     description: "Check Atlassian CLI authentication status",
     inputSchema: {
       type: "object",
