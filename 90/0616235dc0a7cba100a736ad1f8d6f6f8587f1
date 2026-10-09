@@ -1,0 +1,57 @@
+mcps/Atlassian/src/tools.js
+  s_d88b9ea0ceaca5::t_c6b62974114e07 4,24,40,55
+mcps/Atlassian/src/tools.js.bak
+  s_d88b9ea0ceaca5::t_351d3e7a2a5036 1-58
+mcps/AzureAD/src/tools.js
+  s_d88b9ea0ceaca5::t_9b35006c5600a5 4,13,23,32,41
+mcps/AzureAD/src/tools.js.bak
+  s_d88b9ea0ceaca5::t_cf9cade4212466 1-62
+mcps/CloudWatch/src/tools.js
+  s_d88b9ea0ceaca5::t_38d5b98941f98f 4,39,58
+mcps/CloudWatch/src/tools.js.bak
+  s_d88b9ea0ceaca5::t_2625f5a3b461a6 1-82
+mcps/CodeReview/src/tools.js
+  s_d88b9ea0ceaca5::t_80b28d68f102f2 4
+mcps/CodeReview/src/tools.js.bak
+  s_d88b9ea0ceaca5::t_3fb0881c90e3e3 1-22
+mcps/GitHub/src/tools.js
+  s_d88b9ea0ceaca5::t_cacfd1c548922b 4,25,45
+mcps/GitHub/src/tools.js.bak
+  s_d88b9ea0ceaca5::t_6af75dbb6f5cf9 1-49
+mcps/Jira/src/tools.js
+  s_d88b9ea0ceaca5::t_a029c04ed11d03 4,19,39,59,73,82,91,131,151
+mcps/Jira/src/tools.js.bak
+  s_d88b9ea0ceaca5::t_be19b3368fa114 1-155
+mcps/MySQL/src/tools.js
+  s_d88b9ea0ceaca5::t_e7e74941c1de97 4,33,42,57
+mcps/MySQL/src/tools.js.bak
+  s_d88b9ea0ceaca5::t_ad4455fede286d 1-70
+mcps/Obsidian/src/tools.js
+  s_d88b9ea0ceaca5::t_826012787bae23 4,20,40,60,75
+mcps/Obsidian/src/tools.js.bak
+  s_d88b9ea0ceaca5::t_739d5e15f0edba 1-96
+mcps/Onyx/src/tools.js
+  s_d88b9ea0ceaca5::t_d7134e082b4b09 4
+mcps/Onyx/src/tools.js.bak
+  s_d88b9ea0ceaca5::t_40354961701666 1-32
+mcps/SonarCloud/src/tools.js
+  s_d88b9ea0ceaca5::t_08aeee80ad7a02 4,13,51,66,82,108,123,146,169,201,217,235
+mcps/SonarCloud/src/tools.js.bak
+  s_d88b9ea0ceaca5::t_ae6f1f9819061d 1-231
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "900616235dc0a7cba100a736ad1f8d6f6f8587f1",
+  "prompts": {},
+  "sessions": {
+    "s_d88b9ea0ceaca5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a27f2ed9-f1cb-40aa-a742-5c584aaf39bd",
+        "model": "claude-opus-5"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
