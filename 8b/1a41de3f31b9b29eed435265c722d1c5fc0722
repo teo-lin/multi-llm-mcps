@@ -1,0 +1,23 @@
+mcps/Onyx/src/onyx-client.js
+  s_a9b2fae46d80b9::t_7b638385d3a528 99-102,109-135,138,143
+mcps/Onyx/src/onyx-client.js.bak-keyword
+  s_a9b2fae46d80b9::t_1aa850c00ce2a5 1-128
+mcps/Onyx/src/tools.js
+  s_a9b2fae46d80b9::t_82cc2ae4b11da3 9,16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8b1a41de3f31b9b29eed435265c722d1c5fc0722",
+  "prompts": {},
+  "sessions": {
+    "s_a9b2fae46d80b9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "734f1bf1-efbd-4c2a-932f-2fe84cb7f465",
+        "model": "claude-opus-5"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
