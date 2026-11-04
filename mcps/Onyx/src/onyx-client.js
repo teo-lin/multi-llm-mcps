@@ -96,24 +96,51 @@ export class OnyxClient {
   }
 
   /**
-   * Keyword search across all indexed documents (no LLM required).
-   * Returns deduplicated documents with a matching snippet ("blurb").
+   * Meaning-based search across all indexed documents.
+   * Uses Onyx's full search pipeline (vectors + keywords, blended), the same
+   * one the Onyx chat uses. Falls back to the keyword-only admin endpoint if
+   * the pipeline is unavailable.
    *
    * @param {string} query
    * @param {string|null} sourceType  e.g. "confluence" | "jira" | "github" | "web" | "file"
    * @param {number} maxResults
    */
   async search(query, sourceType = null, maxResults = 10) {
-    const payload = {
+    const sources = sourceType ? [sourceType] : null
+    try {
+      const data = await this.request("POST", "/search", {
+        query,
+        sources,
+        document_sets: null,
+        tags: null,
+        time_cutoff: null,
+        skip_query_expansion: false,
+      })
+      const results = Array.isArray(data?.results) ? data.results : []
+      if (results.length) {
+        return results.slice(0, maxResults).map((r) => ({
+          title: r.semantic_identifier ?? r.title,
+          source: r.source_type ?? r.source,
+          link: r.link,
+          score: r.score,
+          updated_at: r.updated_at,
+          snippet: r.blurb ?? r.content?.slice(0, 500),
+          metadata: r.metadata || {},
+        }))
+      }
+    } catch (e) {
+      // fall through to keyword search
+    }
+
+    const data = await this.request("POST", "/admin/search", {
       query,
       filters: {
-        source_type: sourceType ? [sourceType] : null,
+        source_type: sources,
         document_set: null,
         time_cutoff: null,
         tags: null,
       },
-    }
-    const data = await this.request("POST", "/admin/search", payload)
+    })
     const docs = Array.isArray(data?.documents) ? data.documents : []
     return docs.slice(0, maxResults).map((d) => ({
       title: d.semantic_identifier,

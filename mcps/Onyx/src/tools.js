@@ -6,14 +6,14 @@ export const tools = [
       "Keyword search across the Onyx knowledge base (indexed Jira, Confluence, GitHub, web pages and uploaded files). " +
       "Returns the most relevant documents with a matching snippet and a link. " +
       "Use this to ground answers in Doctari's internal knowledge. " +
-      "Note: this is lexical/keyword matching, not semantic — prefer specific terms over vague questions.",
+      "Searches by meaning as well as words, so plain-English questions work well.",
     inputSchema: {
       type: "object",
       properties: {
         query: {
           type: "string",
           description:
-            "Search terms. Use concrete keywords (names, identifiers, error strings) rather than full sentences.",
+            "What you want to know. A full question works; so do specific names, identifiers or error strings.",
         },
         source_type: {
           type: "string",
