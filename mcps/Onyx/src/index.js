@@ -9,18 +9,6 @@ import {
 import { OnyxClient } from "./onyx-client.js"
 import { tools } from "./tools.js"
 
-const server = new Server(
-  {
-    name: "doctari-onyx-mcp",
-    version: "1.0.0",
-  },
-  {
-    capabilities: {
-      tools: {},
-    },
-  }
-)
-
 // Lazily construct the client so a missing .env surfaces as a tool error
 // rather than crashing the server at startup.
 let onyx = null
@@ -29,9 +17,18 @@ function getClient() {
   return onyx
 }
 
-server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }))
+// One per connection: the shared HTTP mode (scripts/serve-http.js) makes one per request.
+export function createServer() {
+  const server = new Server(
+    { name: "doctari-onyx-mcp", version: "1.0.0" },
+    { capabilities: { tools: {} } }
+  )
+  server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }))
+  server.setRequestHandler(CallToolRequestSchema, callTool)
+  return server
+}
 
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
+async function callTool(request) {
   const { name, arguments: args } = request.params
 
   try {
@@ -66,14 +63,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       isError: true,
     }
   }
-})
+}
 
 async function main() {
   const transport = new StdioServerTransport()
-  await server.connect(transport)
+  await createServer().connect(transport)
 }
 
-main().catch((error) => {
+if (import.meta.main) main().catch((error) => {
   console.error("Server error:", error)
   process.exit(1)
 })

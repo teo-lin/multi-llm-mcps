@@ -10,17 +10,7 @@ import { tools } from "./tools.js"
 
 class MySQLMCPServer {
   constructor() {
-    this.server = new Server(
-      {
-        name: "mysql-mcp-server",
-        version: "1.0.0",
-      },
-      {
-        capabilities: {
-          tools: {},
-        },
-      }
-    )
+    this.server = this.createServer()
 
     this.pool = mysql.createPool({
       host: process.env.MYSQL_HOST ?? "127.0.0.1",
@@ -37,7 +27,6 @@ class MySQLMCPServer {
       keepAliveInitialDelay: 0,
     })
 
-    this.setupHandlers()
     this.setupErrorHandling()
   }
 
@@ -46,10 +35,13 @@ class MySQLMCPServer {
       console.error("[MCP Error]", error)
     }
 
-    process.on("SIGINT", async () => {
-      await this.cleanup()
-      process.exit(0)
-    })
+    process.on("SIGINT", () => this.shutdown())
+    process.on("SIGTERM", () => this.shutdown())
+  }
+
+  async shutdown() {
+    await this.cleanup().catch(() => {})
+    process.exit(0)
   }
 
   async cleanup() {
@@ -80,12 +72,12 @@ class MySQLMCPServer {
     }
   }
 
-  setupHandlers() {
-    this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  setupHandlers(server = this.server) {
+    server.setRequestHandler(ListToolsRequestSchema, async () => ({
       tools,
     }))
 
-    this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    server.setRequestHandler(CallToolRequestSchema, async (request) => {
       try {
         const { name, arguments: args } = request.params
 
@@ -192,12 +184,25 @@ class MySQLMCPServer {
     })
   }
 
+  // One per connection: the shared HTTP mode (scripts/serve-http.js) makes one per request.
+  createServer() {
+    const server = new Server(
+      { name: "mysql-mcp-server", version: "1.0.0" },
+      { capabilities: { tools: {} } }
+    )
+    this.setupHandlers(server)
+    return server
+  }
+
   async run() {
     const transport = new StdioServerTransport()
     await this.server.connect(transport)
+    // The mysql2 pool keeps a 1-second timer forever, so node never exits on its own when the client goes.
+    process.stdin.on("end", () => this.shutdown())
     console.error("MySQL MCP server running on stdio")
   }
 }
 
 const server = new MySQLMCPServer()
-server.run().catch(console.error)
+export const createServer = () => server.createServer()
+if (import.meta.main) server.run().catch(console.error)

@@ -4,4 +4,4 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 # Use node from PATH (respects nvm/volta/etc). No .env: this server needs no config.
-node mcp-server.js
+exec node mcp-server.js

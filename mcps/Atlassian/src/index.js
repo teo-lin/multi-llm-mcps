@@ -35,17 +35,7 @@ const log = {
 
 class AtlassianServer {
   constructor() {
-    this.server = new Server(
-      {
-        name: "atlassian-server",
-        version: "1.0.0",
-      },
-      {
-        capabilities: {
-          tools: {},
-        },
-      }
-    )
+    this.server = this.createServer()
 
     this.oauthAvailable = null // Cache oauth availability check
 
@@ -65,7 +55,6 @@ class AtlassianServer {
       })
     }
 
-    this.setupToolHandlers()
   }
 
   async _isOAuthAvailable() {
@@ -86,12 +75,12 @@ class AtlassianServer {
     }
   }
 
-  setupToolHandlers() {
-    this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  setupToolHandlers(server = this.server) {
+    server.setRequestHandler(ListToolsRequestSchema, async () => ({
       tools,
     }))
 
-    this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const { working_directory } = request.params.arguments
 
       try {
@@ -410,6 +399,16 @@ class AtlassianServer {
     }
   }
 
+  // One per connection: the shared HTTP mode (scripts/serve-http.js) makes one per request.
+  createServer() {
+    const server = new Server(
+      { name: "atlassian-server", version: "1.0.0" },
+      { capabilities: { tools: {} } }
+    )
+    this.setupToolHandlers(server)
+    return server
+  }
+
   async run() {
     log.info(" ---- STARTING Atlassian MCP ---- ")
     const transport = new StdioServerTransport()
@@ -419,4 +418,5 @@ class AtlassianServer {
 }
 
 const server = new AtlassianServer()
-server.run().catch(log.error)
+export const createServer = () => server.createServer()
+if (import.meta.main) server.run().catch(log.error)

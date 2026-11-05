@@ -28,19 +28,8 @@ const log = {
 
 class CodeReviewServer {
   constructor() {
-    this.server = new Server(
-      {
-        name: "code-review-server",
-        version: "1.0.0",
-      },
-      {
-        capabilities: {
-          tools: {},
-        },
-      }
-    )
+    this.server = this.createServer()
 
-    this.setupToolHandlers()
   }
 
   getProjectName(currentDir) {
@@ -58,12 +47,12 @@ class CodeReviewServer {
     }
   }
 
-  setupToolHandlers() {
-    this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  setupToolHandlers(server = this.server) {
+    server.setRequestHandler(ListToolsRequestSchema, async () => ({
       tools,
     }))
 
-    this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    server.setRequestHandler(CallToolRequestSchema, async (request) => {
       if (request.params.name !== "codereview") {
         throw new McpError(
           ErrorCode.MethodNotFound,
@@ -449,6 +438,16 @@ class CodeReviewServer {
     }
   }
 
+  // One per connection: the shared HTTP mode (scripts/serve-http.js) makes one per request.
+  createServer() {
+    const server = new Server(
+      { name: "code-review-server", version: "1.0.0" },
+      { capabilities: { tools: {} } }
+    )
+    this.setupToolHandlers(server)
+    return server
+  }
+
   async run() {
     log.info(" ---- STARTING CodeReview MCP ---- ")
     const transport = new StdioServerTransport()
@@ -458,4 +457,5 @@ class CodeReviewServer {
 }
 
 const server = new CodeReviewServer()
-server.run().catch(log.error)
+export const createServer = () => server.createServer()
+if (import.meta.main) server.run().catch(log.error)

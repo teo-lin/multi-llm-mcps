@@ -24,19 +24,8 @@ const log = {
 
 class GitHubServer {
   constructor() {
-    this.server = new Server(
-      {
-        name: "github-server",
-        version: "1.0.0",
-      },
-      {
-        capabilities: {
-          tools: {},
-        },
-      }
-    )
+    this.server = this.createServer()
 
-    this.setupToolHandlers()
   }
 
   findGitRoot(startPath = process.env.GITHUB_WORKING_DIR || process.cwd()) {
@@ -66,12 +55,12 @@ class GitHubServer {
     return prIdentifier
   }
 
-  setupToolHandlers() {
-    this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  setupToolHandlers(server = this.server) {
+    server.setRequestHandler(ListToolsRequestSchema, async () => ({
       tools,
     }))
 
-    this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    server.setRequestHandler(CallToolRequestSchema, async (request) => {
       let { working_directory } = request.params.arguments
 
       try {
@@ -204,6 +193,16 @@ class GitHubServer {
     }
   }
 
+  // One per connection: the shared HTTP mode (scripts/serve-http.js) makes one per request.
+  createServer() {
+    const server = new Server(
+      { name: "github-server", version: "1.0.0" },
+      { capabilities: { tools: {} } }
+    )
+    this.setupToolHandlers(server)
+    return server
+  }
+
   async run() {
     log.info(" ---- STARTING GitHub MCP ---- ")
     const transport = new StdioServerTransport()
@@ -213,4 +212,5 @@ class GitHubServer {
 }
 
 const server = new GitHubServer()
-server.run().catch(log.error)
+export const createServer = () => server.createServer()
+if (import.meta.main) server.run().catch(log.error)

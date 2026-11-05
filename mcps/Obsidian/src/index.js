@@ -23,12 +23,8 @@ class ObsidianMCPServer {
     }
     this.vaultPath = path.resolve(vault)
 
-    this.server = new Server(
-      { name: "obsidian-mcp-server", version: "1.0.0" },
-      { capabilities: { tools: {} } }
-    )
+    this.server = this.createServer()
 
-    this.setupHandlers()
     this.setupErrorHandling()
   }
 
@@ -149,10 +145,10 @@ class ObsidianMCPServer {
     return results
   }
 
-  setupHandlers() {
-    this.server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }))
+  setupHandlers(server = this.server) {
+    server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }))
 
-    this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    server.setRequestHandler(CallToolRequestSchema, async (request) => {
       try {
         const { name, arguments: args } = request.params
         let payload
@@ -210,6 +206,16 @@ class ObsidianMCPServer {
     })
   }
 
+  // One per connection: the shared HTTP mode (scripts/serve-http.js) makes one per request.
+  createServer() {
+    const server = new Server(
+      { name: "obsidian-mcp-server", version: "1.0.0" },
+      { capabilities: { tools: {} } }
+    )
+    this.setupHandlers(server)
+    return server
+  }
+
   async run() {
     const transport = new StdioServerTransport()
     await this.server.connect(transport)
@@ -218,4 +224,5 @@ class ObsidianMCPServer {
 }
 
 const server = new ObsidianMCPServer()
-server.run().catch(console.error)
+export const createServer = () => server.createServer()
+if (import.meta.main) server.run().catch(console.error)

@@ -211,7 +211,27 @@ npm run unregister
 
 # Re-point the stable symlink after renaming or moving this repo
 ./scripts/relink.sh
+
+# macOS: one shared server per MCP for all sessions (register runs it too)
+./scripts/share-servers.sh
+# after a code change: restart the shared servers
+./scripts/share-servers.sh --restart
 ```
+
+### Shared servers (macOS default)
+
+Each agent session used to start its own copy of every server. On macOS, every server with
+a port in `scripts/servers.sh` now runs once, as a launchd agent (`local.mcps.<name>`), and
+all sessions and agents reach it at `http://127.0.0.1:<port>/mcp` (ports 7341–7350).
+`scripts/serve-http.js` hosts a server over streamable HTTP. It makes a new protocol
+object per request, from the server's exported `createServer()`; the server's state
+(clients, tokens, DB pool) is shared. Only local agents are accepted (Host/Origin checked).
+Logs: `~/Library/Logs/mcps/<name>.log`.
+
+- Browser has port `-`: one process per session, so sessions never see each other's pages.
+- Set a port to `-` and re-run `share-servers.sh` to go back to one process per session.
+- The servers still run over stdio (`start-mcp.sh`, `npx`), for Linux and Windows.
+- kits setup runs `share-servers.sh`, then copies Claude's entries to Codex, Gemini, opencode, goose.
 
 ### Path independence
 

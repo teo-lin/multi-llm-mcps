@@ -11,23 +11,18 @@ import { tools } from "./tools.js"
 
 const sonarClient = new SonarClient()
 
-const server = new Server(
-  {
-    name: "sonarcloud-server",
-    version: "1.0.0",
-  },
-  {
-    capabilities: {
-      tools: {},
-    },
-  }
-)
+// One per connection: the shared HTTP mode (scripts/serve-http.js) makes one per request.
+export function createServer() {
+  const server = new Server(
+    { name: "sonarcloud-server", version: "1.0.0" },
+    { capabilities: { tools: {} } }
+  )
+  server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }))
+  server.setRequestHandler(CallToolRequestSchema, callTool)
+  return server
+}
 
-server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools,
-}))
-
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
+async function callTool(request) {
   const { name, arguments: args } = request.params
 
   try {
@@ -307,9 +302,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       isError: true,
     }
   }
-})
+}
 
-const transport = new StdioServerTransport()
-await server.connect(transport)
-
-console.log("  SonarCloud MCP Server running on stdio")
+if (import.meta.main) {
+  await createServer().connect(new StdioServerTransport())
+  // stderr: stdout carries the MCP messages.
+  console.error("  SonarCloud MCP Server running on stdio")
+}

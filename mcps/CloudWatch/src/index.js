@@ -18,17 +18,7 @@ import { tools } from "./tools.js"
 
 class CloudWatchLogsMCPServer {
   constructor() {
-    this.server = new Server(
-      {
-        name: "cloudwatch-logs-server",
-        version: "1.0.0",
-      },
-      {
-        capabilities: {
-          tools: {},
-        },
-      }
-    )
+    this.server = this.createServer()
 
     // SSO profile used for lazy `aws sso login` on expiry. Set via AWS_PROFILE or
     // SSO_PROFILE (e.g. in .env). If unset, the default credential chain / default
@@ -66,7 +56,6 @@ class CloudWatchLogsMCPServer {
       ? process.env.ALLOWED_LOG_GROUPS.split(",").map((g) => g.trim())
       : null
 
-    this.setupHandlers()
   }
 
   createClient() {
@@ -132,12 +121,12 @@ class CloudWatchLogsMCPServer {
     }
   }
 
-  setupHandlers() {
-    this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  setupHandlers(server = this.server) {
+    server.setRequestHandler(ListToolsRequestSchema, async () => ({
       tools,
     }))
 
-    this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    server.setRequestHandler(CallToolRequestSchema, async (request) => {
       switch (request.params.name) {
         case "query_logs":
           return await this.handleQueryLogs(request.params.arguments)
@@ -404,6 +393,16 @@ class CloudWatchLogsMCPServer {
     })
   }
 
+  // One per connection: the shared HTTP mode (scripts/serve-http.js) makes one per request.
+  createServer() {
+    const server = new Server(
+      { name: "cloudwatch-logs-server", version: "1.0.0" },
+      { capabilities: { tools: {} } }
+    )
+    this.setupHandlers(server)
+    return server
+  }
+
   async run() {
     const transport = new StdioServerTransport()
     await this.server.connect(transport)
@@ -412,4 +411,5 @@ class CloudWatchLogsMCPServer {
 }
 
 const server = new CloudWatchLogsMCPServer()
-server.run().catch(console.error)
+export const createServer = () => server.createServer()
+if (import.meta.main) server.run().catch(console.error)

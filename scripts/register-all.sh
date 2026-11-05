@@ -36,6 +36,13 @@ for profile in "${PROFILES[@]}"; do
   echo ""
 done
 
+# macOS: servers with a port in servers.sh become one shared process for all sessions.
+if [ "$(uname -s)" = Darwin ]; then
+  echo " Sharing servers (one process for all sessions)..."
+  bash "$ROOT_DIR/scripts/share-servers.sh"
+  echo ""
+fi
+
 echo " All servers registered!"
 echo ""
 echo " Verify with: ${PROFILES[0]:-claude} mcp list"

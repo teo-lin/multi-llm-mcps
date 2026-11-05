@@ -18,17 +18,7 @@ const __dirname = path.dirname(__filename)
 
 class AzureADMCPServer {
   constructor() {
-    this.server = new Server(
-      {
-        name: "azuread-server",
-        version: "1.0.0",
-      },
-      {
-        capabilities: {
-          tools: {},
-        },
-      }
-    )
+    this.server = this.createServer()
 
     this.tokenCachePath = path.join(__dirname, ".token-cache.json")
     this.accessToken = null
@@ -56,7 +46,6 @@ class AzureADMCPServer {
     this.pca = new msal.PublicClientApplication(this.msalConfig)
 
     this.loadTokenCache()
-    this.setupHandlers()
   }
 
   loadTokenCache() {
@@ -130,12 +119,12 @@ class AzureADMCPServer {
     }
   }
 
-  setupHandlers() {
-    this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  setupHandlers(server = this.server) {
+    server.setRequestHandler(ListToolsRequestSchema, async () => ({
       tools,
     }))
 
-    this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    server.setRequestHandler(CallToolRequestSchema, async (request) => {
       try {
         const { name, arguments: args } = request.params
 
@@ -266,6 +255,16 @@ class AzureADMCPServer {
     }
   }
 
+  // One per connection: the shared HTTP mode (scripts/serve-http.js) makes one per request.
+  createServer() {
+    const server = new Server(
+      { name: "azuread-server", version: "1.0.0" },
+      { capabilities: { tools: {} } }
+    )
+    this.setupHandlers(server)
+    return server
+  }
+
   async run() {
     const transport = new StdioServerTransport()
     await this.server.connect(transport)
@@ -274,4 +273,5 @@ class AzureADMCPServer {
 }
 
 const server = new AzureADMCPServer()
-server.run().catch(console.error)
+export const createServer = () => server.createServer()
+if (import.meta.main) server.run().catch(console.error)
