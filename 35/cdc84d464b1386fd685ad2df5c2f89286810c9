@@ -1,0 +1,36 @@
+mcps/Atlassian/package.json
+  h_08ff9149c6bb35 3
+mcps/AzureAD/package.json
+  h_08ff9149c6bb35 3
+mcps/Browser/package.json
+  h_08ff9149c6bb35 3
+mcps/CloudWatch/package.json
+  h_08ff9149c6bb35 3
+mcps/CodeReview/package.json
+  h_08ff9149c6bb35 3
+mcps/GitHub/package.json
+  h_08ff9149c6bb35 3
+mcps/Jira/package.json
+  h_08ff9149c6bb35 3
+mcps/Kafdrop/package.json
+  h_08ff9149c6bb35 3
+mcps/MSK/package-lock.json
+  h_08ff9149c6bb35 3,9
+mcps/MSK/package.json
+  h_08ff9149c6bb35 3
+mcps/MySQL/package.json
+  h_08ff9149c6bb35 3
+package-lock.json
+  h_08ff9149c6bb35 22,37,53,67,82,96,110,125,140,157
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "35cdc84d464b1386fd685ad2df5c2f89286810c9",
+  "prompts": {},
+  "humans": {
+    "h_08ff9149c6bb35": {
+      "author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
