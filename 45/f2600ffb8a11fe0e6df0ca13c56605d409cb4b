@@ -1,0 +1,44 @@
+.github/workflows/publish-sonarcloud-mcp.yml
+  s_f5a815f1bcbc24::t_03f387ad3d1b66 9-11
+.github/workflows/publish-all-mcps.yml
+  s_f5a815f1bcbc24::t_03f387ad3d1b66 9-11,18-20,27-29,36-38,45-47,54-56,63-65,72-74,81-83,90-92,99-101
+.github/workflows/publish-cloudwatch-mcp.yml
+  s_f5a815f1bcbc24::t_03f387ad3d1b66 9-11
+.github/workflows/publish-atlassian-mcp.yml
+  s_f5a815f1bcbc24::t_03f387ad3d1b66 9-11
+.github/workflows/publish-mcp.yml
+  s_f5a815f1bcbc24::t_d5447232d4f919 31
+  s_f5a815f1bcbc24::t_169d796b3cca87 18-21
+.github/workflows/publish-mysql-mcp.yml
+  s_f5a815f1bcbc24::t_03f387ad3d1b66 9-11
+.github/workflows/publish-obsidian-mcp.yml
+  s_f5a815f1bcbc24::t_03f387ad3d1b66 9-11
+.github/workflows/publish-jira-mcp.yml
+  s_f5a815f1bcbc24::t_03f387ad3d1b66 9-11
+.github/workflows/publish-github-mcp.yml
+  s_f5a815f1bcbc24::t_03f387ad3d1b66 9-11
+.github/workflows/publish-codereview-mcp.yml
+  s_f5a815f1bcbc24::t_03f387ad3d1b66 9-11
+.github/workflows/publish-browser-mcp.yml
+  s_f5a815f1bcbc24::t_03f387ad3d1b66 9-11
+.github/workflows/publish-onyx-mcp.yml
+  s_f5a815f1bcbc24::t_03f387ad3d1b66 9-11
+.github/workflows/publish-azuread-mcp.yml
+  s_f5a815f1bcbc24::t_03f387ad3d1b66 9-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "45f2600ffb8a11fe0e6df0ca13c56605d409cb4b",
+  "prompts": {},
+  "sessions": {
+    "s_f5a815f1bcbc24": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9a082052-68cd-42b3-babf-054d21f8a189",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "teolin <teolin@gmail.com>"
+    }
+  }
+}
